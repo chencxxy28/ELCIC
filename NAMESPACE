@@ -1,0 +1,7 @@
+export(ee.glm)
+export(lambda.find.glm)
+export(ELCIC.glm)
+export(glm.generator)
+import(MASS)
+import(mvtnorm)
+importFrom("stats", "glm", "rbinom", "rnbinom", "rnorm", "rpois")
