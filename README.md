@@ -39,6 +39,6 @@ if (!require("devtools")) {
 devtools::install_github("chencxxy28/ELCIC")
 ```
 
-## Vignettes
+# Vignettes
 
-Please visit \[Tutorial\]
+Please visit [Tutorial](https://chencxxy28.github.io/ELCIC/articles/ELCIC.html)
