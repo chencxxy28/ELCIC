@@ -1,7 +1,7 @@
 Package: ELCIC
 Type: Package
 Title: The Empirical Likelihood-based Consistent Information Criterion
-Version: 0.1.0
+Version: 0.2.0
 Author: Chixiang Chen <chixiang.chen@pennmedicine.upenn.edu>
 Maintainer: Chixiang Chen <chixiang.chen@pennmedicine.upenn.edu>
 Description: A criterion to conduct robust model selection
