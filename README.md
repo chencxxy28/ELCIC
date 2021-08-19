@@ -1,5 +1,6 @@
 
 # ELCIC: Empirical Likelihood-based Consistent Information Criterion
+[![codecov](https://codecov.io/gh/chencxxy28/ELCIC/branch/master/graph/badge.svg?token=MP1P4H0OHP)](https://codecov.io/gh/chencxxy28/ELCIC)
 
 Conventional likelihood-based information criteria for model selection
 rely on the distribution assumption of data. However, for complex data
