@@ -4,7 +4,7 @@
 \alias{ELCIC.gee}
 \title{Calculate ELCIC value for a given candidate model under GEE framework without missingness}
 \usage{
-ELCIC.gee(x, y, r, id, time, index.var, name.var = NULL, dist, corstr, joints=TRUE)
+ELCIC.gee(x, y, r, id, time, index.var=NULL, name.var = NULL, dist, corstr, joints=TRUE)
 }
 \arguments{
 \item{x}{A matrix containing covariates. The first column should be all ones corresponding to the intercept.}
