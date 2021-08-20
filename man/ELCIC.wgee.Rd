@@ -46,16 +46,16 @@ When the argument "joints" is TRUE, \code{\link{ELCIC.wgee}} will calculate ELCI
 ## tests
 # load data
 data(wgeetoydata)
-corstr="exchangeable"
-dist="binomial"
-x=wgeetoydata$x
-y=wgeetoydata$y
-x_mis=wgeetoydata$x_mis
-r=wgeetoydata$obs_ind
-id=wgeetoydata$id
-time=3
-index.var=c(1,2,3)
-ELCIC_value=ELCIC.wgee(x,y,x_mis,r,id,time,index.var,name.var=NULL,
+corstr<-"exchangeable"
+dist<-"binomial"
+x<-wgeetoydata$x
+y<-wgeetoydata$y
+x_mis<-wgeetoydata$x_mis
+r<-wgeetoydata$obs_ind
+id<-wgeetoydata$id
+time<-3
+index.var<-c(1,2,3)
+ELCIC_value<-ELCIC.wgee(x,y,x_mis,r,id,time,index.var,name.var=NULL,
                      dist,corstr,joints=TRUE)
 ELCIC_value
 }
