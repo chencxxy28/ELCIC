@@ -15,11 +15,11 @@
 #'## tests
 #'# load data
 #'data(glmtoydata)
-#'x=glmtoydata$x
-#'y=glmtoydata$y
+#'x<-glmtoydata$x
+#'y<-glmtoydata$y
 #'#candidate model index
-#'name.var=c("intercept","x1","x2")
-#'index.var=c(1,2,3)
+#'name.var<-c("intercept","x1","x2")
+#'index.var<-c(1,2,3)
 #'criteria<-ELCIC.glm(x, y, index.var =index.var, name.var = NULL, dist="poisson")
 #'criteria
 #'
@@ -90,13 +90,13 @@ ELCIC.glm<-function (x,y,index.var=NULL,name.var=NULL,dist)
 #'## tests
 #'# load data
 #'data(geetoydata)
-#'x=geetoydata$x
-#'y=geetoydata$y
-#'id=geetoydata$id
-#'r=rep(1,nrow(x))
-#'time=3
-#'corstr="exchangeable"
-#'dist="poisson"
+#'x<-geetoydata$x
+#'y<-geetoydata$y
+#'id<-geetoydata$id
+#'r<-rep(1,nrow(x))
+#'time<-3
+#'corstr<-"exchangeable"
+#'dist<-"poisson"
 #'criteria<-ELCIC.gee(x=x,y=y,r=r,id=id,time=time,index.var=c(1,2,3),
 #'            name.var=NULL,dist=dist,corstr=corstr)
 #'criteria
@@ -133,7 +133,7 @@ ELCIC.gee<-function(x,y,r,id,time,index.var=NULL,name.var=NULL,dist,corstr,joint
 
         if(corstr=="independence")
         {
-            ro=0
+            ro<-0
             p<-pbeta
         }else{
             ro<-unlist(summary(fit)$corr[1]) #correlation coefficients
@@ -166,14 +166,14 @@ ELCIC.gee<-function(x,y,r,id,time,index.var=NULL,name.var=NULL,dist,corstr,joint
         betahat[index.var]<-fit$coefficients
         p<-length(fit$coefficients)
 
-        # if(corstr=="independence")
-        # {
-        #     ro=0
-        #     p<-pbeta
-        # }else{
-        #     ro<-unlist(summary(fit)$corr[1]) #correlation coefficients
-        #     p<-pbeta+1
-        # }
+        if(corstr=="independence")
+        {
+            ro=0
+            #p<-pbeta
+        }else{
+            ro<-unlist(summary(fit)$corr[1]) #correlation coefficients
+            #p<-pbeta+1
+        }
         phihat<-unlist(summary(fit)$dispersion[1])
         Z<-as.matrix(ee.gee.onlymean(y=y,x=x,r=r,id=id,beta=betahat,ro=ro,phi=phihat,dist=dist,corstr=corstr))
         # epi<-1/samplesize
@@ -222,16 +222,16 @@ ELCIC.gee<-function(x,y,r,id,time,index.var=NULL,name.var=NULL,dist,corstr,joint
 #'## tests
 #'# load data
 #'data(wgeetoydata)
-#'corstr="exchangeable"
-#'dist="binomial"
-#'x=wgeetoydata$x
-#'y=wgeetoydata$y
-#'x_mis=wgeetoydata$x_mis
-#'r=wgeetoydata$obs_ind
-#'id=wgeetoydata$id
-#'time=3
-#'index.var=c(1,2,3)
-#'ELCIC_value=ELCIC.wgee(x,y,x_mis,r,id,time,index.var,name.var=NULL,
+#'corstr<-"exchangeable"
+#'dist<-"binomial"
+#'x<-wgeetoydata$x
+#'y<-wgeetoydata$y
+#'x_mis<-wgeetoydata$x_mis
+#'r<-wgeetoydata$obs_ind
+#'id<-wgeetoydata$id
+#'time<-3
+#'index.var<-c(1,2,3)
+#'ELCIC_value<-ELCIC.wgee(x,y,x_mis,r,id,time,index.var,name.var=NULL,
 #'                      dist,corstr,joints=TRUE)
 #'ELCIC_value
 
@@ -277,15 +277,15 @@ ELCIC.wgee<-function(x,y,x_mis,r,id,time,index.var=NULL,name.var=NULL,dist,corst
 
         if(corstr=="independence")
         {
-            ro=0
+            ro<-0
             p<-pbeta
         }else{
             ro<-summary(fit)$corr
             p<-pbeta+1
         }
-        phi=summary(fit)$phi
+        phi<-summary(fit)$phi
         gamma<-as.vector(summary(fit$mis_fit)$coefficients[,1])
-        pi=prob.obs(x_mis,gamma)
+        pi<-prob.obs(x_mis,gamma)
         Z<-as.matrix(ee.wgee(y,x,r, pi,id,time=3,beta,ro,phi,dist,corstr))
         # epi<-1/samplesize
         # model<-function(lambda)
@@ -317,22 +317,22 @@ ELCIC.wgee<-function(x,y,x_mis,r,id,time,index.var=NULL,name.var=NULL,dist,corst
             }
         }
         mismodel_formula<-as.formula(mismodel_formula)
-        fit=wgee(y~x_candidate-1,data_wgee,id,family=dist,corstr =corstr,scale = NULL,mismodel =mismodel_formula)
+        fit<-wgee(y~x_candidate-1,data_wgee,id,family=dist,corstr =corstr,scale = NULL,mismodel =mismodel_formula)
 
         beta[index.var]<-as.vector(summary(fit)$beta)
         p<-length(summary(fit)$beta)
 
-        # if(corstr=="independence")
-        # {
-        #     ro=0
-        #     p<-pbeta
-        # }else{
-        #     ro<-summary(fit)$corr
-        #     p<-pbeta+1
-        # }
-        phi=summary(fit)$phi
+        if(corstr=="independence")
+        {
+            ro=0
+            #p<-pbeta
+        }else{
+            ro<-summary(fit)$corr
+            #p<-pbeta+1
+        }
+        phi<-summary(fit)$phi
         gamma<-as.vector(summary(fit$mis_fit)$coefficients[,1])
-        pi=prob.obs(x_mis,gamma)
+        pi<-prob.obs(x_mis,gamma)
         Z<-as.matrix(ee.wgee.onlymean(y,x,r, pi,id,time=3,beta,ro,phi,dist,corstr))
         # epi<-1/samplesize
         # model<-function(lambda)
@@ -373,8 +373,8 @@ ELCIC.wgee<-function(x,y,x_mis,r,id,time,index.var=NULL,name.var=NULL,dist,corst
 #'## tests
 #'# load data
 #'data(glmtoydata)
-#'x=glmtoydata$x
-#'y=glmtoydata$y
+#'x<-glmtoydata$x
+#'y<-glmtoydata$y
 #'#candidate model index
 #'candidate.sets<-list(c(1,2),c(1,2,3),c(1,2,3,4))
 #'criteria<-ELCIC.glm.procedure(x, y, candidate.sets, name.var.sets = NULL, dist="poisson")
@@ -433,14 +433,14 @@ ELCIC.glm.procedure<-function(x,y,candidate.sets,name.var.sets=NULL,dist)
 #'## tests
 #'# load data
 #'data(geetoydata)
-#'x=geetoydata$x
-#'y=geetoydata$y
-#'id=geetoydata$id
-#'r=rep(1,nrow(x))
-#'time=3
+#'x<-geetoydata$x
+#'y<-geetoydata$y
+#'id<-geetoydata$id
+#'r<-rep(1,nrow(x))
+#'time<-3
 #'candidate.sets<-list(c(1,2),c(1,2,3))
 #'candidate.cor.sets<-c("exchangeable")
-#'dist="poisson"
+#'dist<-"poisson"
 #'criterion.elcic<-ELCIC.gee.procedure(x=x,y=y,r=r,id=id,time=time,candidate.sets=candidate.sets,
 #'                 name.var.sets=NULL,dist=dist,candidate.cor.sets=candidate.cor.sets)
 #'criterion.elcic
@@ -547,13 +547,13 @@ ELCIC.gee.procedure<-function(x,y,r,id,time,candidate.sets=NULL,name.var.sets=NU
 #'## tests
 #'# load data
 #'data(wgeetoydata)
-#'dist="binomial"
-#'x=wgeetoydata$x
-#'y=wgeetoydata$y
-#'x_mis=wgeetoydata$x_mis
-#'r=wgeetoydata$obs_ind
-#'id=wgeetoydata$id
-#'time=3
+#'dist<-"binomial"
+#'x<-wgeetoydata$x
+#'y<-wgeetoydata$y
+#'x_mis<-wgeetoydata$x_mis
+#'r<-wgeetoydata$obs_ind
+#'id<-wgeetoydata$id
+#'time<-3
 #'candidate.sets<-list(c(1,2,3))
 #'candidate.cor.sets<-c("exchangeable")
 #'criterion.elcic<-ELCIC.wgee.procedure(x,y,x_mis,r,id,time,candidate.sets,name.var.sets=NULL,
@@ -655,11 +655,11 @@ ELCIC.wgee.procedure<-function(x,y,x_mis,r,id,time,candidate.sets=NULL,name.var.
 #'## tests
 #'# load data
 #'data(geetoydata)
-#'x=geetoydata$x
-#'y=geetoydata$y
-#'id=geetoydata$id
-#'r=rep(1,nrow(x))
-#'time=3
+#'x<-geetoydata$x
+#'y<-geetoydata$y
+#'id<-geetoydata$id
+#'r<-rep(1,nrow(x))
+#'time<-3
 #'candidate.sets<-list(c(1,2),c(1,2,3))
 #'candidate.cor.sets<-c("exchangeable")
 #'dist="poisson"
@@ -788,12 +788,12 @@ QICc.procedure<-function (x,y,id,dist,candidate.sets=NULL,name.var.sets=NULL,can
 #'## tests
 #'# load data
 #'data(wgeetoydata)
-#'dist="binomial"
-#'x=wgeetoydata$x
-#'y=wgeetoydata$y
-#'x_mis=wgeetoydata$x_mis
-#'r=wgeetoydata$obs_ind
-#'id=wgeetoydata$id
+#'dist<-"binomial"
+#'x<-wgeetoydata$x
+#'y<-wgeetoydata$y
+#'x_mis<-wgeetoydata$x_mis
+#'r<-wgeetoydata$obs_ind
+#'id<-wgeetoydata$id
 #'candidate.sets<-list(c(1,2,3))
 #'candidate.cor.sets<-c("exchangeable")
 #'criterion.mlic<-MLIC.wgee.procedure(x,y,x_mis,r,id,candidate.sets,
@@ -976,11 +976,11 @@ MLIC.wgee.procedure<-function(x,y,x_mis,r,id,candidate.sets=NULL,name.var.sets=N
 #'# load data
 #'data(wgeetoydata)
 #'dist="binomial"
-#'x=wgeetoydata$x
-#'y=wgeetoydata$y
-#'x_mis=wgeetoydata$x_mis
-#'r=wgeetoydata$obs_ind
-#'id=wgeetoydata$id
+#'x<-wgeetoydata$x
+#'y<-wgeetoydata$y
+#'x_mis<-wgeetoydata$x_mis
+#'r<-wgeetoydata$obs_ind
+#'id<-wgeetoydata$id
 #'candidate.sets<-list(c(1,2,3))
 #'candidate.cor.sets<-c("exchangeable")
 #'criterion.qicw<-QICW.wgee.procedure(x,y,x_mis,r,id,candidate.sets,
