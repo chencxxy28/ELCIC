@@ -16,7 +16,7 @@ test_that("output equal: same output given both index and var.names, given joint
 
 
 output1<-MLIC.wgee.procedure(x=wgeetoydata$x,y=(wgeetoydata$y)
-                             ,x_mis=wgeetoydata$x_mis,r=wgeetoydata$obs_ind,id=wgeetoydata$id,candidate.sets=NULL,name.var.sets=list(c("intercept","x1","x2")),dist="binomial",candidate.cor.sets="exchangeable",joints=FALSE)
+                             ,x_mis=wgeetoydata$x_mis,r=wgeetoydata$obs_ind,id=wgeetoydata$id,candidate.sets=NULL,name.var.sets=list(c("intercept","x1","x2")),dist="binomial",candidate.cor.sets="ar1",joints=FALSE)
 output2<-MLIC.wgee.procedure(x=wgeetoydata$x,y=(wgeetoydata$y)
-                             ,x_mis=wgeetoydata$x_mis,r=wgeetoydata$obs_ind,id=wgeetoydata$id,candidate.sets=NULL,name.var.sets=list(c("intercept","x1","x2")),dist="binomial",candidate.cor.sets=c("exchangeable","ar1"),joints=FALSE)
+                             ,x_mis=wgeetoydata$x_mis,r=wgeetoydata$obs_ind,id=wgeetoydata$id,candidate.sets=NULL,name.var.sets=list(c("intercept","x1","x2")),dist="binomial",candidate.cor.sets=c("ar1","exchangeable"),joints=FALSE)
 test_that("output equal: same output given multiple correlation structures, given joints=false",{expect_equal(output1,output2)})
