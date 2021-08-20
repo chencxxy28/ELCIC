@@ -43,6 +43,13 @@ output1<-ELCIC.wgee.procedure(x=wgeetoydata$x,y=(wgeetoydata$y)
                     ,x_mis=wgeetoydata$x_mis,r=wgeetoydata$obs_ind,id=wgeetoydata$id,time=3,candidate.sets=NULL,name.var.sets=list(c("intercept","x1","x2")),dist="binomial",candidate.cor.sets="exchangeable",joints=TRUE)
 output2<-ELCIC.wgee.procedure(x=wgeetoydata$x,y=(wgeetoydata$y)
                     ,x_mis=wgeetoydata$x_mis,r=wgeetoydata$obs_ind,id=wgeetoydata$id,time=3,candidate.sets=list(c(1,2,3)),name.var.sets=list(c("intercept","x1","x2")),dist="binomial",candidate.cor.sets="exchangeable",joints=TRUE)
+test_that("output equal: same output given both index and var.names, given joints=true",{expect_equal(output1,output2)})
+
+
+output1<-ELCIC.wgee.procedure(x=wgeetoydata$x,y=(wgeetoydata$y)
+                              ,x_mis=wgeetoydata$x_mis,r=wgeetoydata$obs_ind,id=wgeetoydata$id,time=3,candidate.sets=NULL,name.var.sets=list(c("intercept","x1","x2")),dist="binomial",candidate.cor.sets="exchangeable",joints=FALSE)
+output2<-ELCIC.wgee.procedure(x=wgeetoydata$x,y=(wgeetoydata$y)
+                              ,x_mis=wgeetoydata$x_mis,r=wgeetoydata$obs_ind,id=wgeetoydata$id,time=3,candidate.sets=list(c(1,2,3)),name.var.sets=list(c("intercept","x1","x2")),dist="binomial",candidate.cor.sets="exchangeable",joints=FALSE)
 test_that("output equal: same output given both index and var.names, given joints=false",{expect_equal(output1,output2)})
 
 
