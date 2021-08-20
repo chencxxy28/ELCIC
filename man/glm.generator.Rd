@@ -28,8 +28,8 @@ y: a vector containing outcomes.
 A function provides simulated outcomes as well as covariates under the framework of GLM. All covariates (except for intercept) are normally distributed.
 }
 \examples{
-beta=c(0.5,0.5,0.5,0)
-samplesize=100
+beta<-c(0.5,0.5,0.5,0)
+samplesize<-100
 data<-glm.generator(beta=beta,samplesize=samplesize,rho=0.5,dist="poisson")
 
 }
