@@ -35,11 +35,11 @@ This function provides an efficient algorithm to calculate the tuning parameters
 ## tests
 # load data
 data(geetoydata)
-x=geetoydata$x
-y=geetoydata$y
-id=geetoydata$id
-corstr="exchangeable"
-dist="poisson"
+x<-geetoydata$x
+y<-geetoydata$y
+id<-geetoydata$id
+corstr<-"exchangeable"
+dist<-"poisson"
 # obtain the estimates
 library(geepack)
 fit<-geeglm(y~x-1,data=geetoydata,family =dist,id=id,corstr = corstr)
