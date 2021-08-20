@@ -40,21 +40,21 @@ Calculate estimating equation from WGEE in ELCIC with data missing at random. Th
 # load data
 data(wgeetoydata)
 library(wgeesel)
-data_wgee=data.frame(do.call(cbind,wgeetoydata))
-corstr="exchangeable"
-dist="binomial"
-id=data_wgee$id
+data_wgee<-data.frame(do.call(cbind,wgeetoydata))
+corstr<-"exchangeable"
+dist<-"binomial"
+id<-data_wgee$id
 # obtain the estimates
-fit=wgee(y~x1+x2+x3,data_wgee,id,family=dist,corstr =corstr,
+fit<-wgee(y~x1+x2+x3,data_wgee,id,family=dist,corstr =corstr,
      scale = NULL,mismodel =obs_ind~x_mis1+x_mis2)
-beta=as.vector(summary(fit)$beta)
-ro=summary(fit)$corr
-phi=summary(fit)$phi
+beta<-as.vector(summary(fit)$beta)
+ro<-summary(fit)$corr
+phi<-summary(fit)$phi
 #calculate observing probabilies for all observations
 gamma<-as.vector(summary(fit$mis_fit)$coefficients[,1])
-x_mis=wgeetoydata$x_mis
-pi=prob.obs(x_mis,gamma)
-wgee.matrix=ee.wgee(y=wgeetoydata$y,x=wgeetoydata$x,r=wgeetoydata$obs_ind,
+x_mis<-wgeetoydata$x_mis
+pi<-prob.obs(x_mis,gamma)
+wgee.matrix<-ee.wgee(y=wgeetoydata$y,x=wgeetoydata$x,r=wgeetoydata$obs_ind,
 pi=pi,id=wgeetoydata$id,time=3,beta=beta,ro=ro,phi=phi,dist=dist,corstr=corstr)
 apply(wgee.matrix,1,mean)
 
