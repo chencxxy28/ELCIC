@@ -25,10 +25,25 @@ test_that("output error: non-unique variable name",{expect_error(ELCIC.wgee(x=wg
 test_that("output error: invalid correlation structure for outcomes in gee without missing",{expect_error(ELCIC.wgee(x=wgeetoydata$x,y=(wgeetoydata$y)
                                                                                                                      ,x_mis=wgeetoydata$x_mis,r=wgeetoydata$obs_ind,id=wgeetoydata$id,time=3,index.var=NULL,name.var=c("intercept","x1","x2"),dist="binomial",corstr="ar2",joints=T),"Invalid type of correlation structure for outcomes. It should be one of ar1,exchangeable,independence")})
 
+output1<-ELCIC.wgee(x=wgeetoydata$x,y=(wgeetoydata$y)
+                    ,x_mis=wgeetoydata$x_mis,r=wgeetoydata$obs_ind,id=wgeetoydata$id,time=3,index.var=NULL,name.var=c("intercept","x1","x2"),dist="binomial",corstr="exchangeable",joints=T)
+output2<-ELCIC.wgee(x=wgeetoydata$x,y=(wgeetoydata$y)
+                    ,x_mis=wgeetoydata$x_mis,r=wgeetoydata$obs_ind,id=wgeetoydata$id,time=3,index.var=c(1,2,3),name.var=c("intercept","x1","x2"),dist="binomial",corstr="exchangeable",joints=T)
+test_that("output equal: same output given both index and var.names, given joints=true",{expect_equal(output1,output2)})
 
 
+output1<-ELCIC.wgee(x=wgeetoydata$x,y=(wgeetoydata$y)
+                    ,x_mis=wgeetoydata$x_mis,r=wgeetoydata$obs_ind,id=wgeetoydata$id,time=3,index.var=NULL,name.var=c("intercept","x1","x2"),dist="binomial",corstr="exchangeable",joints=FALSE)
+output2<-ELCIC.wgee(x=wgeetoydata$x,y=(wgeetoydata$y)
+                    ,x_mis=wgeetoydata$x_mis,r=wgeetoydata$obs_ind,id=wgeetoydata$id,time=3,index.var=c(1,2,3),name.var=c("intercept","x1","x2"),dist="binomial",corstr="exchangeable",joints=FALSE)
+test_that("output equal: same output given both index and var.names, given joints=false",{expect_equal(output1,output2)})
 
 
+output1<-ELCIC.wgee.procedure(x=wgeetoydata$x,y=(wgeetoydata$y)
+                    ,x_mis=wgeetoydata$x_mis,r=wgeetoydata$obs_ind,id=wgeetoydata$id,time=3,candidate.sets=NULL,name.var.sets=list(c("intercept","x1","x2")),dist="binomial",candidate.cor.sets="exchangeable",joints=TRUE)
+output2<-ELCIC.wgee.procedure(x=wgeetoydata$x,y=(wgeetoydata$y)
+                    ,x_mis=wgeetoydata$x_mis,r=wgeetoydata$obs_ind,id=wgeetoydata$id,time=3,candidate.sets=list(c(1,2,3)),name.var.sets=list(c("intercept","x1","x2")),dist="binomial",candidate.cor.sets="exchangeable",joints=TRUE)
+test_that("output equal: same output given both index and var.names, given joints=false",{expect_equal(output1,output2)})
 
 
 
