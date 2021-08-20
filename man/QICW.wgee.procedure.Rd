@@ -46,11 +46,11 @@ When joint=TRUE, the argument "candidate.cor.sets" can contain multiple correlat
 # load data
 data(wgeetoydata)
 dist="binomial"
-x=wgeetoydata$x
-y=wgeetoydata$y
-x_mis=wgeetoydata$x_mis
-r=wgeetoydata$obs_ind
-id=wgeetoydata$id
+x<-wgeetoydata$x
+y<-wgeetoydata$y
+x_mis<-wgeetoydata$x_mis
+r<-wgeetoydata$obs_ind
+id<-wgeetoydata$id
 candidate.sets<-list(c(1,2,3))
 candidate.cor.sets<-c("exchangeable")
 criterion.qicw<-QICW.wgee.procedure(x,y,x_mis,r,id,candidate.sets,
