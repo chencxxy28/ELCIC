@@ -5,7 +5,7 @@
 \title{The whole QICW procedure for joint selection of mean structure and correlation structure in longitudinal data without missingness}
 \usage{
 QICW.wgee.procedure(x,y,x_mis,r,id,candidate.sets,name.var.sets=NULL,
-         dist,candidate.cor.sets, joints=TRUE)
+     dist,candidate.cor.sets=c("independence","exchangeable", "ar1"), joints=TRUE)
 }
 \arguments{
 \item{x}{A matrix containing covariates. The first column should be all ones corresponding to the intercept.}
@@ -24,7 +24,7 @@ QICW.wgee.procedure(x,y,x_mis,r,id,candidate.sets,name.var.sets=NULL,
 
 \item{dist}{A specified distribution. It can be "gaussian", "poisson",and "binomial".}
 
-\item{candidate.cor.sets}{A vector containing condidate correlation structures. It is c("independence","exchangeable", "ar1") as default.}
+\item{candidate.cor.sets}{A vector containing condidate correlation structures. When joint=TRUE, it is c("independence","exchangeable", "ar1") as default. When joint=FALSE, it should be one of c("independence","exchangeable", "ar1").}
 
 \item{joints}{A logic value for joint selection of marginal mean and working correlation structure. The default is TRUE.}
 }
@@ -47,7 +47,7 @@ id=wgeetoydata$id
 candidate.sets<-list(c(1,2,3))
 candidate.cor.sets<-c("exchangeable")
 criterion.qicw<-QICW.wgee.procedure(x,y,x_mis,r,id,candidate.sets,
-          name.var.sets=NULL,dist,candidate.cor.sets,joints=TRUE)
+          name.var.sets=NULL,dist,candidate.cor.sets,joints=FALSE)
 criterion.qicw
 
 }
