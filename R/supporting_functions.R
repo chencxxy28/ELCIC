@@ -57,8 +57,8 @@ JJ<-function (x,y,betahat,size,samplesize,dist)
     J_G
 }
 
-#'@title Data generation under GLMs
-#'@description A function provides simulated outcomes as well as covariates under the framework of GLMs.
+#'@title Data generation under GLM
+#'@description A function provides simulated outcomes as well as covariates under the framework of GLM. All covariates (except for intercept) are normally distributed.
 #'@usage glm.generator(beta, samplesize, rho = 0, dist, sd.gaussian = NULL, ov = NULL)
 #'@param beta The underlying true coefficient for each covariates in the model (including the intercept).
 #'@param samplesize The sample size.
@@ -121,7 +121,7 @@ glm.generator<-function(beta,samplesize,rho=0,dist,sd.gaussian=NULL,ov=NULL)
 }
 
 #'@title Generate longitudinal data without missingness
-#'@description A function for generating longitudinal data without missingness
+#'@description A function for generating longitudinal data without missingness. All covariates (except for intercept) are normally distributed.
 #'@usage gee.generator(beta,samplesize,time,num.time.dep,num.time.indep,
 #'      rho,x.rho,dist,cor.str,x.cor.str)
 #'@param beta A vector containing underlying true coefficients for each covariate in the model (including the intercept).
@@ -142,14 +142,16 @@ glm.generator<-function(beta,samplesize,rho=0,dist,sd.gaussian=NULL,ov=NULL)
 #'@examples
 #'beta=c(-1,1,0.5,0)
 #'samplesize=100
-#'gee.generator(beta=beta,samplesize=samplesize,time=3,num.time.dep=2,
+#'geetoydata=gee.generator(beta=beta,samplesize=samplesize,time=3,num.time.dep=2,
 #'num.time.indep=1,rho=0.4,x.rho=0.2,dist="poisson",cor.str="exchangeable",
 #'x.cor.str="exchangeable")
+#'geetoydata$y
 #'
 #'@export
 #'@importFrom mvtnorm rmvnorm
 #'@importFrom PoisNor genPoisNor
 #'@importFrom bindata rmvbin
+#'
 gee.generator<-function(beta,samplesize,time,num.time.dep,num.time.indep,rho,x.rho,dist,cor.str,x.cor.str) {
 
     if(length(beta)!=(num.time.dep+num.time.indep+1))
@@ -344,7 +346,7 @@ roo<-function(ro,time,corstr)
 
 
 #'@title Calculate conditional probabilities for observing records from each subject
-#'@description A function provides conditional probabilities for weight calculation in WGEE
+#'@description A function provides conditional probabilities.
 #'@usage prob.obs(x_mis,gamma)
 #'@param x_mis A matrix containing covariates for the missing data model. The first column should be all ones corresponding to the intercept.
 #'@param gamma coefficients calculated from missing data model
@@ -379,6 +381,37 @@ prob.obs<-function(x_mis,gamma)
 }
 
 
+
+
+#'@title Calculate the inverse of joint probability for observing records from each subject
+#'@description A function provides the inverse of joint probabilities for weight calculation involved in WGEE.
+#'@usage pii<-function(pi)
+#'@param pi A matrix containing covariates for the missing data model. The first column should be all ones corresponding to the intercept.
+#'@param gamma coefficients calculated from missing data model
+
+#'@return pii: a vector containing the inverse of joint probabilities.
+#'@examples
+#'## tests
+#'# load data
+#'data(wgeetoydata)
+#'library(wgeesel)
+#'data_wgee=data.frame(do.call(cbind,wgeetoydata))
+#'corstr="exchangeable"
+#'dist="binomial"
+#'id=data_wgee$id
+#'# obtain the estimates
+#'fit=wgee(y~x1+x2+x3,data_wgee,id,family=dist,corstr =corstr,scale = NULL,
+#'          mismodel =obs_ind~x_mis1+x_mis2)
+#'beta=as.vector(summary(fit)$beta)
+#'ro=summary(fit)$corr
+#'phi=summary(fit)$phi
+#'#calculate observing probabilies for all observations
+#'gamma=as.vector(summary(fit$mis_fit)$coefficients[,1])
+#'x_mis=wgeetoydata$x_mis
+#'pi=prob.obs(x_mis,gamma)
+#'joint_prob=pii(pi)
+#'@export
+#'
 pii<-function(pi) #missing prob
 { pi[which(pi<0.00001)]<-0.00001
 pii<-1/pi
