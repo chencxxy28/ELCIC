@@ -4,7 +4,7 @@
 \alias{ELCIC.wgee}
 \title{Calculate ELCIC value for a given candidate model under WGEE framework with data missing at random}
 \usage{
-ELCIC.wgee(x,y,x_mis,r,id,time,index.var,name.var=NULL,dist,corstr,joints=TRUE)
+ELCIC.wgee(x,y,x_mis,r,id,time,index.var=NULL,name.var=NULL,dist,corstr,joints=TRUE)
 }
 \arguments{
 \item{x}{A matrix containing covariates. The first column should be all ones corresponding to the intercept.}
@@ -50,4 +50,5 @@ time=3
 index.var=c(1,2,3)
 ELCIC_value=ELCIC.wgee(x,y,x_mis,r,id,time,index.var,name.var=NULL,
                      dist,corstr,joints=TRUE)
+ELCIC_value
 }
