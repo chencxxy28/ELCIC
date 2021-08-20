@@ -38,18 +38,18 @@ corstr should be prespecified.
 ## tests
 # load data
 data(geetoydata)
-x=geetoydata$x
-y=geetoydata$y
-id=geetoydata$id
-corstr="exchangeable"
-dist="poisson"
+x<-geetoydata$x
+y<-geetoydata$y
+id<-geetoydata$id
+corstr<-"exchangeable"
+dist<-"poisson"
 # obtain the estimates
 library(geepack)
 fit<-geeglm(y~x-1,data=geetoydata,family =dist,id=id,corstr = corstr)
 betahat<-fit$coefficients
 ro<-unlist(summary(fit)$corr[1])
 phi<-unlist(summary(fit)$dispersion[1])
-r=rep(1,nrow(x))
+r<-rep(1,nrow(x))
 lambda<-lambda.find.gee.onlymean(x,y,id,betahat,r,dist,ro,phi,corstr)
 lambda
 
