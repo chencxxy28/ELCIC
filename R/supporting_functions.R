@@ -72,8 +72,8 @@ JJ<-function (x,y,betahat,size,samplesize,dist)
 #'@return y: a vector containing outcomes.
 #'
 #'@examples
-#'beta=c(0.5,0.5,0.5,0)
-#'samplesize=100
+#'beta<-c(0.5,0.5,0.5,0)
+#'samplesize<-100
 #'data<-glm.generator(beta=beta,samplesize=samplesize,rho=0.5,dist="poisson")
 #'
 #'@export
@@ -140,9 +140,9 @@ glm.generator<-function(beta,samplesize,rho=0,dist,sd.gaussian=NULL,ov=NULL)
 #'@return id: a vector indicating subject id.
 #'
 #'@examples
-#'beta=c(-1,1,0.5,0)
-#'samplesize=100
-#'geetoydata=gee.generator(beta=beta,samplesize=samplesize,time=3,num.time.dep=2,
+#'beta<-c(-1,1,0.5,0)
+#'samplesize<-100
+#'geetoydata<-gee.generator(beta=beta,samplesize=samplesize,time=3,num.time.dep=2,
 #'num.time.indep=1,rho=0.4,x.rho=0.2,dist="poisson",cor.str="exchangeable",
 #'x.cor.str="exchangeable")
 #'geetoydata$y
@@ -357,20 +357,20 @@ roo<-function(ro,time,corstr)
 #'# load data
 #'data(wgeetoydata)
 #'library(wgeesel)
-#'data_wgee=data.frame(do.call(cbind,wgeetoydata))
-#'corstr="exchangeable"
-#'dist="binomial"
-#'id=data_wgee$id
+#'data_wgee<-data.frame(do.call(cbind,wgeetoydata))
+#'corstr<-"exchangeable"
+#'dist<-"binomial"
+#'id<-data_wgee$id
 #'# obtain the estimates
-#'fit=wgee(y~x1+x2+x3,data_wgee,id,family=dist,corstr =corstr,scale = NULL,
+#'fit<-wgee(y~x1+x2+x3,data_wgee,id,family=dist,corstr =corstr,scale = NULL,
 #'          mismodel =obs_ind~x_mis1+x_mis2)
-#'beta=as.vector(summary(fit)$beta)
-#'ro=summary(fit)$corr
-#'phi=summary(fit)$phi
+#'beta<-as.vector(summary(fit)$beta)
+#'ro<-summary(fit)$corr
+#'phi<-summary(fit)$phi
 #'#calculate observing probabilies for all observations
 #'gamma<-as.vector(summary(fit$mis_fit)$coefficients[,1])
-#'x_mis=wgeetoydata$x_mis
-#'pi=prob.obs(x_mis,gamma)
+#'x_mis<-wgeetoydata$x_mis
+#'pi<-prob.obs(x_mis,gamma)
 #'
 #'@export
 prob.obs<-function(x_mis,gamma)
@@ -394,21 +394,21 @@ prob.obs<-function(x_mis,gamma)
 #'# load data
 #'data(wgeetoydata)
 #'library(wgeesel)
-#'data_wgee=data.frame(do.call(cbind,wgeetoydata))
-#'corstr="exchangeable"
-#'dist="binomial"
-#'id=data_wgee$id
+#'data_wgee<-data.frame(do.call(cbind,wgeetoydata))
+#'corstr<-"exchangeable"
+#'dist<-"binomial"
+#'id<-data_wgee$id
 #'# obtain the estimates
-#'fit=wgee(y~x1+x2+x3,data_wgee,id,family=dist,corstr =corstr,scale = NULL,
+#'fit<-wgee(y~x1+x2+x3,data_wgee,id,family=dist,corstr =corstr,scale = NULL,
 #'          mismodel =obs_ind~x_mis1+x_mis2)
-#'beta=as.vector(summary(fit)$beta)
-#'ro=summary(fit)$corr
-#'phi=summary(fit)$phi
+#'beta<-as.vector(summary(fit)$beta)
+#'ro<-summary(fit)$corr
+#'phi<-summary(fit)$phi
 #'#calculate observing probabilies for all observations
-#'gamma=as.vector(summary(fit$mis_fit)$coefficients[,1])
-#'x_mis=wgeetoydata$x_mis
-#'pi=prob.obs(x_mis,gamma)
-#'joint_prob=pii(pi)
+#'gamma<-as.vector(summary(fit$mis_fit)$coefficients[,1])
+#'x_mis<-wgeetoydata$x_mis
+#'pi<-prob.obs(x_mis,gamma)
+#'joint_prob<-pii(pi)
 #'@export
 #'
 pii<-function(pi) #missing prob
