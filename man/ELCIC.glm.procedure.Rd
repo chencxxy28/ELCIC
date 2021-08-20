@@ -7,13 +7,13 @@
 ELCIC.glm.procedure(x,y,candidate.sets,name.var.sets=NULL,dist)
 }
 \arguments{
-\item{x}{A matrix containing covariates. The first column should contain all ones corresponding to the intercept.}
+\item{x}{A matrix containing covariates. The first column should contain all ones corresponding to the intercept if the intercept is expected in the mean structure.}
 
 \item{y}{A vector containing outcomes.}
 
-\item{candidate.sets}{A list containing index corresponding to candidate covariates in each candidate model.}
+\item{candidate.sets}{A list containing index corresponding to candidate covariates in each candidate model. See more in details section.}
 
-\item{name.var.sets}{A list containing names of candidate covariates coresponding to each candidate model. The names should be subset of column names of the x matrix.}
+\item{name.var.sets}{A list containing names of candidate covariates coresponding to each candidate model. The names should be subset of column names of the x matrix. See more in details section.}
 
 \item{dist}{A specified distribution. It can be "gaussian", "poisson",and "binomial".}
 }
@@ -21,7 +21,10 @@ ELCIC.glm.procedure(x,y,candidate.sets,name.var.sets=NULL,dist)
 A matrix with each element containing ELCIC value for each candidate model (in columns) and (in rows)
 }
 \description{
-This function provides the overall procedure for variable selection in GLM.
+The function \code{\link{ELCIC.glm.procedure}} provides the overall procedure for variable selection in GLM.
+}
+\details{
+Either arguments "candidate.sets" or "name.var.sets" is used to identify the set of candidate mean model. If both arguments are provided, only the argument "name.var.sets" will be used.
 }
 \examples{
 ## tests
