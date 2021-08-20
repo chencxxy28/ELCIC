@@ -2,18 +2,18 @@
 % Please edit documentation in R/model_selection.R
 \name{ELCIC.glm}
 \alias{ELCIC.glm}
-\title{Variable selection in generalized linear models (GLMs)}
+\title{Variable selection in generalized linear models (GLM)}
 \usage{
 ELCIC.glm(x, y, index.var=NULL, name.var = NULL, dist)
 }
 \arguments{
-\item{x}{A matrix containing covariates. The first column should contain all ones corresponding to the intercept.}
+\item{x}{A matrix containing covariates. The first column should contain all ones corresponding to the intercept if intercept is considered in your mean model.}
 
 \item{y}{A vector containing outcomes.}
 
-\item{index.var}{A vector containing index corresponding to candidate covariates (including the intercept).}
+\item{index.var}{A vector containing index corresponding to candidate covariates (including the intercept). See more in details section.}
 
-\item{name.var}{A vector containing names of candidate covariates. The names should be subset of column names of x matrix.}
+\item{name.var}{A vector containing names of candidate covariates. The names should be subset of column names of x matrix. See more in details section.}
 
 \item{dist}{A specified distribution. It can be "gaussian", "poisson",and "binomial".}
 }
@@ -21,7 +21,10 @@ ELCIC.glm(x, y, index.var=NULL, name.var = NULL, dist)
 A vector containing information criteria including ELCIC, AIC, BIC, and GIC.
 }
 \description{
-This function will provide values of several model selection criteria including AIC, BIC, GIC, and ELCIC.
+The function \code{\link{ELCIC.gee}} provides values of several model selection criteria including AIC, BIC, GIC, and ELCIC, given a candidate mean model.
+}
+\details{
+Either arguments "index.var" or "name.var" is used to identify the candidate mean model. If both arguments are provided, only the argument "name.var" will be used.
 }
 \examples{
 ## tests
