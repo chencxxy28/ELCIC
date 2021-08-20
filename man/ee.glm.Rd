@@ -2,7 +2,7 @@
 % Please edit documentation in R/estimating_equations.R
 \name{ee.glm}
 \alias{ee.glm}
-\title{Estimating equations for ELCIC under GLM}
+\title{Estimating equation for ELCIC under GLM}
 \usage{
 ee.glm(x, y, betahat, dist)
 }
@@ -19,7 +19,7 @@ ee.glm(x, y, betahat, dist)
 A matrix containing values of calculated estimating equations.
 }
 \description{
-A specified estimating equations for ELCIC under GLM.
+A specified estimating equation for ELCIC under GLM. This estimating equation is used for marginal mean selection.
 }
 \examples{
 ## tests
