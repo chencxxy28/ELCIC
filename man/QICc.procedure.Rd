@@ -39,11 +39,11 @@ When the argument "joints" is TRUE, \code{\link{ELCIC.gee}} will calculate ELCIC
 ## tests
 # load data
 data(geetoydata)
-x=geetoydata$x
-y=geetoydata$y
-id=geetoydata$id
-r=rep(1,nrow(x))
-time=3
+x<-geetoydata$x
+y<-geetoydata$y
+id<-geetoydata$id
+r<-rep(1,nrow(x))
+time<-3
 candidate.sets<-list(c(1,2),c(1,2,3))
 candidate.cor.sets<-c("exchangeable")
 dist="poisson"
