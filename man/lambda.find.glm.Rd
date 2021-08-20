@@ -2,7 +2,7 @@
 % Please edit documentation in R/lambda.R
 \name{lambda.find.glm}
 \alias{lambda.find.glm}
-\title{To calculate tuning parameter in the empirical likelihood}
+\title{To calculate tuning parameter involved in ELCIC under GLM}
 \usage{
 lambda.find.glm(x, y, betahat, dist)
 }
@@ -19,7 +19,7 @@ lambda.find.glm(x, y, betahat, dist)
 A value of lambda (tuning parameter) vector involved in the empirical likelihood.
 }
 \description{
-This function aims to efficiently calculate the tuning parameter lambda in the empirical likelihood.
+This function aims to efficiently calculate the tuning parameter lambda in ELCIC.
 }
 \examples{
 ## tests
