@@ -2,7 +2,7 @@
 % Please edit documentation in R/model_selection.R
 \name{ELCIC.gee}
 \alias{ELCIC.gee}
-\title{Calculate ELCIC value for a given candidate model under GEE framework without missingness}
+\title{Calculate ELCIC value for a given candidate model under GEE framework}
 \usage{
 ELCIC.gee(x, y, r, id, time, index.var=NULL, name.var = NULL, dist, corstr, joints=TRUE)
 }
@@ -15,23 +15,28 @@ ELCIC.gee(x, y, r, id, time, index.var=NULL, name.var = NULL, dist, corstr, join
 
 \item{id}{A vector indicating subject id.}
 
-\item{time}{The number of observations for each subject}
+\item{time}{The number of observations in total for each subject}
 
-\item{index.var}{A vector containing index corresponding to candidate covariates.}
+\item{index.var}{A vector containing index corresponding to candidate covariates. See more in details section.}
 
-\item{name.var}{A vector containing names of candidate covariates. The names should be subset of column names of x matrix.}
+\item{name.var}{A vector containing names of candidate covariates. The names should be subset of column names of x matrix. See more in details section.}
 
 \item{dist}{A specified distribution. It can be "gaussian", "poisson",and "binomial".}
 
-\item{corstr}{A condidate correlation structure. It can be "independence","exchangeable", and "ar1".}
+\item{corstr}{A condidate correlation structure. It can be either of "independence","exchangeable", and "ar1".}
 
-\item{joints}{A logic value for joint selection of marginal mean and working correlation structure. The default is TRUE.}
+\item{joints}{A logic value for joint selection of marginal mean and working correlation structure. The default is TRUE. See more in details section.}
 }
 \value{
 A ELCIC value for a given candidate model.
 }
 \description{
-This is the function to calculate ELCIC value for a given candidate model. It is able to simultaneously evaluate mean model and working correlation structure.
+The function \code{\link{ELCIC.gee}} calculates ELCIC value for a given marginal mean candidate model with a specified working correlation structure. It is able to simultaneously evaluate mean model and working correlation structure.
+}
+\details{
+Either arguments "index.var" or "name.var" is used to identify the candidate mean model. If both arguments are provided, only the argument "name.var" will be used.
+
+When the argument "joints" is TRUE, \code{\link{ELCIC.gee}} will calculate ELCIC value based on the function \code{\link{lambda.find.gee}} and \code{\link{ee.gee}}, which involve both marginal mean and correlation coefficient estimating equations. When the argument "joints" is FALSE, \code{\link{ELCIC.gee}} will calculate ELCIC value based on the function \code{\link{lambda.find.gee.onlymean}} and \code{\link{ee.gee.onlymean}}, which only involve marginal mean estimating equations.
 }
 \examples{
 ## tests
