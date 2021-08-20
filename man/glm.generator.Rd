@@ -2,7 +2,7 @@
 % Please edit documentation in R/supporting_functions.R
 \name{glm.generator}
 \alias{glm.generator}
-\title{Data generation under GLMs}
+\title{Data generation under GLM}
 \usage{
 glm.generator(beta, samplesize, rho = 0, dist, sd.gaussian = NULL, ov = NULL)
 }
@@ -25,7 +25,7 @@ x: a matrix containing covariates. The first column should contain all ones corr
 y: a vector containing outcomes.
 }
 \description{
-A function provides simulated outcomes as well as covariates under the framework of GLMs.
+A function provides simulated outcomes as well as covariates under the framework of GLM. All covariates (except for intercept) are normally distributed.
 }
 \examples{
 beta=c(0.5,0.5,0.5,0)
