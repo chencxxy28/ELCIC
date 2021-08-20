@@ -4,3 +4,5 @@
 ^docs$
 ^pkgdown$
 ^cran-comments\.md$
+^\.travis\.yml$
+^\.github$
