@@ -4,12 +4,10 @@
 \alias{pii}
 \title{Calculate the inverse of joint probability for observing records from each subject}
 \usage{
-pii<-function(pi)
+pii(pi)
 }
 \arguments{
 \item{pi}{A matrix containing covariates for the missing data model. The first column should be all ones corresponding to the intercept.}
-
-\item{gamma}{coefficients calculated from missing data model}
 }
 \value{
 pii: a vector containing the inverse of joint probabilities.
