@@ -42,13 +42,13 @@ When the argument "joints" is TRUE, \code{\link{ELCIC.gee}} will calculate ELCIC
 ## tests
 # load data
 data(geetoydata)
-x=geetoydata$x
-y=geetoydata$y
-id=geetoydata$id
-r=rep(1,nrow(x))
-time=3
-corstr="exchangeable"
-dist="poisson"
+x<-geetoydata$x
+y<-geetoydata$y
+id<-geetoydata$id
+r<-rep(1,nrow(x))
+time<-3
+corstr<-"exchangeable"
+dist<-"poisson"
 criteria<-ELCIC.gee(x=x,y=y,r=r,id=id,time=time,index.var=c(1,2,3),
            name.var=NULL,dist=dist,corstr=corstr)
 criteria
