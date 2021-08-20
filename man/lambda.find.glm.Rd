@@ -25,8 +25,8 @@ This function aims to efficiently calculate the tuning parameter lambda in ELCIC
 ## tests
 # load data
 data(glmtoydata)
-x=glmtoydata$x
-y=glmtoydata$y
+x<-glmtoydata$x
+y<-glmtoydata$y
 # obtain the estimates
 fit<-glm(y~x-1,family="poisson")
 betahat<-fit$coefficients
