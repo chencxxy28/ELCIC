@@ -13,8 +13,8 @@
 #'## tests
 #'# load data
 #'data(glmtoydata)
-#'x=glmtoydata$x
-#'y=glmtoydata$y
+#'x<-glmtoydata$x
+#'y<-glmtoydata$y
 #'# obtain the estimates
 #'fit<-glm(y~x-1,family="poisson")
 #'betahat<-fit$coefficients
@@ -26,7 +26,7 @@
 ######for cross-sectional glm
 ee.glm<-function (x,y,betahat,dist)
 {
-    full=ncol(x)
+    full<-ncol(x)
     samplesize<-nrow(x)
     ee<-matrix(0,nrow=full,ncol=samplesize)
 
@@ -98,18 +98,18 @@ ee.glm<-function (x,y,betahat,dist)
 #'## tests
 #'# load data
 #'data(geetoydata)
-#'x=geetoydata$x
-#'y=geetoydata$y
-#'id=geetoydata$id
-#'corstr="exchangeable"
-#'dist="poisson"
+#'x<-geetoydata$x
+#'y<-geetoydata$y
+#'id<-geetoydata$id
+#'corstr<-"exchangeable"
+#'dist<-"poisson"
 #'# obtain the estimates
 #'library(geepack)
 #'fit<-geeglm(y~x-1,data=geetoydata,family =dist,id=id,corstr = "ar1")
 #'beta<-fit$coefficients
 #'ro<-unlist(summary(fit)$corr[1])
 #'phi<-unlist(summary(fit)$dispersion[1])
-#'r=rep(1,nrow(x))
+#'r<-rep(1,nrow(x))
 #'ee.matrix<-ee.gee(y,x,r,id,beta,ro,phi,dist,corstr)
 #'apply(ee.matrix,1,mean)
 #'
@@ -182,21 +182,21 @@ ee.gee<-function(y,x,r,id,beta,ro,phi,dist,corstr)
 #'# load data
 #'data(wgeetoydata)
 #'library(wgeesel)
-#'data_wgee=data.frame(do.call(cbind,wgeetoydata))
-#'corstr="exchangeable"
-#'dist="binomial"
-#'id=data_wgee$id
+#'data_wgee<-data.frame(do.call(cbind,wgeetoydata))
+#'corstr<-"exchangeable"
+#'dist<-"binomial"
+#'id<-data_wgee$id
 #'# obtain the estimates
-#'fit=wgee(y~x1+x2+x3,data_wgee,id,family=dist,corstr =corstr,
+#'fit<-wgee(y~x1+x2+x3,data_wgee,id,family=dist,corstr =corstr,
 #'      scale = NULL,mismodel =obs_ind~x_mis1+x_mis2)
-#'beta=as.vector(summary(fit)$beta)
-#'ro=summary(fit)$corr
-#'phi=summary(fit)$phi
+#'beta<-as.vector(summary(fit)$beta)
+#'ro<-summary(fit)$corr
+#'phi<-summary(fit)$phi
 #'#calculate observing probabilies for all observations
 #'gamma<-as.vector(summary(fit$mis_fit)$coefficients[,1])
-#'x_mis=wgeetoydata$x_mis
-#'pi=prob.obs(x_mis,gamma)
-#'wgee.matrix=ee.wgee(y=wgeetoydata$y,x=wgeetoydata$x,r=wgeetoydata$obs_ind,
+#'x_mis<-wgeetoydata$x_mis
+#'pi<-prob.obs(x_mis,gamma)
+#'wgee.matrix<-ee.wgee(y=wgeetoydata$y,x=wgeetoydata$x,r=wgeetoydata$obs_ind,
 #'pi=pi,id=wgeetoydata$id,time=3,beta=beta,ro=ro,phi=phi,dist=dist,corstr=corstr)
 #'apply(wgee.matrix,1,mean)
 #'
@@ -272,18 +272,18 @@ ee.wgee<-function(y,x,r,pi,id,time,beta,ro,phi,dist,corstr)
 #'## tests
 #'# load data
 #'data(geetoydata)
-#'x=geetoydata$x
-#'y=geetoydata$y
-#'id=geetoydata$id
-#'corstr="exchangeable"
-#'dist="poisson"
+#'x<-geetoydata$x
+#'y<-geetoydata$y
+#'id<-geetoydata$id
+#'corstr<-"exchangeable"
+#'dist<-"poisson"
 #'# obtain the estimates
 #'library(geepack)
 #'fit<-geeglm(y~x-1,data=geetoydata,family =dist,id=id,corstr = corstr)
 #'beta<-fit$coefficients
 #'ro<-unlist(summary(fit)$corr[1])
 #'phi<-unlist(summary(fit)$dispersion[1])
-#'r=rep(1,nrow(x))
+#'r<-rep(1,nrow(x))
 #'ee.matrix<-ee.gee.onlymean(y,x,r,id,beta,ro,phi,dist,corstr)
 #'apply(ee.matrix,1,mean)
 #'
@@ -356,21 +356,21 @@ ee.gee.onlymean<-function(y,x,r,id,beta,ro,phi,dist,corstr)
 #'# load data
 #'data(wgeetoydata)
 #'library(wgeesel)
-#'data_wgee=data.frame(do.call(cbind,wgeetoydata))
-#'corstr="exchangeable"
-#'dist="binomial"
-#'id=data_wgee$id
+#'data_wgee<-data.frame(do.call(cbind,wgeetoydata))
+#'corstr<-"exchangeable"
+#'dist<-"binomial"
+#'id<-data_wgee$id
 #'# obtain the estimates
-#'fit=wgee(y~x1+x2+x3,data_wgee,id,family=dist,corstr =corstr,
+#'fit<-wgee(y~x1+x2+x3,data_wgee,id,family=dist,corstr =corstr,
 #'      scale = NULL,mismodel =obs_ind~x_mis1+x_mis2)
-#'beta=as.vector(summary(fit)$beta)
-#'ro=summary(fit)$corr
-#'phi=summary(fit)$phi
+#'beta<-as.vector(summary(fit)$beta)
+#'ro<-summary(fit)$corr
+#'phi<-summary(fit)$phi
 #'#calculate observing probabilies for all observations
 #'gamma<-as.vector(summary(fit$mis_fit)$coefficients[,1])
-#'x_mis=wgeetoydata$x_mis
-#'pi=prob.obs(x_mis,gamma)
-#'wgee.matrix=ee.wgee.onlymean(y=wgeetoydata$y,x=wgeetoydata$x,r=wgeetoydata$obs_ind,
+#'x_mis<-wgeetoydata$x_mis
+#'pi<-prob.obs(x_mis,gamma)
+#'wgee.matrix<-ee.wgee.onlymean(y=wgeetoydata$y,x=wgeetoydata$x,r=wgeetoydata$obs_ind,
 #'pi=pi,id=wgeetoydata$id,time=3,beta=beta,ro=ro,phi=phi,dist=dist,corstr=corstr)
 #'apply(wgee.matrix,1,mean)
 #'@export
