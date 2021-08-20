@@ -19,11 +19,18 @@ test_that("output error: invalid correlation structure for outcomes in gee witho
 
 output1<-ELCIC.gee(x=(geetoydata$x),y=(geetoydata$y),r=rep(1,nrow(x)),id=geetoydata$id,time=3,index.var=NULL,name.var=c("intercept","x1","x2"),dist="poisson",corstr="ar1",joint=TRUE)
 output2<-ELCIC.gee(x=(geetoydata$x),y=(geetoydata$y),r=rep(1,nrow(x)),id=geetoydata$id,time=3,index.var=c(1,2,3),name.var=c("intercept","x1","x2"),dist="poisson",corstr="ar1",joint=TRUE)
-test_that("output equal: equal values given both index and name, when joint=ture",{expect_equal(output1,output2)})
+test_that("output equal: equal values given both index and name, when joint=true",{expect_equal(output1,output2)})
 
 output1<-ELCIC.gee(x=(geetoydata$x),y=(geetoydata$y),r=rep(1,nrow(x)),id=geetoydata$id,time=3,index.var=NULL,name.var=c("intercept","x1","x2"),dist="poisson",corstr="ar1",joint=FALSE)
 output2<-ELCIC.gee(x=(geetoydata$x),y=(geetoydata$y),r=rep(1,nrow(x)),id=geetoydata$id,time=3,index.var=c(1,2,3),name.var=c("intercept","x1","x2"),dist="poisson",corstr="ar1",joint=FALSE)
 test_that("output equal: equal values given both index and name, when joint=false",{expect_equal(output1,output2)})
 
+output1<-ELCIC.gee.procedure(x=(geetoydata$x),y=(geetoydata$y),r=rep(1,nrow(x)),id=geetoydata$id,time=3,candidate.sets=NULL,name.var.sets=list(c("intercept","x1","x2")),dist="poisson",candidate.cor.sets="ar1",joint=TRUE)
+output2<-ELCIC.gee.procedure(x=(geetoydata$x),y=(geetoydata$y),r=rep(1,nrow(x)),id=geetoydata$id,time=3,candidate.sets=list(c(1,2,3)),name.var.sets=list(c("intercept","x1","x2")),dist="poisson",candidate.cor.sets="ar1",joint=TRUE)
+test_that("output equal: equal values given both index and name, when joint=true",{expect_equal(output1,output2)})
+
+output1<-ELCIC.gee.procedure(x=(geetoydata$x),y=(geetoydata$y),r=rep(1,nrow(x)),id=geetoydata$id,time=3,candidate.sets=NULL,name.var.sets=list(c("intercept","x1","x2")),dist="poisson",candidate.cor.sets="ar1",joint=FALSE)
+output2<-ELCIC.gee.procedure(x=(geetoydata$x),y=(geetoydata$y),r=rep(1,nrow(x)),id=geetoydata$id,time=3,candidate.sets=list(c(1,2,3)),name.var.sets=list(c("intercept","x1","x2")),dist="poisson",candidate.cor.sets="ar1",joint=FALSE)
+test_that("output equal: equal values given both index and name, when joint=false",{expect_equal(output1,output2)})
 
 
