@@ -47,13 +47,13 @@ When joint=TRUE, the argument "candidate.cor.sets" can contain multiple correlat
 ## tests
 # load data
 data(wgeetoydata)
-dist="binomial"
-x=wgeetoydata$x
-y=wgeetoydata$y
-x_mis=wgeetoydata$x_mis
-r=wgeetoydata$obs_ind
-id=wgeetoydata$id
-time=3
+dist<-"binomial"
+x<-wgeetoydata$x
+y<-wgeetoydata$y
+x_mis<-wgeetoydata$x_mis
+r<-wgeetoydata$obs_ind
+id<-wgeetoydata$id
+time<-3
 candidate.sets<-list(c(1,2,3))
 candidate.cor.sets<-c("exchangeable")
 criterion.elcic<-ELCIC.wgee.procedure(x,y,x_mis,r,id,time,candidate.sets,name.var.sets=NULL,
