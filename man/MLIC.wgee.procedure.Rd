@@ -2,37 +2,44 @@
 % Please edit documentation in R/model_selection.R
 \name{MLIC.wgee.procedure}
 \alias{MLIC.wgee.procedure}
-\title{The whole MLIC procedure for joint selection of mean structure and correlation structure in longitudinal data without missingness}
+\title{The whole MLIC procedure for joint selection of mean structure and correlation structure in longitudinal dropout data}
 \usage{
 MLIC.wgee.procedure(x,y,x_mis,r,id,candidate.sets=NULL, name.var.sets=NULL,dist,
       candidate.cor.sets=c("independence","exchangeable", "ar1"), joints=TRUE)
 }
 \arguments{
-\item{x}{A matrix containing covariates. The first column should be all ones corresponding to the intercept.}
+\item{x}{A matrix containing covariates. The first column should be all ones corresponding to the intercept if the intercept is expected in the marginal mean model.}
 
-\item{y}{A vector containing outcomes. use NA to indicate missing outcomes.}
+\item{y}{A vector containing outcomes. Use NA to indicate missing outcomes.}
 
-\item{x_mis}{A matrix containing covariates for the missing data model. The first column should be all ones corresponding to the intercept.}
+\item{x_mis}{A matrix containing covariates for the missing data model. The first column should be all ones corresponding to the intercept if the intercept is expected in the missing data model. See more in details section.}
 
 \item{r}{A vector indicating missingness: 1 for observed records, and 0 for unobserved records.}
 
 \item{id}{A vector indicating subject id.}
 
-\item{candidate.sets}{A list containing index corresponding to candidate covariates.}
+\item{candidate.sets}{A list containing index corresponding to candidate covariates. See more in details section.}
 
-\item{name.var.sets}{A list containing names of candidate covariates. The names should be subset of column names of x matrix.}
+\item{name.var.sets}{A list containing names of candidate covariates. The names should be subset of column names of x matrix. See more in details section.}
 
 \item{dist}{A specified distribution. It can be "gaussian", "poisson",and "binomial".}
 
-\item{candidate.cor.sets}{A vector containing condidate correlation structures. When joint=TRUE, it is c("independence","exchangeable", "ar1") as default. When joint=FALSE, it should be one of c("independence","exchangeable", "ar1").}
+\item{candidate.cor.sets}{A vector containing condidate correlation structures. When joint=TRUE, it is c("independence","exchangeable", "ar1") as default. When joint=FALSE, it should be either of "independence","exchangeable", "ar1". See more in details section.}
 
-\item{joints}{A logic value for joint selection of marginal mean and working correlation structure. The default is TRUE.}
+\item{joints}{A logic value for joint selection of marginal mean and working correlation structure. The default is TRUE. See more in details section.}
 }
 \value{
 A vector with each element containing MLIC value for each candidate model. The row name of this vector is the selected correlation structure.
 }
 \description{
-This function provides the overall MLIC procedure for joint selection of mean structure and correlation structure in longitudinal data without missingness.
+This function provides the overall MLIC procedure for joint selection of mean structure and correlation structure in longitudinal data missing at random. It is also able to implement marginal mean structure selection given a prespecified working correlation structure. The data is dropout missing and missing at random.
+}
+\details{
+The argument "x_mis" includes all covariates to fit the missing data model. It typically contains a lag-1 variable based on the outcome y to indicate the data missing at random. Note that the lag-1 variable should be NA for the first observation from each subject.
+
+Either arguments "candidate.sets" or "name.var.sets" is used to identify the set of candidate mean model. If both arguments are provided, only the argument "name.var.sets" will be used.
+
+When joint=TRUE, the argument "candidate.cor.sets" can contain multiple correlation structures; however, when joint=FALSE, it should contain either of "independence","exchangeable", "ar1". If multiple correlation structures are provided, only the first one will be used.
 }
 \examples{
 ## tests
