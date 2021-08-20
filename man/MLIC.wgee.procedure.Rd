@@ -44,8 +44,8 @@ y=wgeetoydata$y
 x_mis=wgeetoydata$x_mis
 r=wgeetoydata$obs_ind
 id=wgeetoydata$id
-candidate.sets<-list(c(1,2),c(1,2,3))
-candidate.cor.sets<-c("exchangeable","ar1")
+candidate.sets<-list(c(1,2,3))
+candidate.cor.sets<-c("exchangeable")
 criterion.mlic<-MLIC.wgee.procedure(x,y,x_mis,r,id,candidate.sets,
             name.var.sets=NULL,dist,candidate.cor.sets,joints=TRUE)
 criterion.mlic
