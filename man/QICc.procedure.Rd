@@ -4,8 +4,8 @@
 \alias{QICc.procedure}
 \title{Joint selection of marginal mean and correlation structures in longitudinal data based on QIC}
 \usage{
-QICc.procedure(x,y,id,dist,candidate.sets,
-      name.var.sets=NULL,candidate.cor.sets, joints=TRUE)
+QICc.procedure(x,y,id,dist,candidate.sets=NULL, name.var.sets=NULL,
+   candidate.cor.sets=c("independence","exchangeable", "ar1"), joints=TRUE)
 }
 \arguments{
 \item{x}{A matrix containing covariates. The first column should be all ones corresponding to the intercept.}
@@ -20,7 +20,7 @@ QICc.procedure(x,y,id,dist,candidate.sets,
 
 \item{name.var.sets}{A list containing names of candidate covariates. The names should be subset of column names of x matrix.}
 
-\item{candidate.cor.sets}{A vector containing condidate correlation structures. It is c("independence","exchangeable", "ar1") as default.}
+\item{candidate.cor.sets}{A vector containing condidate correlation structures. When joint=TRUE, it is c("independence","exchangeable", "ar1") as default. When joint=FALSE, it should be one of c("independence","exchangeable", "ar1").}
 
 \item{joints}{A logic value for joint selection of marginal mean and working correlation structure. The default is TRUE.}
 }
@@ -40,7 +40,7 @@ id=geetoydata$id
 r=rep(1,nrow(x))
 time=3
 candidate.sets<-list(c(1,2),c(1,2,3))
-candidate.cor.sets<-c("exchangeable","ar1")
+candidate.cor.sets<-c("exchangeable")
 dist="poisson"
 criterion.qic<-QICc.procedure(x=x,y=y,id=id,dist=dist,candidate.sets=candidate.sets,
                     name.var.sets=NULL,candidate.cor.sets=candidate.cor.sets)
