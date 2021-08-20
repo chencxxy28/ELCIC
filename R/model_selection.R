@@ -1,11 +1,13 @@
-#'@title Variable selection in generalized linear models (GLMs)
-#'@description This function will provide values of several model selection criteria including AIC, BIC, GIC, and ELCIC.
+#'@title Variable selection in generalized linear models (GLM)
+#'@description The function \code{\link{ELCIC.gee}} provides values of several model selection criteria including AIC, BIC, GIC, and ELCIC, given a candidate mean model.
 #'@usage ELCIC.glm(x, y, index.var=NULL, name.var = NULL, dist)
-#'@param x A matrix containing covariates. The first column should contain all ones corresponding to the intercept.
+#'@param x A matrix containing covariates. The first column should contain all ones corresponding to the intercept if intercept is considered in your mean model.
 #'@param y A vector containing outcomes.
-#'@param index.var A vector containing index corresponding to candidate covariates (including the intercept).
-#'@param name.var A vector containing names of candidate covariates. The names should be subset of column names of x matrix.
+#'@param index.var A vector containing index corresponding to candidate covariates (including the intercept). See more in details section.
+#'@param name.var A vector containing names of candidate covariates. The names should be subset of column names of x matrix. See more in details section.
 #'@param dist A specified distribution. It can be "gaussian", "poisson",and "binomial".
+#'
+#'@details Either arguments "index.var" or "name.var" is used to identify the candidate mean model. If both arguments are provided, only the argument "name.var" will be used.
 #'
 #'@return A vector containing information criteria including ELCIC, AIC, BIC, and GIC.
 #'
@@ -64,21 +66,25 @@ ELCIC.glm<-function (x,y,index.var=NULL,name.var=NULL,dist)
 
 
 
-#'@title Calculate ELCIC value for a given candidate model under GEE framework without missingness
-#'@description This is the function to calculate ELCIC value for a given candidate model. It is able to simultaneously evaluate mean model and working correlation structure.
+#'@title Calculate ELCIC value for a given candidate model under GEE framework
+#'@description The function \code{\link{ELCIC.gee}} calculates ELCIC value for a given marginal mean candidate model with a specified working correlation structure. It is able to simultaneously evaluate mean model and working correlation structure.
 #'@usage ELCIC.gee(x, y, r, id, time, index.var=NULL, name.var = NULL, dist, corstr, joints=TRUE)
 #'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept.
 #'@param y A vector containing outcomes.
 #'@param r A vector indicating missingness: 1 for observed records, and 0 for unobserved records. The default setup is that all data are observed.
 #'@param id A vector indicating subject id.
-#'@param time The number of observations for each subject
-#'@param index.var A vector containing index corresponding to candidate covariates.
-#'@param name.var A vector containing names of candidate covariates. The names should be subset of column names of x matrix.
+#'@param time The number of observations in total for each subject
+#'@param index.var A vector containing index corresponding to candidate covariates. See more in details section.
+#'@param name.var A vector containing names of candidate covariates. The names should be subset of column names of x matrix. See more in details section.
 #'@param dist A specified distribution. It can be "gaussian", "poisson",and "binomial".
-#'@param corstr A condidate correlation structure. It can be "independence","exchangeable", and "ar1".
-#'@param joints A logic value for joint selection of marginal mean and working correlation structure. The default is TRUE.
+#'@param corstr A condidate correlation structure. It can be either of "independence","exchangeable", and "ar1".
+#'@param joints A logic value for joint selection of marginal mean and working correlation structure. The default is TRUE. See more in details section.
 #'
 #'@return A ELCIC value for a given candidate model.
+#'
+#'@details Either arguments "index.var" or "name.var" is used to identify the candidate mean model. If both arguments are provided, only the argument "name.var" will be used.
+#'
+#'When the argument "joints" is TRUE, \code{\link{ELCIC.gee}} will calculate ELCIC value based on the function \code{\link{lambda.find.gee}} and \code{\link{ee.gee}}, which involve both marginal mean and correlation coefficient estimating equations. When the argument "joints" is FALSE, \code{\link{ELCIC.gee}} will calculate ELCIC value based on the function \code{\link{lambda.find.gee.onlymean}} and \code{\link{ee.gee.onlymean}}, which only involve marginal mean estimating equations.
 #'
 #'@examples
 #'## tests
@@ -189,22 +195,28 @@ ELCIC.gee<-function(x,y,r,id,time,index.var=NULL,name.var=NULL,dist,corstr,joint
 
 
 
-#'@title Calculate ELCIC value for a given candidate model under WGEE framework with data missing at random
-#'@description This is the function to calculate ELCIC value for a given candidate model. It is able to simultaneously evaluate mean model and working correlation structure. The data is missing at random.
+#'@title Calculate ELCIC value for a given candidate model under WGEE framework with dropout data
+#'@description The function \code{\link{ELCIC.wgee}} to calculate ELCIC value for a given candidate mean model with specified working correlation structure. It is able to simultaneously evaluate mean model and working correlation structure. The data is dropout missing and missing at random.
 #'@usage ELCIC.wgee(x,y,x_mis,r,id,time,index.var=NULL,name.var=NULL,dist,corstr,joints=TRUE)
-#'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept.
-#'@param y A vector containing outcomes. use NA to indicate missing outcomes.
-#'@param x_mis A matrix containing covariates for the missing data model. The first column should be all ones corresponding to the intercept.
+#'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept if the intercept is considered in the marginal mean.
+#'@param y A vector containing outcomes. Use NA to indicate missing outcomes.
+#'@param x_mis A matrix containing covariates for the missing data model. The first column should be all ones corresponding to the intercept if the intercept is considered in this missing data model. See more in details section.
 #'@param r A vector indicating missingness: 1 for observed records, and 0 for unobserved records.
 #'@param id A vector indicating subject id.
-#'@param time The number of observations for each subject
-#'@param index.var A vector containing index corresponding to candidate covariates.
-#'@param name.var A vector containing names of candidate covariates. The names should be subset of column names of x matrix.
+#'@param time The number of observations in total for each subject
+#'@param index.var A vector containing index corresponding to candidate covariates. See more in details section.
+#'@param name.var A vector containing names of candidate covariates. The names should be subset of column names of x matrix. See more in details section.
 #'@param dist A specified distribution. It can be "gaussian", "poisson",and "binomial".
 #'@param corstr A condidate correlation structure. It can be "independence","exchangeable", and "ar1".
-#'@param joints A logic value for joint selection of marginal mean and working correlation structure. The default is TRUE.
+#'@param joints A logic value for joint selection of marginal mean and working correlation structure. The default is TRUE. See more in details section.
 
 #'@return A matrix containing values of calculated estimating equations.
+#'
+#'@details The argument "x_mis" includes all covariates to fit the missing data model. It typically contains a lag-1 variable based on the outcome y to indicate the data missing at random. Note that the lag-1 variable should be NA for the first observation from each subject.
+#'
+#'Either arguments "index.var" or "name.var" is used to identify the candidate mean model. If both arguments are provided, only the argument "name.var" will be used.
+#'
+#'When the argument "joints" is TRUE, \code{\link{ELCIC.wgee}} will calculate ELCIC value based on the function \code{\link{lambda.find.wgee}} and \code{\link{ee.wgee}}, which involve both marginal mean and correlation coefficient estimating equations. When the argument "joints" is FALSE, \code{\link{ELCIC.wgee}} will calculate ELCIC value based on the function \code{\link{lambda.find.wgee.onlymean}} and \code{\link{ee.wgee.onlymean}}, which only involve marginal mean estimating equations.
 #'
 #'@examples
 #'## tests
@@ -344,15 +356,18 @@ ELCIC.wgee<-function(x,y,x_mis,r,id,time,index.var=NULL,name.var=NULL,dist,corst
 
 
 #'@title The whole variable selection procedure in GLM
-#'@description This function provides the overall procedure for variable selection in GLM.
+#'@description The function \code{\link{ELCIC.glm.procedure}} provides the overall procedure for variable selection in GLM.
 #'@usage ELCIC.glm.procedure(x,y,candidate.sets,name.var.sets=NULL,dist)
-#'@param x A matrix containing covariates. The first column should contain all ones corresponding to the intercept.
+#'@param x A matrix containing covariates. The first column should contain all ones corresponding to the intercept if the intercept is expected in the mean structure.
 #'@param y A vector containing outcomes.
-#'@param candidate.sets A list containing index corresponding to candidate covariates in each candidate model.
-#'@param name.var.sets A list containing names of candidate covariates coresponding to each candidate model. The names should be subset of column names of the x matrix.
+#'@param candidate.sets A list containing index corresponding to candidate covariates in each candidate model. See more in details section.
+#'@param name.var.sets A list containing names of candidate covariates coresponding to each candidate model. The names should be subset of column names of the x matrix. See more in details section.
 #'@param dist A specified distribution. It can be "gaussian", "poisson",and "binomial".
 #'
 #'@return A matrix with each element containing ELCIC value for each candidate model (in columns) and (in rows)
+#'
+#'@details Either arguments "candidate.sets" or "name.var.sets" is used to identify the set of candidate mean model. If both arguments are provided, only the argument "name.var.sets" will be used.
+#'
 #'
 #'@examples
 #'## tests
@@ -393,22 +408,26 @@ ELCIC.glm.procedure<-function(x,y,candidate.sets,name.var.sets=NULL,dist)
 
 
 
-#'@title The whole procedure for joint selection of mean structure and correlation structure in longitudinal data without missingness
-#'@description This function provides the overall procedure for joint selection of mean structure and correlation structure in longitudinal data without missingness.
+#'@title The whole procedure for joint selection of mean structure and correlation structure in longitudinal data without missingness or missing completely at random
+#'@description The function \code{\link{ELCIC.gee.procedure}} provides the overall procedure for joint selection of mean structure and correlation structure in longitudinal data without missingness or missing completely at random.
 #'@usage ELCIC.gee.procedure(x,y,r,id,time,candidate.sets=NULL,name.var.sets=NULL,dist,
 #'       candidate.cor.sets=c("independence","exchangeable", "ar1"), joints=TRUE)
-#'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept.
+#'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept if the intercept is expected in the marginal mean.
 #'@param y A vector containing outcomes.
 #'@param r A vector indicating missingness: 1 for observed records, and 0 for unobserved records. The default setup is that all data are observed.
 #'@param id A vector indicating subject id.
-#'@param time The number of observations for each subject
-#'@param candidate.sets A list containing index corresponding to candidate covariates.
-#'@param name.var.sets A list containing names of candidate covariates. The names should be subset of column names of x matrix.
+#'@param time The number of observations in total for each subject
+#'@param candidate.sets A list containing index corresponding to candidate covariates. See more in details section.
+#'@param name.var.sets A list containing names of candidate covariates. The names should be subset of column names of x matrix. See more in details section.
 #'@param dist A specified distribution. It can be "gaussian", "poisson",and "binomial".
-#'@param candidate.cor.sets A vector containing condidate correlation structures. When joint=TRUE, it is c("independence","exchangeable", "ar1") as default. When joint=FALSE, it should be one of c("independence","exchangeable", "ar1").
-#'@param joints A logic value for joint selection of marginal mean and working correlation structure. The default is TRUE.
+#'@param candidate.cor.sets A vector containing condidate correlation structures. When joint=TRUE, it is c("independence","exchangeable", "ar1") as default. When joint=FALSE, it should be either of "independence","exchangeable", "ar1". See more in details section.
+#'@param joints A logic value for joint selection of marginal mean and working correlation structure. The default is TRUE. See more in details section.
 #'
 #'@return A matrix with each element containing ELCIC value for each candidate model.
+#'
+#'@details Either arguments "candidate.sets" or "name.var.sets" is used to identify the set of candidate mean model. If both arguments are provided, only the argument "name.var.sets" will be used.
+#'
+#'When joint=TRUE, the argument "candidate.cor.sets" can contain multiple correlation structures; however, when joint=FALSE, it should contain either of "independence","exchangeable", "ar1". If multiple correlation structures are provided, only the first one will be used.
 #'
 #'@examples
 #'## tests
@@ -473,7 +492,7 @@ ELCIC.gee.procedure<-function(x,y,r,id,time,candidate.sets=NULL,name.var.sets=NU
         if(!is.null(name.var.sets))
         {
                 criterion.elcic<-rep()
-                corstr<-candidate.cor.sets
+                corstr<-candidate.cor.sets[1]
                 for (i in 1:length(name.var.sets))
                 {
                     criterion<-ELCIC.gee(x=x,y=y,r=r,id=id,time=time,index.var=NULL,name.var=name.var.sets[[i]],dist=dist,corstr=corstr)
@@ -484,7 +503,7 @@ ELCIC.gee.procedure<-function(x,y,r,id,time,candidate.sets=NULL,name.var.sets=NU
             criterion.elcic
         }else{
                 criterion.elcic<-rep()
-                corstr<-candidate.cor.sets
+                corstr<-candidate.cor.sets[1]
                 for (i in 1:length(candidate.sets))
                 {
                     criterion<-ELCIC.gee(x=x,y=y,r=r,id=id,time=time,index.var=candidate.sets[[i]],name.var=NULL,dist=dist,corstr=corstr)
@@ -500,24 +519,30 @@ ELCIC.gee.procedure<-function(x,y,r,id,time,candidate.sets=NULL,name.var.sets=NU
 
 
 
-#'@title The whole procedure for joint selection of mean structure and correlation structure in longitudinal data without missingness
-#'@description This function provides the overall procedure for joint selection of mean structure and correlation structure in longitudinal data without missingness.
+#'@title The whole procedure for joint selection of mean structure and correlation structure in longitudinal dropout data
+#'@description The function \code{\link{ELCIC.wgee.procedure}} provides the overall procedure for joint selection of mean structure and correlation structure in longitudinal data missing at random. It is also able to implement marginal mean structure selection given a prespecified working correlation structure. The data is dropout missing and missing at random.
 #'@usage ELCIC.wgee.procedure(x,y,x_mis,r,id,time,candidate.sets=NULL,name.var.sets=NULL,
 #'      dist,candidate.cor.sets=c("independence","exchangeable", "ar1"), joints=TRUE)
-#'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept.
-#'@param y A vector containing outcomes. use NA to indicate missing outcomes.
-#'@param x_mis A matrix containing covariates for the missing data model. The first column should be all ones corresponding to the intercept.
+#'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept if the intercept is considered in the marginal mean.
+#'@param y A vector containing outcomes. Use NA to indicate missing outcomes.
+#'@param x_mis A matrix containing covariates for the missing data model. The first column should be all ones corresponding to the intercept if the intercept is expected in the missing data model. See more in details section.
 #'@param r A vector indicating missingness: 1 for observed records, and 0 for unobserved records.
 #'@param id A vector indicating subject id.
-#'@param time The number of observations for each subject
-#'@param candidate.sets A list containing index corresponding to candidate covariates.
-#'@param name.var.sets A list containing names of candidate covariates. The names should be subset of column names of x matrix.
+#'@param time The number of observations in total for each subject
+#'@param candidate.sets A list containing index corresponding to candidate covariates. See more in details section.
+#'@param name.var.sets A list containing names of candidate covariates. The names should be subset of column names of x matrix. See more in details section.
 #'@param dist A specified distribution. It can be "gaussian", "poisson",and "binomial".
-#'@param candidate.cor.sets A vector containing condidate correlation structures. When joint=TRUE, it is c("independence","exchangeable", "ar1") as default. When joint=FALSE, it should be one of c("independence","exchangeable", "ar1").
-#'@param joints A logic value for joint selection of marginal mean and working correlation structure. The default is TRUE.
+#'@param candidate.cor.sets A vector containing condidate correlation structures. When joint=TRUE, it is c("independence","exchangeable", "ar1") as default. When joint=FALSE, it should be either of "independence","exchangeable", "ar1". See more in details section.
+#'@param joints A logic value for joint selection of marginal mean and working correlation structure. The default is TRUE. See more in details section.
 
 #'@return A matrix with each element containing ELCIC value for each candidate model.
 #'
+#'@details The argument "x_mis" includes all covariates to fit the missing data model. It typically contains a lag-1 variable based on the outcome y to indicate the data missing at random. Note that the lag-1 variable should be NA for the first observation from each subject.
+#'
+#'Either arguments "candidate.sets" or "name.var.sets" is used to identify the set of candidate mean model. If both arguments are provided, only the argument "name.var.sets" will be used.
+#'
+#'When joint=TRUE, the argument "candidate.cor.sets" can contain multiple correlation structures; however, when joint=FALSE, it should contain either of "independence","exchangeable", "ar1". If multiple correlation structures are provided, only the first one will be used.
+
 #'@examples
 #'## tests
 #'# load data
@@ -581,7 +606,7 @@ ELCIC.wgee.procedure<-function(x,y,x_mis,r,id,time,candidate.sets=NULL,name.var.
         if(!is.null(name.var.sets))
         {
                 criterion.elcic<-rep()
-                corstr<-candidate.cor.sets
+                corstr<-candidate.cor.sets[1]
                 for (i in 1:length(name.var.sets))
                 {
                     criterion<-ELCIC.wgee(x,y,x_mis,r,id,time,index.var=NULL,name.var=name.var.sets[[i]],dist,corstr,joints=FALSE)
@@ -592,7 +617,7 @@ ELCIC.wgee.procedure<-function(x,y,x_mis,r,id,time,candidate.sets=NULL,name.var.
             criterion.elcic
         }else{
             criterion.elcic<-rep()
-                corstr<-candidate.cor.sets
+                corstr<-candidate.cor.sets[1]
                 for (i in 1:length(candidate.sets))
                 {
                     criterion<-ELCIC.wgee(x,y,x_mis,r,id,time,index.var=candidate.sets[[i]],name.var=NULL,dist,corstr,joints=FALSE)
@@ -622,6 +647,10 @@ ELCIC.wgee.procedure<-function(x,y,x_mis,r,id,time,candidate.sets=NULL,name.var.
 #'
 #'@return A vector with each element containing QIC value for each candidate model. The row name of this vector is the selected correlation structure.
 #'
+#'@details Either arguments "index.var" or "name.var" is used to identify the candidate mean model. If both arguments are provided, only the argument "name.var" will be used.
+#'
+#'When the argument "joints" is TRUE, \code{\link{ELCIC.gee}} will calculate ELCIC value based on the function \code{\link{lambda.find.gee}} and \code{\link{ee.gee}}, which involve both marginal mean and correlation coefficient estimating equations. When the argument "joints" is FALSE, \code{\link{ELCIC.gee}} will calculate ELCIC value based on the function \code{\link{lambda.find.gee.onlymean}} and \code{\link{ee.gee.onlymean}}, which only involve marginal mean estimating equations.
+#'
 #'@examples
 #'## tests
 #'# load data
@@ -641,7 +670,7 @@ ELCIC.wgee.procedure<-function(x,y,x_mis,r,id,time,candidate.sets=NULL,name.var.
 #'@export
 #'@importFrom geepack QIC
 
-QICc.procedure<-function (x,y,id,dist,candidate.sets,name.var.sets=NULL,candidate.cor.sets=c("independence","exchangeable", "ar1"),joints=TRUE)
+QICc.procedure<-function (x,y,id,dist,candidate.sets=NULL,name.var.sets=NULL,candidate.cor.sets=c("independence","exchangeable", "ar1"),joints=TRUE)
 {
     if(joints)
     {
@@ -732,22 +761,28 @@ QICc.procedure<-function (x,y,id,dist,candidate.sets,name.var.sets=NULL,candidat
 
 
 
-#'@title The whole MLIC procedure for joint selection of mean structure and correlation structure in longitudinal data without missingness
-#'@description This function provides the overall MLIC procedure for joint selection of mean structure and correlation structure in longitudinal data without missingness.
+#'@title The whole MLIC procedure for joint selection of mean structure and correlation structure in longitudinal dropout data
+#'@description This function provides the overall MLIC procedure for joint selection of mean structure and correlation structure in longitudinal data missing at random. It is also able to implement marginal mean structure selection given a prespecified working correlation structure. The data is dropout missing and missing at random.
 #'@usage MLIC.wgee.procedure(x,y,x_mis,r,id,candidate.sets=NULL, name.var.sets=NULL,dist,
 #'       candidate.cor.sets=c("independence","exchangeable", "ar1"), joints=TRUE)
-#'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept.
-#'@param y A vector containing outcomes. use NA to indicate missing outcomes.
-#'@param x_mis A matrix containing covariates for the missing data model. The first column should be all ones corresponding to the intercept.
+#'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept if the intercept is expected in the marginal mean model.
+#'@param y A vector containing outcomes. Use NA to indicate missing outcomes.
+#'@param x_mis A matrix containing covariates for the missing data model. The first column should be all ones corresponding to the intercept if the intercept is expected in the missing data model. See more in details section.
 #'@param r A vector indicating missingness: 1 for observed records, and 0 for unobserved records.
 #'@param id A vector indicating subject id.
-#'@param candidate.sets A list containing index corresponding to candidate covariates.
-#'@param name.var.sets A list containing names of candidate covariates. The names should be subset of column names of x matrix.
+#'@param candidate.sets A list containing index corresponding to candidate covariates. See more in details section.
+#'@param name.var.sets A list containing names of candidate covariates. The names should be subset of column names of x matrix. See more in details section.
 #'@param dist A specified distribution. It can be "gaussian", "poisson",and "binomial".
-#'@param candidate.cor.sets A vector containing condidate correlation structures. When joint=TRUE, it is c("independence","exchangeable", "ar1") as default. When joint=FALSE, it should be one of c("independence","exchangeable", "ar1").
-#'@param joints A logic value for joint selection of marginal mean and working correlation structure. The default is TRUE.
+#'@param candidate.cor.sets A vector containing condidate correlation structures. When joint=TRUE, it is c("independence","exchangeable", "ar1") as default. When joint=FALSE, it should be either of "independence","exchangeable", "ar1". See more in details section.
+#'@param joints A logic value for joint selection of marginal mean and working correlation structure. The default is TRUE. See more in details section.
 
 #'@return A vector with each element containing MLIC value for each candidate model. The row name of this vector is the selected correlation structure.
+#'
+#'@details The argument "x_mis" includes all covariates to fit the missing data model. It typically contains a lag-1 variable based on the outcome y to indicate the data missing at random. Note that the lag-1 variable should be NA for the first observation from each subject.
+#'
+#'Either arguments "candidate.sets" or "name.var.sets" is used to identify the set of candidate mean model. If both arguments are provided, only the argument "name.var.sets" will be used.
+#'
+#'When joint=TRUE, the argument "candidate.cor.sets" can contain multiple correlation structures; however, when joint=FALSE, it should contain either of "independence","exchangeable", "ar1". If multiple correlation structures are provided, only the first one will be used.
 #'
 #'@examples
 #'## tests
@@ -860,7 +895,7 @@ MLIC.wgee.procedure<-function(x,y,x_mis,r,id,candidate.sets=NULL,name.var.sets=N
             }
             mismodel_formula<-as.formula(mismodel_formula)
 
-            MLICcorstr<-candidate.cor.sets
+            MLICcorstr<-candidate.cor.sets[1]
 
             #fit a full model
             fitf<-wgee(y~x-1,data_wgee,id,family=dist,corstr = MLICcorstr,scale = NULL,mismodel =mismodel_formula)
@@ -890,7 +925,7 @@ MLIC.wgee.procedure<-function(x,y,x_mis,r,id,candidate.sets=NULL,name.var.sets=N
             }
             mismodel_formula<-as.formula(mismodel_formula)
 
-            MLICcorstr<-candidate.cor.sets
+            MLICcorstr<-candidate.cor.sets[1]
 
             #fit a full model
             fitf<-wgee(y~x-1,data_wgee,id,family=dist,corstr = MLICcorstr,scale = NULL,mismodel =mismodel_formula)
@@ -913,22 +948,28 @@ MLIC.wgee.procedure<-function(x,y,x_mis,r,id,candidate.sets=NULL,name.var.sets=N
 
 
 
-#'@title The whole QICW procedure for joint selection of mean structure and correlation structure in longitudinal data without missingness
-#'@description This function provides the overall QICW procedure for joint selection of mean structure and correlation structure in longitudinal data without missingness.
+#'@title The whole QICW procedure for joint selection of mean structure and correlation structure in longitudinal dropout data
+#'@description This function provides the overall QICW procedure for joint selection of mean structure and correlation structure in longitudinal data missing at random. It is also able to implement marginal mean structure selection given a prespecified working correlation structure. The data is dropout missing and missing at random.
 #'@usage QICW.wgee.procedure(x,y,x_mis,r,id,candidate.sets,name.var.sets=NULL,
 #'      dist,candidate.cor.sets=c("independence","exchangeable", "ar1"), joints=TRUE)
-#'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept.
-#'@param y A vector containing outcomes. use NA to indicate missing outcomes.
-#'@param x_mis A matrix containing covariates for the missing data model. The first column should be all ones corresponding to the intercept.
+#'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept if the intercept is expected in the marginal mean model.
+#'@param y A vector containing outcomes. Use NA to indicate missing outcomes.
+#'@param x_mis A matrix containing covariates for the missing data model. The first column should be all ones corresponding to the intercept if the intercept is expected in the missing data model. See more in details section.
 #'@param r A vector indicating missingness: 1 for observed records, and 0 for unobserved records.
 #'@param id A vector indicating subject id.
-#'@param candidate.sets A list containing index corresponding to candidate covariates.
-#'@param name.var.sets A list containing names of candidate covariates. The names should be subset of column names of x matrix.
+#'@param candidate.sets A list containing index corresponding to candidate covariates. See more in details section.
+#'@param name.var.sets A list containing names of candidate covariates. The names should be subset of column names of x matrix. See more in details section.
 #'@param dist A specified distribution. It can be "gaussian", "poisson",and "binomial".
-#'@param candidate.cor.sets A vector containing condidate correlation structures. When joint=TRUE, it is c("independence","exchangeable", "ar1") as default. When joint=FALSE, it should be one of c("independence","exchangeable", "ar1").
-#'@param joints A logic value for joint selection of marginal mean and working correlation structure. The default is TRUE.
+#'@param candidate.cor.sets A vector containing condidate correlation structures. When joint=TRUE, it is c("independence","exchangeable", "ar1") as default. When joint=FALSE, it should be either of "independence","exchangeable", "ar1". See more in details section.
+#'@param joints A logic value for joint selection of marginal mean and working correlation structure. The default is TRUE. See more in details section.
 
 #'@return A vector with each element containing QICW value for each candidate model. The row name of this vector is the selected correlation structure.
+#'
+#'@details The argument "x_mis" includes all covariates to fit the missing data model. It typically contains a lag-1 variable based on the outcome y to indicate the data missing at random. Note that the lag-1 variable should be NA for the first observation from each subject.
+#'
+#'Either arguments "candidate.sets" or "name.var.sets" is used to identify the set of candidate mean model. If both arguments are provided, only the argument "name.var.sets" will be used.
+#'
+#'When joint=TRUE, the argument "candidate.cor.sets" can contain multiple correlation structures; however, when joint=FALSE, it should contain either of "independence","exchangeable", "ar1". If multiple correlation structures are provided, only the first one will be used.
 #'
 #'@examples
 #'## tests
@@ -1034,7 +1075,7 @@ QICW.wgee.procedure<-function(x,y,x_mis,r,id,candidate.sets=NULL,name.var.sets=N
                 }
             }
             mismodel_formula<-as.formula(mismodel_formula)
-            QICWcorstr<-candidate.cor.sets
+            QICWcorstr<-candidate.cor.sets[1]
 
             criterion.mean<-rep()
             for (i in 1:length(name.var.sets))
@@ -1060,7 +1101,7 @@ QICW.wgee.procedure<-function(x,y,x_mis,r,id,candidate.sets=NULL,name.var.sets=N
                 }
             }
             mismodel_formula<-as.formula(mismodel_formula)
-            QICWcorstr<-candidate.cor.sets
+            QICWcorstr<-candidate.cor.sets[1]
 
             criterion.mean<-rep()
             for (i in 1:length(candidate.sets))
