@@ -15,7 +15,7 @@ prob.obs(x_mis,gamma)
 pi: a vector containing conditional probabilities.
 }
 \description{
-A function provides conditional probabilities for weight calculation in WGEE
+A function provides conditional probabilities.
 }
 \examples{
 ## tests
