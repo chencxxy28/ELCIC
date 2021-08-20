@@ -123,13 +123,15 @@ ELCIC.gee<-function(x,y,r,id,time,index.var,name.var=NULL,dist,corstr,joints=TRU
 
         fit<-geeglm(y~x_candidate-1,data=data,family =dist,id=id,corstr = corstr)
         betahat[index.var]<-fit$coefficients
-        p<-length(fit$coefficients)
+        pbeta<-length(fit$coefficients)
 
         if(corstr=="independence")
         {
             ro=0
+            p<-pbeta
         }else{
             ro<-unlist(summary(fit)$corr[1]) #correlation coefficients
+            p<-pbeta+1
         }
         phihat<-unlist(summary(fit)$dispersion[1])
         Z<-as.matrix(ee.gee(y=y,x=x,r=r,id=id,beta=betahat,ro=ro,phi=phihat,dist=dist,corstr=corstr))
@@ -223,13 +225,15 @@ ELCIC.wgee<-function(x,y,x_mis,r,id,time,index.var,name.var=NULL,dist,corstr,joi
         fit=wgee(y~x_candidate-1,data_wgee,id,family=dist,corstr =corstr,scale = NULL,mismodel =mismodel_formula)
 
         beta[index.var]<-as.vector(summary(fit)$beta)
-        p<-length(summary(fit)$beta)
+        pbeta<-length(summary(fit)$beta)
 
         if(corstr=="independence")
         {
             ro=0
+            p<-pbeta
         }else{
             ro<-summary(fit)$corr
+            p<-pbeta+1
         }
         phi=summary(fit)$phi
         gamma<-as.vector(summary(fit$mis_fit)$coefficients[,1])
@@ -417,8 +421,8 @@ ELCIC.gee.procedure<-function(x,y,r,id,time,candidate.sets,name.var.sets=NULL,di
 #'r=wgeetoydata$obs_ind
 #'id=wgeetoydata$id
 #'time=3
-#'candidate.sets<-list(c(1,2),c(1,2,3))
-#'candidate.cor.sets<-c("exchangeable","ar1")
+#'candidate.sets<-list(c(1,2,3))
+#'candidate.cor.sets<-c("exchangeable")
 #'criterion.elcic<-ELCIC.wgee.procedure(x,y,x_mis,r,id,time,candidate.sets,name.var.sets=NULL,
 #'                                     dist,candidate.cor.sets,joints=TRUE)
 #'criterion.elcic
@@ -587,8 +591,8 @@ QICc.procedure<-function (x,y,id,dist,candidate.sets,name.var.sets=NULL,candidat
 #'x_mis=wgeetoydata$x_mis
 #'r=wgeetoydata$obs_ind
 #'id=wgeetoydata$id
-#'candidate.sets<-list(c(1,2),c(1,2,3))
-#'candidate.cor.sets<-c("exchangeable","ar1")
+#'candidate.sets<-list(c(1,2,3))
+#'candidate.cor.sets<-c("exchangeable")
 #'criterion.mlic<-MLIC.wgee.procedure(x,y,x_mis,r,id,candidate.sets,
 #'             name.var.sets=NULL,dist,candidate.cor.sets,joints=TRUE)
 #'criterion.mlic
@@ -705,8 +709,8 @@ MLIC.wgee.procedure<-function(x,y,x_mis,r,id,candidate.sets,name.var.sets=NULL,d
 #'x_mis=wgeetoydata$x_mis
 #'r=wgeetoydata$obs_ind
 #'id=wgeetoydata$id
-#'candidate.sets<-list(c(1,2),c(1,2,3))
-#'candidate.cor.sets<-c("exchangeable","ar1")
+#'candidate.sets<-list(c(1,2,3))
+#'candidate.cor.sets<-c("exchangeable")
 #'criterion.qicw<-QICW.wgee.procedure(x,y,x_mis,r,id,candidate.sets,
 #'           name.var.sets=NULL,dist,candidate.cor.sets,joints=TRUE)
 #'criterion.qicw
