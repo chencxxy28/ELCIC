@@ -385,9 +385,8 @@ prob.obs<-function(x_mis,gamma)
 
 #'@title Calculate the inverse of joint probability for observing records from each subject
 #'@description A function provides the inverse of joint probabilities for weight calculation involved in WGEE.
-#'@usage pii<-function(pi)
+#'@usage pii(pi)
 #'@param pi A matrix containing covariates for the missing data model. The first column should be all ones corresponding to the intercept.
-#'@param gamma coefficients calculated from missing data model
 
 #'@return pii: a vector containing the inverse of joint probabilities.
 #'@examples
