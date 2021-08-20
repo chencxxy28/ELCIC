@@ -909,7 +909,7 @@ MLIC.wgee.procedure<-function(x,y,x_mis,r,id,candidate.sets=NULL,name.var.sets=N
             }
             criterion.mean<-t(as.matrix(criterion.mean,nrow=1))
             colnames(criterion.mean)<-name.var.sets
-            rownames(criterion.mean)<-candidate.cor.sets
+            rownames(criterion.mean)<-MLICcorstr
             criterion.mean
         }else{
             y<-as.matrix(y,col=1)
@@ -939,7 +939,7 @@ MLIC.wgee.procedure<-function(x,y,x_mis,r,id,candidate.sets=NULL,name.var.sets=N
             }
             criterion.mean<-t(as.matrix(criterion.mean,nrow=1))
             colnames(criterion.mean)<-candidate.sets
-            rownames(criterion.mean)<-candidate.cor.sets
+            rownames(criterion.mean)<-MLICcorstr
             criterion.mean
         }
     }
