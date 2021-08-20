@@ -35,18 +35,18 @@ Calculate estimating equation from GEE in ELCIC without missingness or missing c
 ## tests
 # load data
 data(geetoydata)
-x=geetoydata$x
-y=geetoydata$y
-id=geetoydata$id
-corstr="exchangeable"
-dist="poisson"
+x<-geetoydata$x
+y<-geetoydata$y
+id<-geetoydata$id
+corstr<-"exchangeable"
+dist<-"poisson"
 # obtain the estimates
 library(geepack)
 fit<-geeglm(y~x-1,data=geetoydata,family =dist,id=id,corstr = "ar1")
 beta<-fit$coefficients
 ro<-unlist(summary(fit)$corr[1])
 phi<-unlist(summary(fit)$dispersion[1])
-r=rep(1,nrow(x))
+r<-rep(1,nrow(x))
 ee.matrix<-ee.gee(y,x,r,id,beta,ro,phi,dist,corstr)
 apply(ee.matrix,1,mean)
 
