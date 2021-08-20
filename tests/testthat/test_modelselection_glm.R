@@ -19,6 +19,11 @@ test_that("output error: undefined candidate model",{expect_error(ELCIC.glm(x=gl
 test_that("output error: non-unique variable name",{expect_error(ELCIC.glm(x=glmtoydata$x,y=glmtoydata$y,index.var=NULL,name.var=c("intercept","x1","x1"),
                                                  dist = "gaussian"),"Invalid candidate model provided")})
 
+output1<-ELCIC.glm(x=glmtoydata$x,y=glmtoydata$y,index.var=NULL,name.var=c("intercept","x1","x2"),
+          dist = "gaussian")
+output2<-ELCIC.glm(x=glmtoydata$x,y=glmtoydata$y,index.var=c(1,2,3),name.var=c("intercept","x1","x2"),
+                   dist = "gaussian")
+test_that("output equal: same output given both index and var.names",{expect_equal(output1,output2)})
 
 
 # name.var.set <- list(c("intercept","x1"),c("intercept","x1","x2"))
