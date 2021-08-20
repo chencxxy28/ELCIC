@@ -4,7 +4,7 @@
 \alias{ELCIC.gee.procedure}
 \title{The whole procedure for joint selection of mean structure and correlation structure in longitudinal data without missingness}
 \usage{
-ELCIC.gee.procedure(x,y,r,id,time,candidate.sets,name.var.sets=NULL,dist,
+ELCIC.gee.procedure(x,y,r,id,time,candidate.sets=NULL,name.var.sets=NULL,dist,
       candidate.cor.sets=c("independence","exchangeable", "ar1"), joints=TRUE)
 }
 \arguments{
@@ -24,7 +24,7 @@ ELCIC.gee.procedure(x,y,r,id,time,candidate.sets,name.var.sets=NULL,dist,
 
 \item{dist}{A specified distribution. It can be "gaussian", "poisson",and "binomial".}
 
-\item{candidate.cor.sets}{A vector containing condidate correlation structures. It is c("independence","exchangeable", "ar1") as default.}
+\item{candidate.cor.sets}{A vector containing condidate correlation structures. When joint=TRUE, it is c("independence","exchangeable", "ar1") as default. When joint=FALSE, it should be one of c("independence","exchangeable", "ar1").}
 
 \item{joints}{A logic value for joint selection of marginal mean and working correlation structure. The default is TRUE.}
 }
@@ -44,7 +44,7 @@ id=geetoydata$id
 r=rep(1,nrow(x))
 time=3
 candidate.sets<-list(c(1,2),c(1,2,3))
-candidate.cor.sets<-c("exchangeable","ar1")
+candidate.cor.sets<-c("exchangeable")
 dist="poisson"
 criterion.elcic<-ELCIC.gee.procedure(x=x,y=y,r=r,id=id,time=time,candidate.sets=candidate.sets,
                 name.var.sets=NULL,dist=dist,candidate.cor.sets=candidate.cor.sets)
