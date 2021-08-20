@@ -1,7 +1,6 @@
 
 # ELCIC: Empirical Likelihood-based Consistent Information Criterion
 [![codecov](https://codecov.io/gh/chencxxy28/ELCIC/branch/master/graph/badge.svg?token=MP1P4H0OHP)](https://codecov.io/gh/chencxxy28/ELCIC)
-
 [![R-CMD-check](https://github.com/chencxxy28/ELCIC/workflows/R-CMD-check/badge.svg)](https://github.com/chencxxy28/ELCIC/actions)
 
 Conventional likelihood-based information criteria for model selection
