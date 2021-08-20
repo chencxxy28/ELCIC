@@ -2,7 +2,7 @@
 % Please edit documentation in R/estimating_equations.R
 \name{ee.wgee}
 \alias{ee.wgee}
-\title{Estimating equations for weighted GEE(WGEE) with data missing at random}
+\title{Estimating equation for weighted GEE (WGEE) with data missing at random}
 \usage{
 ee.wgee(y,x,r,pi,id,time,beta,ro,phi,dist,corstr)
 }
@@ -17,7 +17,7 @@ ee.wgee(y,x,r,pi,id,time,beta,ro,phi,dist,corstr)
 
 \item{id}{A vector indicating subject id.}
 
-\item{time}{The number of observations for each subject}
+\item{time}{The number of observations for each subject.}
 
 \item{beta}{A plug-in estimator solved by an external estimation procedure, such as WGEE.}
 
@@ -33,7 +33,7 @@ ee.wgee(y,x,r,pi,id,time,beta,ro,phi,dist,corstr)
 A matrix containing values of calculated estimating equations.
 }
 \description{
-Calculate estimating equations from WGEE in ELCIC
+Calculate estimating equation from WGEE in ELCIC with data missing at random. This estimating equation is used for joint selection of marginal mean and working correlation structure.
 }
 \examples{
 ## tests
