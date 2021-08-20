@@ -30,11 +30,11 @@ Either arguments "index.var" or "name.var" is used to identify the candidate mea
 ## tests
 # load data
 data(glmtoydata)
-x=glmtoydata$x
-y=glmtoydata$y
+x<-glmtoydata$x
+y<-glmtoydata$y
 #candidate model index
-name.var=c("intercept","x1","x2")
-index.var=c(1,2,3)
+name.var<-c("intercept","x1","x2")
+index.var<-c(1,2,3)
 criteria<-ELCIC.glm(x, y, index.var =index.var, name.var = NULL, dist="poisson")
 criteria
 
