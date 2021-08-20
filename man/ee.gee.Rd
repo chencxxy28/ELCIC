@@ -2,7 +2,7 @@
 % Please edit documentation in R/estimating_equations.R
 \name{ee.gee}
 \alias{ee.gee}
-\title{Estimating equations for GEE without missing}
+\title{Estimating equation for GEE without missingness or missing completely at random}
 \usage{
 ee.gee(y,x,r,id,beta,ro,phi,dist,corstr)
 }
@@ -29,7 +29,7 @@ ee.gee(y,x,r,id,beta,ro,phi,dist,corstr)
 A matrix containing values of calculated estimating equations.
 }
 \description{
-Calculate estimating equations from GEE in ELCIC
+Calculate estimating equation from GEE in ELCIC without missingness or missing completely at random. This estimating equation is used for joint selection of marginal mean and working correlation structure.
 }
 \examples{
 ## tests
