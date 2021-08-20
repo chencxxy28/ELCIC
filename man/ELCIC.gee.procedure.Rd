@@ -43,14 +43,14 @@ When joint=TRUE, the argument "candidate.cor.sets" can contain multiple correlat
 ## tests
 # load data
 data(geetoydata)
-x=geetoydata$x
-y=geetoydata$y
-id=geetoydata$id
-r=rep(1,nrow(x))
-time=3
+x<-geetoydata$x
+y<-geetoydata$y
+id<-geetoydata$id
+r<-rep(1,nrow(x))
+time<-3
 candidate.sets<-list(c(1,2),c(1,2,3))
 candidate.cor.sets<-c("exchangeable")
-dist="poisson"
+dist<-"poisson"
 criterion.elcic<-ELCIC.gee.procedure(x=x,y=y,r=r,id=id,time=time,candidate.sets=candidate.sets,
                 name.var.sets=NULL,dist=dist,candidate.cor.sets=candidate.cor.sets)
 criterion.elcic
