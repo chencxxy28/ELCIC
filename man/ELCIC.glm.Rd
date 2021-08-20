@@ -4,7 +4,7 @@
 \alias{ELCIC.glm}
 \title{Variable selection in generalized linear models (GLMs)}
 \usage{
-ELCIC.glm(x, y, index.var, name.var = NULL, dist)
+ELCIC.glm(x, y, index.var=NULL, name.var = NULL, dist)
 }
 \arguments{
 \item{x}{A matrix containing covariates. The first column should contain all ones corresponding to the intercept.}
