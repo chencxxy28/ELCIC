@@ -9,7 +9,7 @@ R1der<-function(lambda,ZZ)
 R2der<-function(lambda,ZZ)
 {
     r2der<-0
-    for(i in 1:ncol(ZZ))
+    for(i in seq_len(ncol(ZZ)))
     {
         r2der_i<--as.matrix(ZZ[,i],ncol=1)%*%t(as.matrix(ZZ[,i],ncol=1))/as.vector(1+t(lambda)%*%as.matrix(ZZ[,i],ncol=1))^2
         r2der<-r2der+r2der_i
