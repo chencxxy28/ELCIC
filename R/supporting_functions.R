@@ -254,11 +254,11 @@ gee.generator<-function(beta,samplesize,time,num.time.dep,num.time.indep,rho,x.r
                y.i<-rmvnorm(1,mu,sigma.dep)
            },
            "binomial"={
-               mu=1/(1+exp(-xf.i%*%beta))
+               mu<-1/(1+exp(-xf.i%*%beta))
                y.i<-rmvbin(n=1,margprob=mu,bincorr=sigma.dep)
            },
            "poisson"={
-               mu=exp(xf.i%*%beta)
+               mu<-exp(xf.i%*%beta)
                y.i<-genPoisNor(n=1,no.pois=length(mu),lamvec=mu,cmat.star=sigma.dep,no.norm=0,mean.vec=NULL,sd.vec=NULL)
            },
            stop("Invalid type of dist. It should be one of gaussian,binomial,poisson")
