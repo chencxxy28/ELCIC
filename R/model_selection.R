@@ -123,7 +123,7 @@ ELCIC.gee<-function(x,y,r,id,time,index.var=NULL,name.var=NULL,dist,corstr,joint
     samplesize<-length(unique(id))
     betahat<-rep(0,ncol(x))
     x_candidate<-(x[,index.var])
-    colnames(x_candidate)<-rep(1:ncol(x_candidate))
+    colnames(x_candidate)<-seq_len(ncol(x_candidate))
     y<-as.matrix(y,col=1)
     data<-data.frame(y,x_candidate)
 
@@ -158,7 +158,7 @@ ELCIC.gee<-function(x,y,r,id,time,index.var=NULL,name.var=NULL,dist,corstr,joint
         samplesize<-length(unique(id))
         betahat<-rep(0,ncol(x))
         x_candidate<-(x[,index.var])
-        colnames(x_candidate)<-rep(1:ncol(x_candidate))
+        colnames(x_candidate)<-seq_len(ncol(x_candidate))
         y<-as.matrix(y,col=1)
         data<-data.frame(y,x_candidate)
 
@@ -168,7 +168,7 @@ ELCIC.gee<-function(x,y,r,id,time,index.var=NULL,name.var=NULL,dist,corstr,joint
 
         if(corstr=="independence")
         {
-            ro=0
+            ro<-0
             #p<-pbeta
         }else{
             ro<-unlist(summary(fit)$corr[1]) #correlation coefficients
@@ -257,7 +257,7 @@ ELCIC.wgee<-function(x,y,x_mis,r,id,time,index.var=NULL,name.var=NULL,dist,corst
         samplesize<-length(unique(id))
         beta<-rep(0,ncol(x))
         x_candidate<-(x[,index.var])
-        colnames(x_candidate)<-rep(1:ncol(x_candidate))
+        colnames(x_candidate)<-seq_len(ncol(x_candidate))
         y<-as.matrix(y,col=1)
         data_wgee<-data.frame(y,x_candidate,r,x_mis)
 
@@ -270,7 +270,7 @@ ELCIC.wgee<-function(x,y,x_mis,r,id,time,index.var=NULL,name.var=NULL,dist,corst
         }
         }
         mismodel_formula<-as.formula(mismodel_formula)
-        fit=wgee(y~x_candidate-1,data_wgee,id,family=dist,corstr =corstr,scale = NULL,mismodel =mismodel_formula)
+        fit<-wgee(y~x_candidate-1,data_wgee,id,family=dist,corstr =corstr,scale = NULL,mismodel =mismodel_formula)
 
         beta[index.var]<-as.vector(summary(fit)$beta)
         pbeta<-length(summary(fit)$beta)
@@ -304,7 +304,7 @@ ELCIC.wgee<-function(x,y,x_mis,r,id,time,index.var=NULL,name.var=NULL,dist,corst
         samplesize<-length(unique(id))
         beta<-rep(0,ncol(x))
         x_candidate<-(x[,index.var])
-        colnames(x_candidate)<-rep(1:ncol(x_candidate))
+        colnames(x_candidate)<-seq_len(ncol(x_candidate))
         y<-as.matrix(y,col=1)
         data_wgee<-data.frame(y,x_candidate,r,x_mis)
 
@@ -324,7 +324,7 @@ ELCIC.wgee<-function(x,y,x_mis,r,id,time,index.var=NULL,name.var=NULL,dist,corst
 
         if(corstr=="independence")
         {
-            ro=0
+            ro<-0
             #p<-pbeta
         }else{
             ro<-summary(fit)$corr
@@ -387,7 +387,7 @@ ELCIC.glm.procedure<-function(x,y,candidate.sets,name.var.sets=NULL,dist)
     if(!is.null(name.var.sets))
     {
     criterion.all<-rep()
-    for (i in 1:length(name.var.sets))
+    for (i in seq_len(length(name.var.sets)))
     {
         criterion<-ELCIC.glm(x=x,y=y,index.var=NULL,name.var=name.var.sets[[i]],dist=dist)
         criterion.all<-cbind(criterion.all,criterion)
@@ -395,7 +395,7 @@ ELCIC.glm.procedure<-function(x,y,candidate.sets,name.var.sets=NULL,dist)
     criterion.all
     }else{
         criterion.all<-rep()
-        for (i in 1:length(candidate.sets))
+        for (i in seq_len(length(candidate.sets)))
         {
             criterion<-ELCIC.glm(x=x,y=y,index.var=candidate.sets[[i]],name.var=NULL,dist=dist)
             criterion.all<-cbind(criterion.all,criterion)
@@ -455,11 +455,11 @@ ELCIC.gee.procedure<-function(x,y,r,id,time,candidate.sets=NULL,name.var.sets=NU
         if(!is.null(name.var.sets))
         {
             criterion.elcic<-rep()
-            for(j in 1:length(candidate.cor.sets))
+            for(j in seq_len(length(candidate.cor.sets)))
             {
                 corstr<-candidate.cor.sets[j]
                 criterion.all<-rep()
-                for (i in 1:length(name.var.sets))
+                for (i in seq_len(length(name.var.sets)))
                 {
                     criterion<-ELCIC.gee(x=x,y=y,r=r,id=id,time=time,index.var=NULL,name.var=name.var.sets[[i]],dist=dist,corstr=corstr)
                     criterion.all<-c(criterion.all,criterion)
@@ -472,11 +472,11 @@ ELCIC.gee.procedure<-function(x,y,r,id,time,candidate.sets=NULL,name.var.sets=NU
             criterion.elcic
         }else{
     criterion.elcic<-rep()
-    for(j in 1:length(candidate.cor.sets))
+    for(j in seq_len(length(candidate.cor.sets)))
     {
         corstr<-candidate.cor.sets[j]
         criterion.all<-rep()
-        for (i in 1:length(candidate.sets))
+        for (i in seq_len(length(candidate.sets)))
         {
             criterion<-ELCIC.gee(x=x,y=y,r=r,id=id,time=time,index.var=candidate.sets[[i]],name.var=NULL,dist=dist,corstr=corstr)
             criterion.all<-c(criterion.all,criterion)
@@ -493,7 +493,7 @@ ELCIC.gee.procedure<-function(x,y,r,id,time,candidate.sets=NULL,name.var.sets=NU
         {
                 criterion.elcic<-rep()
                 corstr<-candidate.cor.sets[1]
-                for (i in 1:length(name.var.sets))
+                for (i in seq_len(length(name.var.sets)))
                 {
                     criterion<-ELCIC.gee(x=x,y=y,r=r,id=id,time=time,index.var=NULL,name.var=name.var.sets[[i]],dist=dist,corstr=corstr)
                     criterion.elcic<-c(criterion.elcic,criterion)
@@ -504,7 +504,7 @@ ELCIC.gee.procedure<-function(x,y,r,id,time,candidate.sets=NULL,name.var.sets=NU
         }else{
                 criterion.elcic<-rep()
                 corstr<-candidate.cor.sets[1]
-                for (i in 1:length(candidate.sets))
+                for (i in seq_len(length(candidate.sets)))
                 {
                     criterion<-ELCIC.gee(x=x,y=y,r=r,id=id,time=time,index.var=candidate.sets[[i]],name.var=NULL,dist=dist,corstr=corstr)
                     criterion.elcic<-c(criterion.elcic,criterion)
@@ -569,11 +569,11 @@ ELCIC.wgee.procedure<-function(x,y,x_mis,r,id,time,candidate.sets=NULL,name.var.
         if(!is.null(name.var.sets))
         {
             criterion.elcic<-rep()
-            for(j in 1:length(candidate.cor.sets))
+            for(j in seq_len(length(candidate.cor.sets)))
             {
                 corstr<-candidate.cor.sets[j]
                 criterion.all<-rep()
-                for (i in 1:length(name.var.sets))
+                for (i in seq_len(length(name.var.sets)))
                 {
                     criterion<-ELCIC.wgee(x,y,x_mis,r,id,time,index.var=NULL,name.var=name.var.sets[[i]],dist,corstr,joints=TRUE)
                     criterion.all<-c(criterion.all,criterion)
@@ -586,11 +586,11 @@ ELCIC.wgee.procedure<-function(x,y,x_mis,r,id,time,candidate.sets=NULL,name.var.
             criterion.elcic
         }else{
             criterion.elcic<-rep()
-            for(j in 1:length(candidate.cor.sets))
+            for(j in seq_len(length(candidate.cor.sets)))
             {
                 corstr<-candidate.cor.sets[j]
                 criterion.all<-rep()
-                for (i in 1:length(candidate.sets))
+                for (i in seq_len(length(candidate.sets)))
                 {
                     criterion<-ELCIC.wgee(x,y,x_mis,r,id,time,index.var=candidate.sets[[i]],name.var=NULL,dist,corstr,joints=TRUE)
                     criterion.all<-c(criterion.all,criterion)
@@ -607,7 +607,7 @@ ELCIC.wgee.procedure<-function(x,y,x_mis,r,id,time,candidate.sets=NULL,name.var.
         {
                 criterion.elcic<-rep()
                 corstr<-candidate.cor.sets[1]
-                for (i in 1:length(name.var.sets))
+                for (i in seq_len(length(name.var.sets)))
                 {
                     criterion<-ELCIC.wgee(x,y,x_mis,r,id,time,index.var=NULL,name.var=name.var.sets[[i]],dist,corstr,joints=FALSE)
                     criterion.elcic<-c(criterion.elcic,criterion)
@@ -618,7 +618,7 @@ ELCIC.wgee.procedure<-function(x,y,x_mis,r,id,time,candidate.sets=NULL,name.var.
         }else{
             criterion.elcic<-rep()
                 corstr<-candidate.cor.sets[1]
-                for (i in 1:length(candidate.sets))
+                for (i in seq_len(length(candidate.sets)))
                 {
                     criterion<-ELCIC.wgee(x,y,x_mis,r,id,time,index.var=candidate.sets[[i]],name.var=NULL,dist,corstr,joints=FALSE)
                     criterion.elcic<-c(criterion.elcic,criterion)
@@ -678,7 +678,7 @@ QICc.procedure<-function (x,y,id,dist,candidate.sets=NULL,name.var.sets=NULL,can
         {
     data<-data.frame(y,x)
     modelQ<-rep()
-    for(i in 1:length(candidate.cor.sets))
+    for(i in seq_len(length(candidate.cor.sets)))
     {
         fit<-geeglm(y~x-1,data=data,family =dist,id=id,corstr = candidate.cor.sets[i])
         modelQ[i]<-as.numeric(QIC(fit)[4])##look at QIC and QICu
@@ -686,7 +686,7 @@ QICc.procedure<-function (x,y,id,dist,candidate.sets=NULL,name.var.sets=NULL,can
     QICcorstr<-candidate.cor.sets[which.min(modelQ)]
 
     criterion.mean<-rep()
-    for (i in 1:length(name.var.sets))
+    for (i in seq_len(length(name.var.sets)))
     {
         x.candidate<-x[,name.var.sets[[i]]]
         data<-data.frame(y,x.candidate)
@@ -700,7 +700,7 @@ QICc.procedure<-function (x,y,id,dist,candidate.sets=NULL,name.var.sets=NULL,can
         }else{
             data<-data.frame(y,x)
             modelQ<-rep()
-            for(i in 1:length(candidate.cor.sets))
+            for(i in seq_len(length(candidate.cor.sets)))
             {
                 fit<-geeglm(y~x-1,data=data,family =dist,id=id,corstr = candidate.cor.sets[i])
                 modelQ[i]<-as.numeric(QIC(fit)[4])##look at QIC and QICu
@@ -708,7 +708,7 @@ QICc.procedure<-function (x,y,id,dist,candidate.sets=NULL,name.var.sets=NULL,can
             QICcorstr<-candidate.cor.sets[which.min(modelQ)]
 
             criterion.mean<-rep()
-            for (i in 1:length(candidate.sets))
+            for (i in seq_len(length(candidate.sets)))
             {
                 x.candidate<-x[,candidate.sets[[i]]]
                 data<-data.frame(y,x.candidate)
@@ -727,7 +727,7 @@ QICc.procedure<-function (x,y,id,dist,candidate.sets=NULL,name.var.sets=NULL,can
             QICcorstr<-candidate.cor.sets
 
             criterion.mean<-rep()
-            for (i in 1:length(name.var.sets))
+            for (i in seq_len(length(name.var.sets)))
             {
                 x.candidate<-x[,name.var.sets[[i]]]
                 data<-data.frame(y,x.candidate)
@@ -743,7 +743,7 @@ QICc.procedure<-function (x,y,id,dist,candidate.sets=NULL,name.var.sets=NULL,can
             QICcorstr<-candidate.cor.sets
 
             criterion.mean<-rep()
-            for (i in 1:length(candidate.sets))
+            for (i in seq_len(length(candidate.sets)))
             {
                 x.candidate<-x[,candidate.sets[[i]]]
                 data<-data.frame(y,x.candidate)
@@ -822,7 +822,7 @@ MLIC.wgee.procedure<-function(x,y,x_mis,r,id,candidate.sets=NULL,name.var.sets=N
             }
             mismodel_formula<-as.formula(mismodel_formula)
             modelQ<-rep()
-            for(i in 1:length(candidate.cor.sets))
+            for(i in seq_len(length(candidate.cor.sets)))
             {
                 fit<-wgee(y~x-1,data_wgee,id,family=dist,corstr =candidate.cor.sets[[i]],scale = NULL,mismodel =mismodel_formula)
                 modelQ[i]<-MLIC.gee(fit,fit)$MLICc##look at MLICc
@@ -833,7 +833,7 @@ MLIC.wgee.procedure<-function(x,y,x_mis,r,id,candidate.sets=NULL,name.var.sets=N
             fitf<-wgee(y~x-1,data_wgee,id,family=dist,corstr = MLICcorstr,scale = NULL,mismodel =mismodel_formula)
 
             criterion.mean<-rep()
-            for (i in 1:length(name.var.sets))
+            for (i in seq_len(length(name.var.sets)))
             {
                 x.candidate<-x[,name.var.sets[[i]]]
                 fitm<-wgee(y~x.candidate-1,data_wgee,id,family=dist,corstr =MLICcorstr,scale = NULL,mismodel =mismodel_formula)
@@ -857,7 +857,7 @@ MLIC.wgee.procedure<-function(x,y,x_mis,r,id,candidate.sets=NULL,name.var.sets=N
             }
             mismodel_formula<-as.formula(mismodel_formula)
             modelQ<-rep()
-            for(i in 1:length(candidate.cor.sets))
+            for(i in seq_len(length(candidate.cor.sets)))
             {
                 fit<-wgee(y~x-1,data_wgee,id,family=dist,corstr =candidate.cor.sets[[i]],scale = NULL,mismodel =mismodel_formula)
                 modelQ[i]<-MLIC.gee(fit,fit)$MLICc##look at MLICc
@@ -868,7 +868,7 @@ MLIC.wgee.procedure<-function(x,y,x_mis,r,id,candidate.sets=NULL,name.var.sets=N
             fitf<-wgee(y~x-1,data_wgee,id,family=dist,corstr = MLICcorstr,scale = NULL,mismodel =mismodel_formula)
 
             criterion.mean<-rep()
-            for (i in 1:length(candidate.sets))
+            for (i in seq_len(length(candidate.sets)))
             {
                 x.candidate<-x[,candidate.sets[[i]]]
                 fitm<-wgee(y~x.candidate-1,data_wgee,id,family=dist,corstr =MLICcorstr,scale = NULL,mismodel =mismodel_formula)
@@ -901,7 +901,7 @@ MLIC.wgee.procedure<-function(x,y,x_mis,r,id,candidate.sets=NULL,name.var.sets=N
             fitf<-wgee(y~x-1,data_wgee,id,family=dist,corstr = MLICcorstr,scale = NULL,mismodel =mismodel_formula)
 
             criterion.mean<-rep()
-            for (i in 1:length(name.var.sets))
+            for (i in seq_len(length(name.var.sets)))
             {
                 x.candidate<-x[,name.var.sets[[i]]]
                 fitm<-wgee(y~x.candidate-1,data_wgee,id,family=dist,corstr =MLICcorstr,scale = NULL,mismodel =mismodel_formula)
@@ -931,7 +931,7 @@ MLIC.wgee.procedure<-function(x,y,x_mis,r,id,candidate.sets=NULL,name.var.sets=N
             fitf<-wgee(y~x-1,data_wgee,id,family=dist,corstr = MLICcorstr,scale = NULL,mismodel =mismodel_formula)
 
             criterion.mean<-rep()
-            for (i in 1:length(candidate.sets))
+            for (i in seq_len(length(candidate.sets)))
             {
                 x.candidate<-x[,candidate.sets[[i]]]
                 fitm<-wgee(y~x.candidate-1,data_wgee,id,family=dist,corstr =MLICcorstr,scale = NULL,mismodel =mismodel_formula)
@@ -1009,7 +1009,7 @@ QICW.wgee.procedure<-function(x,y,x_mis,r,id,candidate.sets=NULL,name.var.sets=N
             }
             mismodel_formula<-as.formula(mismodel_formula)
             modelQ<-rep()
-            for(i in 1:length(candidate.cor.sets))
+            for(i in seq_len(length(candidate.cor.sets)))
             {
                 fit<-wgee(y~x-1,data_wgee,id,family=dist,corstr =candidate.cor.sets[[i]],scale = NULL,mismodel =mismodel_formula)
                 modelQ[i]<-QICW.gee(fit)$QICWr##look at QICWr
@@ -1017,7 +1017,7 @@ QICW.wgee.procedure<-function(x,y,x_mis,r,id,candidate.sets=NULL,name.var.sets=N
             QICWcorstr<-candidate.cor.sets[which.min(modelQ)]
 
             criterion.mean<-rep()
-            for (i in 1:length(name.var.sets))
+            for (i in seq_len(length(name.var.sets)))
             {
                 x.candidate<-x[,name.var.sets[[i]]]
                 fitm<-wgee(y~x.candidate-1,data_wgee,id,family=dist,corstr =QICWcorstr,scale = NULL,mismodel =mismodel_formula)
@@ -1041,7 +1041,7 @@ QICW.wgee.procedure<-function(x,y,x_mis,r,id,candidate.sets=NULL,name.var.sets=N
             }
             mismodel_formula<-as.formula(mismodel_formula)
             modelQ<-rep()
-            for(i in 1:length(candidate.cor.sets))
+            for(i in seq_len(length(candidate.cor.sets)))
             {
                 fit<-wgee(y~x-1,data_wgee,id,family=dist,corstr =candidate.cor.sets[[i]],scale = NULL,mismodel =mismodel_formula)
                 modelQ[i]<-QICW.gee(fit)$QICWr##look at QICWr
@@ -1049,7 +1049,7 @@ QICW.wgee.procedure<-function(x,y,x_mis,r,id,candidate.sets=NULL,name.var.sets=N
             QICWcorstr<-candidate.cor.sets[which.min(modelQ)]
 
             criterion.mean<-rep()
-            for (i in 1:length(candidate.sets))
+            for (i in seq_len(length(candidate.sets)))
             {
                 x.candidate<-x[,candidate.sets[[i]]]
                 fitm<-wgee(y~x.candidate-1,data_wgee,id,family=dist,corstr =QICWcorstr,scale = NULL,mismodel =mismodel_formula)
@@ -1078,7 +1078,7 @@ QICW.wgee.procedure<-function(x,y,x_mis,r,id,candidate.sets=NULL,name.var.sets=N
             QICWcorstr<-candidate.cor.sets[1]
 
             criterion.mean<-rep()
-            for (i in 1:length(name.var.sets))
+            for (i in seq_len(length(name.var.sets)))
             {
                 x.candidate<-x[,name.var.sets[[i]]]
                 fitm<-wgee(y~x.candidate-1,data_wgee,id,family=dist,corstr =QICWcorstr,scale = NULL,mismodel =mismodel_formula)
@@ -1104,7 +1104,7 @@ QICW.wgee.procedure<-function(x,y,x_mis,r,id,candidate.sets=NULL,name.var.sets=N
             QICWcorstr<-candidate.cor.sets[1]
 
             criterion.mean<-rep()
-            for (i in 1:length(candidate.sets))
+            for (i in seq_len(length(candidate.sets)))
             {
                 x.candidate<-x[,candidate.sets[[i]]]
                 fitm<-wgee(y~x.candidate-1,data_wgee,id,family=dist,corstr =QICWcorstr,scale = NULL,mismodel =mismodel_formula)
