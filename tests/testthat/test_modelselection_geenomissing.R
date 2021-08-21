@@ -1,6 +1,6 @@
 data("geetoydata")
 
-x=geetoydata$x
+x<-geetoydata$x
 
 test_that("output error: y is not a vector",{expect_error(ELCIC.gee(x=geetoydata$x,y=as.data.frame(geetoydata$y),r=rep(1,nrow(x)),id=geetoydata$id,time=3,index.var=c(1,2,3),name.var=NULL,dist="poisson",corstr="exchangeable"),"y should be in a vector format")})
 
