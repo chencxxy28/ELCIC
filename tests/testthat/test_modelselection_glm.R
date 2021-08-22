@@ -25,7 +25,15 @@ output2<-ELCIC.glm(x=glmtoydata$x,y=glmtoydata$y,index.var=c(1,2,3),name.var=c("
                    dist = "gaussian")
 test_that("output equal: same output given both index and var.names",{expect_equal(output1,output2)})
 
-#generate gaussian
+
+output1<-ELCIC.glm(x=glmtoydata$x,y=glmtoydata$y,index.var=NULL,name.var=c("intercept","x1","x2"),
+                   dist = "poisson")
+output2<-ELCIC.glm(x=glmtoydata$x,y=glmtoydata$y,index.var=c(1,2,3),name.var=c("intercept","x1","x2"),
+                   dist = "poisson")
+test_that("output equal: same output given both index and var.names",{expect_equal(output1,output2)})
+
+
+#generate binomial
 set.seed(515413)
 samplesize<-100
 glmtoydata<-glm.generator(beta=c(0.5,0.5,0.5,0),samplesize=samplesize,rho=0.5,dist="binomial")
