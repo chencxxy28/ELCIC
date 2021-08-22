@@ -63,6 +63,9 @@ test_that("output equal: same output given both index and var.names",{expect_equ
 
 
 
+
+
+
 # name.var.set <- list(c("intercept","x1"),c("intercept","x1","x2"))
 # transform.index<-list(c(1,2),c(1:3))
 # test_that("var.name transforms to index",{expect_equal(match.index(x=glmtoydata$x,name.var.set),transform.index)})
