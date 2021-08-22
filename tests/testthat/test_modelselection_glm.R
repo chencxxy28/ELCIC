@@ -40,6 +40,13 @@ output2<-ELCIC.glm.procedure(x=glmtoydata$x,y=glmtoydata$y,candidate.sets=list(c
 test_that("output equal: same output given both index and var.names",{expect_equal(output1,output2)})
 
 
+output1<-ELCIC.glm.procedure(x=glmtoydata$x,y=glmtoydata$y,name.var.sets=list(c("intercept","x1","x2")),
+                             dist = "poisson")
+output2<-ELCIC.glm.procedure(x=glmtoydata$x,y=glmtoydata$y,candidate.sets=list(c(1,2,3)),
+                             dist = "poisson")
+test_that("output equal: same output given both index and var.names",{expect_equal(output1,output2)})
+
+
 #generate binomial
 set.seed(515413)
 samplesize<-100
