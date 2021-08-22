@@ -58,6 +58,12 @@ output2<-ELCIC.wgee.procedure(x=wgeetoydata$x,y=(wgeetoydata$y)
                               ,x_mis=wgeetoydata$x_mis,r=wgeetoydata$obs_ind,id=wgeetoydata$id,time=3,candidate.sets=list(c(1,2,3)),name.var.sets=list(c("intercept","x1","x2")),dist="binomial",candidate.cor.sets="exchangeable",joints=FALSE)
 test_that("output equal: same output given multiple correlation structures, given joints=false",{expect_equal(output1,output2)})
 
+output1<-ELCIC.wgee.procedure(x=wgeetoydata$x,y=(wgeetoydata$y)
+                              ,x_mis=wgeetoydata$x_mis,r=wgeetoydata$obs_ind,id=wgeetoydata$id,time=3,candidate.sets=list(c(1,2,3)),name.var.sets=list(c("intercept","x1","x2")),dist="binomial",candidate.cor.sets=c("independence","ar1"),joints=FALSE)
+output2<-ELCIC.wgee.procedure(x=wgeetoydata$x,y=(wgeetoydata$y)
+                              ,x_mis=wgeetoydata$x_mis,r=wgeetoydata$obs_ind,id=wgeetoydata$id,time=3,candidate.sets=list(c(1,2,3)),name.var.sets=list(c("intercept","x1","x2")),dist="binomial",candidate.cor.sets="independence",joints=FALSE)
+test_that("output equal: same output given multiple correlation structures, given joints=false",{expect_equal(output1,output2)})
+
 #try different distributions
 set.seed(515413)
 library(wgeesel)
