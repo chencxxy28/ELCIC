@@ -37,7 +37,7 @@ test_that("output equal: same output given both index and var.names",{expect_equ
 set.seed(515413)
 samplesize<-100
 glmtoydata<-glm.generator(beta=c(0.5,0.5,0.5,0),samplesize=samplesize,rho=0.5,dist="binomial")
-rownames(glmtoydata$x)<-c(1:nrow(glmtoydata$x))
+rownames(glmtoydata$x)<-seq_len(nrow(glmtoydata$x))
 colnames(glmtoydata$x)<-c("intercept","x1","x2","x3")
 
 output1<-ELCIC.glm(x=glmtoydata$x,y=glmtoydata$y,index.var=NULL,name.var=c("intercept","x1","x2"),
