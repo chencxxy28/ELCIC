@@ -49,15 +49,3 @@ output1<-ELCIC.gee.procedure(x=(geetoydata$x),y=(geetoydata$y),r=rep(1,nrow(geet
 output2<-ELCIC.gee.procedure(x=(geetoydata$x),y=(geetoydata$y),r=rep(1,nrow(geetoydata$x)),id=geetoydata$id,time=3,candidate.sets=list(c(1,2,3)),name.var.sets=list(c("intercept","x1","x2")),dist="gaussian",candidate.cor.sets=c("ar1","exchangeable"),joint=FALSE)
 test_that("output equal: equal values given more than 1 correlation structures, when joint=false",{expect_equal(output1,output2)})
 
-
-set.seed(515413)
-samplesize<-200
-time=3
-geetoydata<-gee.generator(beta=c(-1,1,0.5,0),samplesize=samplesize,time=time,num.time.dep=2,num.time.indep=1,rho=0,x.rho=0.2,dist="binomial",cor.str="exchangeable",x.cor.str="exchangeable")
-rownames(geetoydata$x)<-c(1:nrow(geetoydata$x))
-colnames(geetoydata$x)<-c("intercept","x1","x2","x3")
-
-output1<-ELCIC.gee.procedure(x=(geetoydata$x),y=(geetoydata$y),r=rep(1,nrow(geetoydata$x)),id=geetoydata$id,time=3,candidate.sets=list(c(1,2,3)),name.var.sets=list(c("intercept","x1","x2")),dist="binomial",candidate.cor.sets="ar1",joint=FALSE)
-output2<-ELCIC.gee.procedure(x=(geetoydata$x),y=(geetoydata$y),r=rep(1,nrow(geetoydata$x)),id=geetoydata$id,time=3,candidate.sets=list(c(1,2,3)),name.var.sets=list(c("intercept","x1","x2")),dist="binomial",candidate.cor.sets=c("ar1","exchangeable"),joint=FALSE)
-test_that("output equal: equal values given more than 1 correlation structures, when joint=false",{expect_equal(output1,output2)})
-
