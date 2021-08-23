@@ -2,29 +2,29 @@
 % Please edit documentation in R/model_selection.R
 \name{ELCIC.glm}
 \alias{ELCIC.glm}
-\title{Variable selection in generalized linear models (GLM)}
+\title{The whole variable selection procedure in GLM}
 \usage{
-ELCIC.glm(x, y, index.var=NULL, name.var = NULL, dist)
+ELCIC.glm(x,y,candidate.sets,name.var.sets=NULL,dist)
 }
 \arguments{
-\item{x}{A matrix containing covariates. The first column should contain all ones corresponding to the intercept if intercept is considered in your mean model.}
+\item{x}{A matrix containing covariates. The first column should contain all ones corresponding to the intercept if the intercept is expected in the mean structure.}
 
 \item{y}{A vector containing outcomes.}
 
-\item{index.var}{A vector containing index corresponding to candidate covariates (including the intercept). See more in details section.}
+\item{candidate.sets}{A list containing index corresponding to candidate covariates in each candidate model. See more in details section.}
 
-\item{name.var}{A vector containing names of candidate covariates. The names should be subset of column names of x matrix. See more in details section.}
+\item{name.var.sets}{A list containing names of candidate covariates coresponding to each candidate model. The names should be subset of column names of the x matrix. See more in details section.}
 
 \item{dist}{A specified distribution. It can be "gaussian", "poisson",and "binomial".}
 }
 \value{
-A vector containing information criteria including ELCIC, AIC, BIC, and GIC.
+A matrix with each element containing ELCIC value for each candidate model (in columns) and (in rows)
 }
 \description{
-The function \code{\link{ELCIC.gee}} provides values of several model selection criteria including AIC, BIC, GIC, and ELCIC, given a candidate mean model.
+The function \code{\link{ELCIC.glm}} provides the overall procedure for variable selection in GLM.
 }
 \details{
-Either arguments "index.var" or "name.var" is used to identify the candidate mean model. If both arguments are provided, only the argument "name.var" will be used.
+Either arguments "candidate.sets" or "name.var.sets" is used to identify the set of candidate mean model. If both arguments are provided, only the argument "name.var.sets" will be used.
 }
 \examples{
 ## tests
@@ -33,9 +33,8 @@ data(glmtoydata)
 x<-glmtoydata$x
 y<-glmtoydata$y
 #candidate model index
-name.var<-c("intercept","x1","x2")
-index.var<-c(1,2,3)
-criteria<-ELCIC.glm(x, y, index.var =index.var, name.var = NULL, dist="poisson")
+candidate.sets<-list(c(1,2),c(1,2,3),c(1,2,3,4))
+criteria<-ELCIC.glm(x, y, candidate.sets, name.var.sets = NULL, dist="poisson")
 criteria
 
 }
