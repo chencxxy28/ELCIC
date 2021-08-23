@@ -4,7 +4,8 @@
 \alias{ELCIC.wgee.single}
 \title{Calculate ELCIC value for a given candidate model under WGEE framework with dropout data}
 \usage{
-ELCIC.wgee.single(x,y,x_mis,r,id,time,index.var=NULL,name.var=NULL,dist,corstr,joints=TRUE)
+ELCIC.wgee.single(x,y,x_mis,r,id,time,index.var=NULL,
+                    name.var=NULL,dist,corstr,joints=TRUE)
 }
 \arguments{
 \item{x}{A matrix containing covariates. The first column should be all ones corresponding to the intercept if the intercept is considered in the marginal mean.}
