@@ -1,6 +1,6 @@
 #'@title Variable selection in generalized linear models (GLM)
-#'@description The function \code{\link{ELCIC.gee}} provides values of several model selection criteria including AIC, BIC, GIC, and ELCIC, given a candidate mean model.
-#'@usage ELCIC.glm(x, y, index.var=NULL, name.var = NULL, dist)
+#'@description The function \code{\link{ELCIC.glm.single}} provides values of several model selection criteria including AIC, BIC, GIC, and ELCIC, given a candidate mean model.
+#'@usage ELCIC.glm.single(x, y, index.var=NULL, name.var = NULL, dist)
 #'@param x A matrix containing covariates. The first column should contain all ones corresponding to the intercept if intercept is considered in your mean model.
 #'@param y A vector containing outcomes.
 #'@param index.var A vector containing index corresponding to candidate covariates (including the intercept). See more in details section.
@@ -20,14 +20,14 @@
 #'#candidate model index
 #'name.var<-c("intercept","x1","x2")
 #'index.var<-c(1,2,3)
-#'criteria<-ELCIC.glm(x, y, index.var =index.var, name.var = NULL, dist="poisson")
+#'criteria<-ELCIC.glm.single(x, y, index.var =index.var, name.var = NULL, dist="poisson")
 #'criteria
 #'
 #'@export
 #'@import MASS
 #'@importFrom stats as.formula glm rbinom rnbinom rnorm rpois
 
-ELCIC.glm<-function (x,y,index.var=NULL,name.var=NULL,dist)
+ELCIC.glm.single<-function (x,y,index.var=NULL,name.var=NULL,dist)
 {
     if(!is.matrix(x))
     {stop("x should be in a matrix format")}else if(!is.vector(y)){stop("y should be in a vector format")}else
@@ -67,8 +67,8 @@ ELCIC.glm<-function (x,y,index.var=NULL,name.var=NULL,dist)
 
 
 #'@title Calculate ELCIC value for a given candidate model under GEE framework
-#'@description The function \code{\link{ELCIC.gee}} calculates ELCIC value for a given marginal mean candidate model with a specified working correlation structure. It is able to simultaneously evaluate mean model and working correlation structure.
-#'@usage ELCIC.gee(x, y, r, id, time, index.var=NULL, name.var = NULL, dist, corstr, joints=TRUE)
+#'@description The function \code{\link{ELCIC.gee.single}} calculates ELCIC value for a given marginal mean candidate model with a specified working correlation structure. It is able to simultaneously evaluate mean model and working correlation structure.
+#'@usage ELCIC.gee.single(x, y, r, id, time, index.var=NULL, name.var = NULL, dist, corstr, joints=TRUE)
 #'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept.
 #'@param y A vector containing outcomes.
 #'@param r A vector indicating missingness: 1 for observed records, and 0 for unobserved records. The default setup is that all data are observed.
@@ -84,7 +84,7 @@ ELCIC.glm<-function (x,y,index.var=NULL,name.var=NULL,dist)
 #'
 #'@details Either arguments "index.var" or "name.var" is used to identify the candidate mean model. If both arguments are provided, only the argument "name.var" will be used.
 #'
-#'When the argument "joints" is TRUE, \code{\link{ELCIC.gee}} will calculate ELCIC value based on the function \code{\link{lambda.find.gee}} and \code{\link{ee.gee}}, which involve both marginal mean and correlation coefficient estimating equations. When the argument "joints" is FALSE, \code{\link{ELCIC.gee}} will calculate ELCIC value based on the function \code{\link{lambda.find.gee.onlymean}} and \code{\link{ee.gee.onlymean}}, which only involve marginal mean estimating equations.
+#'When the argument "joints" is TRUE, \code{\link{ELCIC.gee.single}} will calculate ELCIC value based on the function \code{\link{lambda.find.gee}} and \code{\link{ee.gee}}, which involve both marginal mean and correlation coefficient estimating equations. When the argument "joints" is FALSE, \code{\link{ELCIC.gee.single}} will calculate ELCIC value based on the function \code{\link{lambda.find.gee.onlymean}} and \code{\link{ee.gee.onlymean}}, which only involve marginal mean estimating equations.
 #'
 #'@examples
 #'## tests
@@ -97,14 +97,14 @@ ELCIC.glm<-function (x,y,index.var=NULL,name.var=NULL,dist)
 #'time<-3
 #'corstr<-"exchangeable"
 #'dist<-"poisson"
-#'criteria<-ELCIC.gee(x=x,y=y,r=r,id=id,time=time,index.var=c(1,2,3),
+#'criteria<-ELCIC.gee.single(x=x,y=y,r=r,id=id,time=time,index.var=c(1,2,3),
 #'            name.var=NULL,dist=dist,corstr=corstr)
 #'criteria
 #'
 #'@export
 #'@importFrom geepack geeglm
 
-ELCIC.gee<-function(x,y,r,id,time,index.var=NULL,name.var=NULL,dist,corstr,joints=TRUE)
+ELCIC.gee.single<-function(x,y,r,id,time,index.var=NULL,name.var=NULL,dist,corstr,joints=TRUE)
 {
     if(!is.matrix(x))
     {stop("x should be in a matrix format")}else if(!is.vector(y)){stop("y should be in a vector format")}else
@@ -196,8 +196,8 @@ ELCIC.gee<-function(x,y,r,id,time,index.var=NULL,name.var=NULL,dist,corstr,joint
 
 
 #'@title Calculate ELCIC value for a given candidate model under WGEE framework with dropout data
-#'@description The function \code{\link{ELCIC.wgee}} to calculate ELCIC value for a given candidate mean model with specified working correlation structure. It is able to simultaneously evaluate mean model and working correlation structure. The data is dropout missing and missing at random.
-#'@usage ELCIC.wgee(x,y,x_mis,r,id,time,index.var=NULL,name.var=NULL,dist,corstr,joints=TRUE)
+#'@description The function \code{\link{ELCIC.wgee.single}} to calculate ELCIC value for a given candidate mean model with specified working correlation structure. It is able to simultaneously evaluate mean model and working correlation structure. The data is dropout missing and missing at random.
+#'@usage ELCIC.wgee.single(x,y,x_mis,r,id,time,index.var=NULL,name.var=NULL,dist,corstr,joints=TRUE)
 #'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept if the intercept is considered in the marginal mean.
 #'@param y A vector containing outcomes. Use NA to indicate missing outcomes.
 #'@param x_mis A matrix containing covariates for the missing data model. The first column should be all ones corresponding to the intercept if the intercept is considered in this missing data model. See more in details section.
@@ -216,7 +216,7 @@ ELCIC.gee<-function(x,y,r,id,time,index.var=NULL,name.var=NULL,dist,corstr,joint
 #'
 #'Either arguments "index.var" or "name.var" is used to identify the candidate mean model. If both arguments are provided, only the argument "name.var" will be used.
 #'
-#'When the argument "joints" is TRUE, \code{\link{ELCIC.wgee}} will calculate ELCIC value based on the function \code{\link{lambda.find.wgee}} and \code{\link{ee.wgee}}, which involve both marginal mean and correlation coefficient estimating equations. When the argument "joints" is FALSE, \code{\link{ELCIC.wgee}} will calculate ELCIC value based on the function \code{\link{lambda.find.wgee.onlymean}} and \code{\link{ee.wgee.onlymean}}, which only involve marginal mean estimating equations.
+#'When the argument "joints" is TRUE, \code{\link{ELCIC.wgee.single}} will calculate ELCIC value based on the function \code{\link{lambda.find.wgee}} and \code{\link{ee.wgee}}, which involve both marginal mean and correlation coefficient estimating equations. When the argument "joints" is FALSE, \code{\link{ELCIC.wgee.single}} will calculate ELCIC value based on the function \code{\link{lambda.find.wgee.onlymean}} and \code{\link{ee.wgee.onlymean}}, which only involve marginal mean estimating equations.
 #'
 #'@examples
 #'## tests
@@ -231,14 +231,14 @@ ELCIC.gee<-function(x,y,r,id,time,index.var=NULL,name.var=NULL,dist,corstr,joint
 #'id<-wgeetoydata$id
 #'time<-3
 #'index.var<-c(1,2,3)
-#'ELCIC_value<-ELCIC.wgee(x,y,x_mis,r,id,time,index.var,name.var=NULL,
+#'ELCIC_value<-ELCIC.wgee.single(x,y,x_mis,r,id,time,index.var,name.var=NULL,
 #'                      dist,corstr,joints=TRUE)
 #'ELCIC_value
 
 #'@export
 #'@importFrom wgeesel wgee
 #'
-ELCIC.wgee<-function(x,y,x_mis,r,id,time,index.var=NULL,name.var=NULL,dist,corstr,joints=TRUE)
+ELCIC.wgee.single<-function(x,y,x_mis,r,id,time,index.var=NULL,name.var=NULL,dist,corstr,joints=TRUE)
 {
     if(!is.matrix(x))
     {stop("x should be in a matrix format")}else if(!is.vector(y)){stop("y should be in a vector format")}else if(!is.matrix(x_mis)){stop("x_mis should be in a matrix format")}else
@@ -356,8 +356,8 @@ ELCIC.wgee<-function(x,y,x_mis,r,id,time,index.var=NULL,name.var=NULL,dist,corst
 
 
 #'@title The whole variable selection procedure in GLM
-#'@description The function \code{\link{ELCIC.glm.procedure}} provides the overall procedure for variable selection in GLM.
-#'@usage ELCIC.glm.procedure(x,y,candidate.sets,name.var.sets=NULL,dist)
+#'@description The function \code{\link{ELCIC.glm}} provides the overall procedure for variable selection in GLM.
+#'@usage ELCIC.glm(x,y,candidate.sets,name.var.sets=NULL,dist)
 #'@param x A matrix containing covariates. The first column should contain all ones corresponding to the intercept if the intercept is expected in the mean structure.
 #'@param y A vector containing outcomes.
 #'@param candidate.sets A list containing index corresponding to candidate covariates in each candidate model. See more in details section.
@@ -377,19 +377,19 @@ ELCIC.wgee<-function(x,y,x_mis,r,id,time,index.var=NULL,name.var=NULL,dist,corst
 #'y<-glmtoydata$y
 #'#candidate model index
 #'candidate.sets<-list(c(1,2),c(1,2,3),c(1,2,3,4))
-#'criteria<-ELCIC.glm.procedure(x, y, candidate.sets, name.var.sets = NULL, dist="poisson")
+#'criteria<-ELCIC.glm(x, y, candidate.sets, name.var.sets = NULL, dist="poisson")
 #'criteria
 #'
 #'@export
 
-ELCIC.glm.procedure<-function(x,y,candidate.sets,name.var.sets=NULL,dist)
+ELCIC.glm<-function(x,y,candidate.sets,name.var.sets=NULL,dist)
 {
     if(!is.null(name.var.sets))
     {
     criterion.all<-rep()
     for (i in seq_len(length(name.var.sets)))
     {
-        criterion<-ELCIC.glm(x=x,y=y,index.var=NULL,name.var=name.var.sets[[i]],dist=dist)
+        criterion<-ELCIC.glm.single(x=x,y=y,index.var=NULL,name.var=name.var.sets[[i]],dist=dist)
         criterion.all<-cbind(criterion.all,criterion)
     }
     criterion.all
@@ -397,7 +397,7 @@ ELCIC.glm.procedure<-function(x,y,candidate.sets,name.var.sets=NULL,dist)
         criterion.all<-rep()
         for (i in seq_len(length(candidate.sets)))
         {
-            criterion<-ELCIC.glm(x=x,y=y,index.var=candidate.sets[[i]],name.var=NULL,dist=dist)
+            criterion<-ELCIC.glm.single(x=x,y=y,index.var=candidate.sets[[i]],name.var=NULL,dist=dist)
             criterion.all<-cbind(criterion.all,criterion)
         }
         criterion.all
@@ -409,8 +409,8 @@ ELCIC.glm.procedure<-function(x,y,candidate.sets,name.var.sets=NULL,dist)
 
 
 #'@title The whole procedure for joint selection of mean structure and correlation structure in longitudinal data without missingness or missing completely at random
-#'@description The function \code{\link{ELCIC.gee.procedure}} provides the overall procedure for joint selection of mean structure and correlation structure in longitudinal data without missingness or missing completely at random.
-#'@usage ELCIC.gee.procedure(x,y,r,id,time,candidate.sets=NULL,name.var.sets=NULL,dist,
+#'@description The function \code{\link{ELCIC.gee}} provides the overall procedure for joint selection of mean structure and correlation structure in longitudinal data without missingness or missing completely at random.
+#'@usage ELCIC.gee(x,y,r,id,time,candidate.sets=NULL,name.var.sets=NULL,dist,
 #'       candidate.cor.sets=c("independence","exchangeable", "ar1"), joints=TRUE)
 #'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept if the intercept is expected in the marginal mean.
 #'@param y A vector containing outcomes.
@@ -441,13 +441,13 @@ ELCIC.glm.procedure<-function(x,y,candidate.sets,name.var.sets=NULL,dist)
 #'candidate.sets<-list(c(1,2),c(1,2,3))
 #'candidate.cor.sets<-c("exchangeable")
 #'dist<-"poisson"
-#'criterion.elcic<-ELCIC.gee.procedure(x=x,y=y,r=r,id=id,time=time,candidate.sets=candidate.sets,
+#'criterion.elcic<-ELCIC.gee(x=x,y=y,r=r,id=id,time=time,candidate.sets=candidate.sets,
 #'                 name.var.sets=NULL,dist=dist,candidate.cor.sets=candidate.cor.sets)
 #'criterion.elcic
 #'
 #'@export
 
-ELCIC.gee.procedure<-function(x,y,r,id,time,candidate.sets=NULL,name.var.sets=NULL,dist,candidate.cor.sets=c("independence",
+ELCIC.gee<-function(x,y,r,id,time,candidate.sets=NULL,name.var.sets=NULL,dist,candidate.cor.sets=c("independence",
                                                                                                    "exchangeable", "ar1"), joints=TRUE)
 {
     if(joints)
@@ -461,7 +461,7 @@ ELCIC.gee.procedure<-function(x,y,r,id,time,candidate.sets=NULL,name.var.sets=NU
                 criterion.all<-rep()
                 for (i in seq_len(length(name.var.sets)))
                 {
-                    criterion<-ELCIC.gee(x=x,y=y,r=r,id=id,time=time,index.var=NULL,name.var=name.var.sets[[i]],dist=dist,corstr=corstr)
+                    criterion<-ELCIC.gee.single(x=x,y=y,r=r,id=id,time=time,index.var=NULL,name.var=name.var.sets[[i]],dist=dist,corstr=corstr)
                     criterion.all<-c(criterion.all,criterion)
                 }
                 criterion.elcic<-rbind(criterion.elcic,criterion.all)
@@ -478,7 +478,7 @@ ELCIC.gee.procedure<-function(x,y,r,id,time,candidate.sets=NULL,name.var.sets=NU
         criterion.all<-rep()
         for (i in seq_len(length(candidate.sets)))
         {
-            criterion<-ELCIC.gee(x=x,y=y,r=r,id=id,time=time,index.var=candidate.sets[[i]],name.var=NULL,dist=dist,corstr=corstr)
+            criterion<-ELCIC.gee.single(x=x,y=y,r=r,id=id,time=time,index.var=candidate.sets[[i]],name.var=NULL,dist=dist,corstr=corstr)
             criterion.all<-c(criterion.all,criterion)
         }
         criterion.elcic<-rbind(criterion.elcic,criterion.all)
@@ -495,7 +495,7 @@ ELCIC.gee.procedure<-function(x,y,r,id,time,candidate.sets=NULL,name.var.sets=NU
                 corstr<-candidate.cor.sets[1]
                 for (i in seq_len(length(name.var.sets)))
                 {
-                    criterion<-ELCIC.gee(x=x,y=y,r=r,id=id,time=time,index.var=NULL,name.var=name.var.sets[[i]],dist=dist,corstr=corstr)
+                    criterion<-ELCIC.gee.single(x=x,y=y,r=r,id=id,time=time,index.var=NULL,name.var=name.var.sets[[i]],dist=dist,corstr=corstr)
                     criterion.elcic<-c(criterion.elcic,criterion)
                 }
 
@@ -506,7 +506,7 @@ ELCIC.gee.procedure<-function(x,y,r,id,time,candidate.sets=NULL,name.var.sets=NU
                 corstr<-candidate.cor.sets[1]
                 for (i in seq_len(length(candidate.sets)))
                 {
-                    criterion<-ELCIC.gee(x=x,y=y,r=r,id=id,time=time,index.var=candidate.sets[[i]],name.var=NULL,dist=dist,corstr=corstr)
+                    criterion<-ELCIC.gee.single(x=x,y=y,r=r,id=id,time=time,index.var=candidate.sets[[i]],name.var=NULL,dist=dist,corstr=corstr)
                     criterion.elcic<-c(criterion.elcic,criterion)
                 }
 
@@ -520,8 +520,8 @@ ELCIC.gee.procedure<-function(x,y,r,id,time,candidate.sets=NULL,name.var.sets=NU
 
 
 #'@title The whole procedure for joint selection of mean structure and correlation structure in longitudinal dropout data
-#'@description The function \code{\link{ELCIC.wgee.procedure}} provides the overall procedure for joint selection of mean structure and correlation structure in longitudinal data missing at random. It is also able to implement marginal mean structure selection given a prespecified working correlation structure. The data is dropout missing and missing at random.
-#'@usage ELCIC.wgee.procedure(x,y,x_mis,r,id,time,candidate.sets=NULL,name.var.sets=NULL,
+#'@description The function \code{\link{ELCIC.wgee}} provides the overall procedure for joint selection of mean structure and correlation structure in longitudinal data missing at random. It is also able to implement marginal mean structure selection given a prespecified working correlation structure. The data is dropout missing and missing at random.
+#'@usage ELCIC.wgee(x,y,x_mis,r,id,time,candidate.sets=NULL,name.var.sets=NULL,
 #'      dist,candidate.cor.sets=c("independence","exchangeable", "ar1"), joints=TRUE)
 #'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept if the intercept is considered in the marginal mean.
 #'@param y A vector containing outcomes. Use NA to indicate missing outcomes.
@@ -556,13 +556,13 @@ ELCIC.gee.procedure<-function(x,y,r,id,time,candidate.sets=NULL,name.var.sets=NU
 #'time<-3
 #'candidate.sets<-list(c(1,2,3))
 #'candidate.cor.sets<-c("exchangeable")
-#'criterion.elcic<-ELCIC.wgee.procedure(x,y,x_mis,r,id,time,candidate.sets,name.var.sets=NULL,
+#'criterion.elcic<-ELCIC.wgee(x,y,x_mis,r,id,time,candidate.sets,name.var.sets=NULL,
 #'                                     dist,candidate.cor.sets,joints=TRUE)
 #'criterion.elcic
 #'
 #'@export
 
-ELCIC.wgee.procedure<-function(x,y,x_mis,r,id,time,candidate.sets=NULL,name.var.sets=NULL,dist,candidate.cor.sets=c("independence","exchangeable", "ar1"),joints=TRUE)
+ELCIC.wgee<-function(x,y,x_mis,r,id,time,candidate.sets=NULL,name.var.sets=NULL,dist,candidate.cor.sets=c("independence","exchangeable", "ar1"),joints=TRUE)
 {
     if(joints)
     {
@@ -575,7 +575,7 @@ ELCIC.wgee.procedure<-function(x,y,x_mis,r,id,time,candidate.sets=NULL,name.var.
                 criterion.all<-rep()
                 for (i in seq_len(length(name.var.sets)))
                 {
-                    criterion<-ELCIC.wgee(x,y,x_mis,r,id,time,index.var=NULL,name.var=name.var.sets[[i]],dist,corstr,joints=TRUE)
+                    criterion<-ELCIC.wgee.single(x,y,x_mis,r,id,time,index.var=NULL,name.var=name.var.sets[[i]],dist,corstr,joints=TRUE)
                     criterion.all<-c(criterion.all,criterion)
                 }
                 criterion.elcic<-rbind(criterion.elcic,criterion.all)
@@ -592,7 +592,7 @@ ELCIC.wgee.procedure<-function(x,y,x_mis,r,id,time,candidate.sets=NULL,name.var.
                 criterion.all<-rep()
                 for (i in seq_len(length(candidate.sets)))
                 {
-                    criterion<-ELCIC.wgee(x,y,x_mis,r,id,time,index.var=candidate.sets[[i]],name.var=NULL,dist,corstr,joints=TRUE)
+                    criterion<-ELCIC.wgee.single(x,y,x_mis,r,id,time,index.var=candidate.sets[[i]],name.var=NULL,dist,corstr,joints=TRUE)
                     criterion.all<-c(criterion.all,criterion)
                 }
                 criterion.elcic<-rbind(criterion.elcic,criterion.all)
@@ -609,7 +609,7 @@ ELCIC.wgee.procedure<-function(x,y,x_mis,r,id,time,candidate.sets=NULL,name.var.
                 corstr<-candidate.cor.sets[1]
                 for (i in seq_len(length(name.var.sets)))
                 {
-                    criterion<-ELCIC.wgee(x,y,x_mis,r,id,time,index.var=NULL,name.var=name.var.sets[[i]],dist,corstr,joints=FALSE)
+                    criterion<-ELCIC.wgee.single(x,y,x_mis,r,id,time,index.var=NULL,name.var=name.var.sets[[i]],dist,corstr,joints=FALSE)
                     criterion.elcic<-c(criterion.elcic,criterion)
                 }
 
@@ -620,7 +620,7 @@ ELCIC.wgee.procedure<-function(x,y,x_mis,r,id,time,candidate.sets=NULL,name.var.
                 corstr<-candidate.cor.sets[1]
                 for (i in seq_len(length(candidate.sets)))
                 {
-                    criterion<-ELCIC.wgee(x,y,x_mis,r,id,time,index.var=candidate.sets[[i]],name.var=NULL,dist,corstr,joints=FALSE)
+                    criterion<-ELCIC.wgee.single(x,y,x_mis,r,id,time,index.var=candidate.sets[[i]],name.var=NULL,dist,corstr,joints=FALSE)
                     criterion.elcic<-c(criterion.elcic,criterion)
                 }
 
@@ -634,7 +634,7 @@ ELCIC.wgee.procedure<-function(x,y,x_mis,r,id,time,candidate.sets=NULL,name.var.
 
 #'@title Joint selection of marginal mean and correlation structures in longitudinal data based on QIC
 #'@description This function provides the Joint selection of marginal mean and correlation structures in longitudinal data based on QIC.
-#'@usage QICc.procedure(x,y,id,dist,candidate.sets=NULL, name.var.sets=NULL,
+#'@usage QICc.gee(x,y,id,dist,candidate.sets=NULL, name.var.sets=NULL,
 #'    candidate.cor.sets=c("independence","exchangeable", "ar1"), joints=TRUE)
 #'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept.
 #'@param y A vector containing outcomes.
@@ -663,14 +663,14 @@ ELCIC.wgee.procedure<-function(x,y,x_mis,r,id,time,candidate.sets=NULL,name.var.
 #'candidate.sets<-list(c(1,2),c(1,2,3))
 #'candidate.cor.sets<-c("exchangeable")
 #'dist="poisson"
-#'criterion.qic<-QICc.procedure(x=x,y=y,id=id,dist=dist,candidate.sets=candidate.sets,
+#'criterion.qic<-QICc.gee(x=x,y=y,id=id,dist=dist,candidate.sets=candidate.sets,
 #'                     name.var.sets=NULL,candidate.cor.sets=candidate.cor.sets)
 #'criterion.qic
 #'
 #'@export
 #'@importFrom geepack QIC
 
-QICc.procedure<-function (x,y,id,dist,candidate.sets=NULL,name.var.sets=NULL,candidate.cor.sets=c("independence","exchangeable", "ar1"),joints=TRUE)
+QICc.gee<-function (x,y,id,dist,candidate.sets=NULL,name.var.sets=NULL,candidate.cor.sets=c("independence","exchangeable", "ar1"),joints=TRUE)
 {
     if(joints)
     {
@@ -763,7 +763,7 @@ QICc.procedure<-function (x,y,id,dist,candidate.sets=NULL,name.var.sets=NULL,can
 
 #'@title The whole MLIC procedure for joint selection of mean structure and correlation structure in longitudinal dropout data
 #'@description This function provides the overall MLIC procedure for joint selection of mean structure and correlation structure in longitudinal data missing at random. It is also able to implement marginal mean structure selection given a prespecified working correlation structure. The data is dropout missing and missing at random.
-#'@usage MLIC.wgee.procedure(x,y,x_mis,r,id,candidate.sets=NULL, name.var.sets=NULL,dist,
+#'@usage MLIC.wgee(x,y,x_mis,r,id,candidate.sets=NULL, name.var.sets=NULL,dist,
 #'       candidate.cor.sets=c("independence","exchangeable", "ar1"), joints=TRUE)
 #'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept if the intercept is expected in the marginal mean model.
 #'@param y A vector containing outcomes. Use NA to indicate missing outcomes.
@@ -796,14 +796,14 @@ QICc.procedure<-function (x,y,id,dist,candidate.sets=NULL,name.var.sets=NULL,can
 #'id<-wgeetoydata$id
 #'candidate.sets<-list(c(1,2,3))
 #'candidate.cor.sets<-c("exchangeable")
-#'criterion.mlic<-MLIC.wgee.procedure(x,y,x_mis,r,id,candidate.sets,
+#'criterion.mlic<-MLIC.wgee(x,y,x_mis,r,id,candidate.sets,
 #'             name.var.sets=NULL,dist,candidate.cor.sets,joints=FALSE)
 #'criterion.mlic
 
 #'@export
 #'@importFrom wgeesel wgee data_sim MLIC.gee QICW.gee
 
-MLIC.wgee.procedure<-function(x,y,x_mis,r,id,candidate.sets=NULL,name.var.sets=NULL,dist,candidate.cor.sets=c("independence","exchangeable", "ar1"),joints=TRUE)
+MLIC.wgee<-function(x,y,x_mis,r,id,candidate.sets=NULL,name.var.sets=NULL,dist,candidate.cor.sets=c("independence","exchangeable", "ar1"),joints=TRUE)
 {
     if(joints)
     {
@@ -950,7 +950,7 @@ MLIC.wgee.procedure<-function(x,y,x_mis,r,id,candidate.sets=NULL,name.var.sets=N
 
 #'@title The whole QICW procedure for joint selection of mean structure and correlation structure in longitudinal dropout data
 #'@description This function provides the overall QICW procedure for joint selection of mean structure and correlation structure in longitudinal data missing at random. It is also able to implement marginal mean structure selection given a prespecified working correlation structure. The data is dropout missing and missing at random.
-#'@usage QICW.wgee.procedure(x,y,x_mis,r,id,candidate.sets,name.var.sets=NULL,
+#'@usage QICW.wgee(x,y,x_mis,r,id,candidate.sets,name.var.sets=NULL,
 #'      dist,candidate.cor.sets=c("independence","exchangeable", "ar1"), joints=TRUE)
 #'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept if the intercept is expected in the marginal mean model.
 #'@param y A vector containing outcomes. Use NA to indicate missing outcomes.
@@ -983,14 +983,14 @@ MLIC.wgee.procedure<-function(x,y,x_mis,r,id,candidate.sets=NULL,name.var.sets=N
 #'id<-wgeetoydata$id
 #'candidate.sets<-list(c(1,2,3))
 #'candidate.cor.sets<-c("exchangeable")
-#'criterion.qicw<-QICW.wgee.procedure(x,y,x_mis,r,id,candidate.sets,
+#'criterion.qicw<-QICW.wgee(x,y,x_mis,r,id,candidate.sets,
 #'           name.var.sets=NULL,dist,candidate.cor.sets,joints=FALSE)
 #'criterion.qicw
 #'
 #'@export
 #'@importFrom wgeesel wgee data_sim MLIC.gee QICW.gee
 
-QICW.wgee.procedure<-function(x,y,x_mis,r,id,candidate.sets=NULL,name.var.sets=NULL,dist,candidate.cor.sets=c("independence","exchangeable", "ar1"),joints=TRUE)
+QICW.wgee<-function(x,y,x_mis,r,id,candidate.sets=NULL,name.var.sets=NULL,dist,candidate.cor.sets=c("independence","exchangeable", "ar1"),joints=TRUE)
 {
     if(joints)
     {
