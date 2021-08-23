@@ -2,16 +2,17 @@
 % Please edit documentation in R/model_selection.R
 \name{ELCIC.wgee}
 \alias{ELCIC.wgee}
-\title{Calculate ELCIC value for a given candidate model under WGEE framework with dropout data}
+\title{The whole procedure for joint selection of mean structure and correlation structure in longitudinal dropout data}
 \usage{
-ELCIC.wgee(x,y,x_mis,r,id,time,index.var=NULL,name.var=NULL,dist,corstr,joints=TRUE)
+ELCIC.wgee(x,y,x_mis,r,id,time,candidate.sets=NULL,name.var.sets=NULL,
+     dist,candidate.cor.sets=c("independence","exchangeable", "ar1"), joints=TRUE)
 }
 \arguments{
 \item{x}{A matrix containing covariates. The first column should be all ones corresponding to the intercept if the intercept is considered in the marginal mean.}
 
 \item{y}{A vector containing outcomes. Use NA to indicate missing outcomes.}
 
-\item{x_mis}{A matrix containing covariates for the missing data model. The first column should be all ones corresponding to the intercept if the intercept is considered in this missing data model. See more in details section.}
+\item{x_mis}{A matrix containing covariates for the missing data model. The first column should be all ones corresponding to the intercept if the intercept is expected in the missing data model. See more in details section.}
 
 \item{r}{A vector indicating missingness: 1 for observed records, and 0 for unobserved records.}
 
@@ -19,34 +20,33 @@ ELCIC.wgee(x,y,x_mis,r,id,time,index.var=NULL,name.var=NULL,dist,corstr,joints=T
 
 \item{time}{The number of observations in total for each subject}
 
-\item{index.var}{A vector containing index corresponding to candidate covariates. See more in details section.}
+\item{candidate.sets}{A list containing index corresponding to candidate covariates. See more in details section.}
 
-\item{name.var}{A vector containing names of candidate covariates. The names should be subset of column names of x matrix. See more in details section.}
+\item{name.var.sets}{A list containing names of candidate covariates. The names should be subset of column names of x matrix. See more in details section.}
 
 \item{dist}{A specified distribution. It can be "gaussian", "poisson",and "binomial".}
 
-\item{corstr}{A condidate correlation structure. It can be "independence","exchangeable", and "ar1".}
+\item{candidate.cor.sets}{A vector containing condidate correlation structures. When joint=TRUE, it is c("independence","exchangeable", "ar1") as default. When joint=FALSE, it should be either of "independence","exchangeable", "ar1". See more in details section.}
 
 \item{joints}{A logic value for joint selection of marginal mean and working correlation structure. The default is TRUE. See more in details section.}
 }
 \value{
-A matrix containing values of calculated estimating equations.
+A matrix with each element containing ELCIC value for each candidate model.
 }
 \description{
-The function \code{\link{ELCIC.wgee}} to calculate ELCIC value for a given candidate mean model with specified working correlation structure. It is able to simultaneously evaluate mean model and working correlation structure. The data is dropout missing and missing at random.
+The function \code{\link{ELCIC.wgee}} provides the overall procedure for joint selection of mean structure and correlation structure in longitudinal data missing at random. It is also able to implement marginal mean structure selection given a prespecified working correlation structure. The data is dropout missing and missing at random.
 }
 \details{
 The argument "x_mis" includes all covariates to fit the missing data model. It typically contains a lag-1 variable based on the outcome y to indicate the data missing at random. Note that the lag-1 variable should be NA for the first observation from each subject.
 
-Either arguments "index.var" or "name.var" is used to identify the candidate mean model. If both arguments are provided, only the argument "name.var" will be used.
+Either arguments "candidate.sets" or "name.var.sets" is used to identify the set of candidate mean model. If both arguments are provided, only the argument "name.var.sets" will be used.
 
-When the argument "joints" is TRUE, \code{\link{ELCIC.wgee}} will calculate ELCIC value based on the function \code{\link{lambda.find.wgee}} and \code{\link{ee.wgee}}, which involve both marginal mean and correlation coefficient estimating equations. When the argument "joints" is FALSE, \code{\link{ELCIC.wgee}} will calculate ELCIC value based on the function \code{\link{lambda.find.wgee.onlymean}} and \code{\link{ee.wgee.onlymean}}, which only involve marginal mean estimating equations.
+When joint=TRUE, the argument "candidate.cor.sets" can contain multiple correlation structures; however, when joint=FALSE, it should contain either of "independence","exchangeable", "ar1". If multiple correlation structures are provided, only the first one will be used.
 }
 \examples{
 ## tests
 # load data
 data(wgeetoydata)
-corstr<-"exchangeable"
 dist<-"binomial"
 x<-wgeetoydata$x
 y<-wgeetoydata$y
@@ -54,8 +54,10 @@ x_mis<-wgeetoydata$x_mis
 r<-wgeetoydata$obs_ind
 id<-wgeetoydata$id
 time<-3
-index.var<-c(1,2,3)
-ELCIC_value<-ELCIC.wgee(x,y,x_mis,r,id,time,index.var,name.var=NULL,
-                     dist,corstr,joints=TRUE)
-ELCIC_value
+candidate.sets<-list(c(1,2,3))
+candidate.cor.sets<-c("exchangeable")
+criterion.elcic<-ELCIC.wgee(x,y,x_mis,r,id,time,candidate.sets,name.var.sets=NULL,
+                                    dist,candidate.cor.sets,joints=TRUE)
+criterion.elcic
+
 }
