@@ -68,7 +68,8 @@ ELCIC.glm.single<-function (x,y,index.var=NULL,name.var=NULL,dist)
 
 #'@title Calculate ELCIC value for a given candidate model under GEE framework
 #'@description The function \code{\link{ELCIC.gee.single}} calculates ELCIC value for a given marginal mean candidate model with a specified working correlation structure. It is able to simultaneously evaluate mean model and working correlation structure.
-#'@usage ELCIC.gee.single(x, y, r, id, time, index.var=NULL, name.var = NULL, dist, corstr, joints=TRUE)
+#'@usage ELCIC.gee.single(x, y, r, id, time, index.var=NULL, name.var = NULL,
+#'                      dist, corstr, joints=TRUE)
 #'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept.
 #'@param y A vector containing outcomes.
 #'@param r A vector indicating missingness: 1 for observed records, and 0 for unobserved records. The default setup is that all data are observed.
@@ -197,7 +198,8 @@ ELCIC.gee.single<-function(x,y,r,id,time,index.var=NULL,name.var=NULL,dist,corst
 
 #'@title Calculate ELCIC value for a given candidate model under WGEE framework with dropout data
 #'@description The function \code{\link{ELCIC.wgee.single}} to calculate ELCIC value for a given candidate mean model with specified working correlation structure. It is able to simultaneously evaluate mean model and working correlation structure. The data is dropout missing and missing at random.
-#'@usage ELCIC.wgee.single(x,y,x_mis,r,id,time,index.var=NULL,name.var=NULL,dist,corstr,joints=TRUE)
+#'@usage ELCIC.wgee.single(x,y,x_mis,r,id,time,index.var=NULL,
+#'                     name.var=NULL,dist,corstr,joints=TRUE)
 #'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept if the intercept is considered in the marginal mean.
 #'@param y A vector containing outcomes. Use NA to indicate missing outcomes.
 #'@param x_mis A matrix containing covariates for the missing data model. The first column should be all ones corresponding to the intercept if the intercept is considered in this missing data model. See more in details section.
