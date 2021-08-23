@@ -2,12 +2,13 @@
 % Please edit documentation in R/model_selection.R
 \name{ELCIC.gee}
 \alias{ELCIC.gee}
-\title{Calculate ELCIC value for a given candidate model under GEE framework}
+\title{The whole procedure for joint selection of mean structure and correlation structure in longitudinal data without missingness or missing completely at random}
 \usage{
-ELCIC.gee(x, y, r, id, time, index.var=NULL, name.var = NULL, dist, corstr, joints=TRUE)
+ELCIC.gee(x,y,r,id,time,candidate.sets=NULL,name.var.sets=NULL,dist,
+      candidate.cor.sets=c("independence","exchangeable", "ar1"), joints=TRUE)
 }
 \arguments{
-\item{x}{A matrix containing covariates. The first column should be all ones corresponding to the intercept.}
+\item{x}{A matrix containing covariates. The first column should be all ones corresponding to the intercept if the intercept is expected in the marginal mean.}
 
 \item{y}{A vector containing outcomes.}
 
@@ -17,26 +18,26 @@ ELCIC.gee(x, y, r, id, time, index.var=NULL, name.var = NULL, dist, corstr, join
 
 \item{time}{The number of observations in total for each subject}
 
-\item{index.var}{A vector containing index corresponding to candidate covariates. See more in details section.}
+\item{candidate.sets}{A list containing index corresponding to candidate covariates. See more in details section.}
 
-\item{name.var}{A vector containing names of candidate covariates. The names should be subset of column names of x matrix. See more in details section.}
+\item{name.var.sets}{A list containing names of candidate covariates. The names should be subset of column names of x matrix. See more in details section.}
 
 \item{dist}{A specified distribution. It can be "gaussian", "poisson",and "binomial".}
 
-\item{corstr}{A condidate correlation structure. It can be either of "independence","exchangeable", and "ar1".}
+\item{candidate.cor.sets}{A vector containing condidate correlation structures. When joint=TRUE, it is c("independence","exchangeable", "ar1") as default. When joint=FALSE, it should be either of "independence","exchangeable", "ar1". See more in details section.}
 
 \item{joints}{A logic value for joint selection of marginal mean and working correlation structure. The default is TRUE. See more in details section.}
 }
 \value{
-A ELCIC value for a given candidate model.
+A matrix with each element containing ELCIC value for each candidate model.
 }
 \description{
-The function \code{\link{ELCIC.gee}} calculates ELCIC value for a given marginal mean candidate model with a specified working correlation structure. It is able to simultaneously evaluate mean model and working correlation structure.
+The function \code{\link{ELCIC.gee}} provides the overall procedure for joint selection of mean structure and correlation structure in longitudinal data without missingness or missing completely at random.
 }
 \details{
-Either arguments "index.var" or "name.var" is used to identify the candidate mean model. If both arguments are provided, only the argument "name.var" will be used.
+Either arguments "candidate.sets" or "name.var.sets" is used to identify the set of candidate mean model. If both arguments are provided, only the argument "name.var.sets" will be used.
 
-When the argument "joints" is TRUE, \code{\link{ELCIC.gee}} will calculate ELCIC value based on the function \code{\link{lambda.find.gee}} and \code{\link{ee.gee}}, which involve both marginal mean and correlation coefficient estimating equations. When the argument "joints" is FALSE, \code{\link{ELCIC.gee}} will calculate ELCIC value based on the function \code{\link{lambda.find.gee.onlymean}} and \code{\link{ee.gee.onlymean}}, which only involve marginal mean estimating equations.
+When joint=TRUE, the argument "candidate.cor.sets" can contain multiple correlation structures; however, when joint=FALSE, it should contain either of "independence","exchangeable", "ar1". If multiple correlation structures are provided, only the first one will be used.
 }
 \examples{
 ## tests
@@ -47,10 +48,11 @@ y<-geetoydata$y
 id<-geetoydata$id
 r<-rep(1,nrow(x))
 time<-3
-corstr<-"exchangeable"
+candidate.sets<-list(c(1,2),c(1,2,3))
+candidate.cor.sets<-c("exchangeable")
 dist<-"poisson"
-criteria<-ELCIC.gee(x=x,y=y,r=r,id=id,time=time,index.var=c(1,2,3),
-           name.var=NULL,dist=dist,corstr=corstr)
-criteria
+criterion.elcic<-ELCIC.gee(x=x,y=y,r=r,id=id,time=time,candidate.sets=candidate.sets,
+                name.var.sets=NULL,dist=dist,candidate.cor.sets=candidate.cor.sets)
+criterion.elcic
 
 }
