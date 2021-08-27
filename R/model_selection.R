@@ -14,9 +14,9 @@
 #'@examples
 #'## tests
 #'# load data
-#'data(glmtoydata)
-#'x<-glmtoydata$x
-#'y<-glmtoydata$y
+#'data(glmsimdata)
+#'x<-glmsimdata$x
+#'y<-glmsimdata$y
 #'#candidate model index
 #'name.var<-c("intercept","x1","x2")
 #'index.var<-c(1,2,3)
@@ -90,10 +90,10 @@ ELCIC.glm.single<-function (x,y,index.var=NULL,name.var=NULL,dist)
 #'@examples
 #'## tests
 #'# load data
-#'data(geetoydata)
-#'x<-geetoydata$x
-#'y<-geetoydata$y
-#'id<-geetoydata$id
+#'data(geesimdata)
+#'x<-geesimdata$x
+#'y<-geesimdata$y
+#'id<-geesimdata$id
 #'r<-rep(1,nrow(x))
 #'time<-3
 #'corstr<-"exchangeable"
@@ -199,7 +199,7 @@ ELCIC.gee.single<-function(x,y,r,id,time,index.var=NULL,name.var=NULL,dist,corst
 #'@title Calculate ELCIC value for a given candidate model under WGEE framework with dropout data
 #'@description The function \code{\link{ELCIC.wgee.single}} to calculate ELCIC value for a given candidate mean model with specified working correlation structure. It is able to simultaneously evaluate mean model and working correlation structure. The data is dropout missing and missing at random.
 #'@usage ELCIC.wgee.single(x,y,x_mis,r,id,time,index.var=NULL,
-#'                     name.var=NULL,dist,corstr,joints=TRUE)
+#'       name.var=NULL,dist,corstr,joints=TRUE,lag=1)
 #'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept if the intercept is considered in the marginal mean.
 #'@param y A vector containing outcomes. Use NA to indicate missing outcomes.
 #'@param x_mis A matrix containing covariates for the missing data model. The first column should be all ones corresponding to the intercept if the intercept is considered in this missing data model. See more in details section.
@@ -211,10 +211,11 @@ ELCIC.gee.single<-function(x,y,r,id,time,index.var=NULL,name.var=NULL,dist,corst
 #'@param dist A specified distribution. It can be "gaussian", "poisson",and "binomial".
 #'@param corstr A condidate correlation structure. It can be "independence","exchangeable", and "ar1".
 #'@param joints A logic value for joint selection of marginal mean and working correlation structure. The default is TRUE. See more in details section.
+#'@param lag A numeric value indicating lag-response involved in the missing data model. It can be one of 0, 1, and 2. The default is 1.
 
 #'@return A matrix containing values of calculated estimating equations.
 #'
-#'@details The argument "x_mis" includes all covariates to fit the missing data model. It typically contains a lag-1 variable based on the outcome y to indicate the data missing at random. Note that the lag-1 variable should be NA for the first observation from each subject.
+#'@details The argument "x_mis" includes all covariates to fit the missing data model. It does not contains a lag variable based on the outcome y. The argument "lag" in this function will automatically add lag-response variables to indicate the data missing at random.
 #'
 #'Either arguments "index.var" or "name.var" is used to identify the candidate mean model. If both arguments are provided, only the argument "name.var" will be used.
 #'
@@ -223,24 +224,24 @@ ELCIC.gee.single<-function(x,y,r,id,time,index.var=NULL,name.var=NULL,dist,corst
 #'@examples
 #'## tests
 #'# load data
-#'data(wgeetoydata)
+#'data(wgeesimdata)
 #'corstr<-"exchangeable"
 #'dist<-"binomial"
-#'x<-wgeetoydata$x
-#'y<-wgeetoydata$y
-#'x_mis<-wgeetoydata$x_mis
-#'r<-wgeetoydata$obs_ind
-#'id<-wgeetoydata$id
+#'x<-wgeesimdata$x
+#'y<-wgeesimdata$y
+#'x_mis<-wgeesimdata$x_mis
+#'r<-wgeesimdata$obs_ind
+#'id<-wgeesimdata$id
 #'time<-3
 #'index.var<-c(1,2,3)
 #'ELCIC_value<-ELCIC.wgee.single(x,y,x_mis,r,id,time,index.var,name.var=NULL,
-#'                      dist,corstr,joints=TRUE)
+#'                      dist,corstr,joints=FALSE)
 #'ELCIC_value
 
 #'@export
-#'@importFrom wgeesel wgee
+#'@importFrom wgeesel wgee ylag
 #'
-ELCIC.wgee.single<-function(x,y,x_mis,r,id,time,index.var=NULL,name.var=NULL,dist,corstr,joints=TRUE)
+ELCIC.wgee.single<-function(x,y,x_mis,r,id,time,index.var=NULL,name.var=NULL,dist,corstr,joints=TRUE,lag=1)
 {
     if(!is.matrix(x))
     {stop("x should be in a matrix format")}else if(!is.vector(y)){stop("y should be in a vector format")}else if(!is.matrix(x_mis)){stop("x_mis should be in a matrix format")}else
@@ -253,6 +254,21 @@ ELCIC.wgee.single<-function(x,y,x_mis,r,id,time,index.var=NULL,name.var=NULL,dis
         index.var<-match(name.var,colnames(x))
     }
     if(length(index.var)>ncol(x)|max(index.var)>ncol(x)|length(unique(index.var))<length(index.var)){stop("Invalid candidate model provided")}
+
+    #generate ylag1
+    if(lag!=0)
+    {
+    samplesize<-length(unique(id))
+    ylag.cov<-ylag(y=y,id=id,lag=1)
+    ylag.cov[is.na(ylag.cov)]<-0
+    ylag.cov[rep(seq_len(time),time=samplesize)==1]<-NA
+    x_mis<-cbind(x_mis,ylag1.cov=ylag.cov)
+    }
+    if(lag==2){
+        #generate ylag2
+        ylag.cov<-ylag(y=y,id=id,lag=lag)
+        x_mis<-cbind(x_mis,ylag2.cov=ylag.cov)
+    }
 
     if(joints)
     {
@@ -287,7 +303,7 @@ ELCIC.wgee.single<-function(x,y,x_mis,r,id,time,index.var=NULL,name.var=NULL,dis
         }
         phi<-summary(fit)$phi
         gamma<-as.vector(summary(fit$mis_fit)$coefficients[,1])
-        pi<-prob.obs(x_mis,gamma)
+        pi<-prob.obs(x_mis,gamma,id,time)
         Z<-as.matrix(ee.wgee(y,x,r, pi,id,time=3,beta,ro,phi,dist,corstr))
         # epi<-1/samplesize
         # model<-function(lambda)
@@ -301,7 +317,7 @@ ELCIC.wgee.single<-function(x,y,x_mis,r,id,time,index.var=NULL,name.var=NULL,dis
         likelihood<-apply(Z,2,function(x) {
             2*log(1+t(lambda)%*%x)})%*%rep(1,samplesize)
         ELCIC<-likelihood+p*log(samplesize)
-        return(ELCIC=ELCIC)
+
     }else{
         samplesize<-length(unique(id))
         beta<-rep(0,ncol(x))
@@ -334,7 +350,7 @@ ELCIC.wgee.single<-function(x,y,x_mis,r,id,time,index.var=NULL,name.var=NULL,dis
         }
         phi<-summary(fit)$phi
         gamma<-as.vector(summary(fit$mis_fit)$coefficients[,1])
-        pi<-prob.obs(x_mis,gamma)
+        pi<-prob.obs(x_mis,gamma,id,time)
         Z<-as.matrix(ee.wgee.onlymean(y,x,r, pi,id,time=3,beta,ro,phi,dist,corstr))
         # epi<-1/samplesize
         # model<-function(lambda)
@@ -348,8 +364,9 @@ ELCIC.wgee.single<-function(x,y,x_mis,r,id,time,index.var=NULL,name.var=NULL,dis
         likelihood<-apply(Z,2,function(x) {
             2*log(1+t(lambda)%*%x)})%*%rep(1,samplesize)
         ELCIC<-likelihood+p*log(samplesize)
-        return(ELCIC=ELCIC)
+
     }
+    return(ELCIC=ELCIC)
 }
 
 
@@ -374,9 +391,9 @@ ELCIC.wgee.single<-function(x,y,x_mis,r,id,time,index.var=NULL,name.var=NULL,dis
 #'@examples
 #'## tests
 #'# load data
-#'data(glmtoydata)
-#'x<-glmtoydata$x
-#'y<-glmtoydata$y
+#'data(glmsimdata)
+#'x<-glmsimdata$x
+#'y<-glmsimdata$y
 #'#candidate model index
 #'candidate.sets<-list(c(1,2),c(1,2,3),c(1,2,3,4))
 #'criteria<-ELCIC.glm(x, y, candidate.sets, name.var.sets = NULL, dist="poisson")
@@ -394,6 +411,7 @@ ELCIC.glm<-function(x,y,candidate.sets,name.var.sets=NULL,dist)
         criterion<-ELCIC.glm.single(x=x,y=y,index.var=NULL,name.var=name.var.sets[[i]],dist=dist)
         criterion.all<-cbind(criterion.all,criterion)
     }
+    colnames(criterion.all)<-name.var.sets
     criterion.all
     }else{
         criterion.all<-rep()
@@ -402,6 +420,7 @@ ELCIC.glm<-function(x,y,candidate.sets,name.var.sets=NULL,dist)
             criterion<-ELCIC.glm.single(x=x,y=y,index.var=candidate.sets[[i]],name.var=NULL,dist=dist)
             criterion.all<-cbind(criterion.all,criterion)
         }
+        colnames(criterion.all)<-candidate.sets
         criterion.all
     }
 }
@@ -434,10 +453,10 @@ ELCIC.glm<-function(x,y,candidate.sets,name.var.sets=NULL,dist)
 #'@examples
 #'## tests
 #'# load data
-#'data(geetoydata)
-#'x<-geetoydata$x
-#'y<-geetoydata$y
-#'id<-geetoydata$id
+#'data(geesimdata)
+#'x<-geesimdata$x
+#'y<-geesimdata$y
+#'id<-geesimdata$id
 #'r<-rep(1,nrow(x))
 #'time<-3
 #'candidate.sets<-list(c(1,2),c(1,2,3))
@@ -524,7 +543,7 @@ ELCIC.gee<-function(x,y,r,id,time,candidate.sets=NULL,name.var.sets=NULL,dist,ca
 #'@title The whole procedure for joint selection of mean structure and correlation structure in longitudinal dropout data
 #'@description The function \code{\link{ELCIC.wgee}} provides the overall procedure for joint selection of mean structure and correlation structure in longitudinal data missing at random. It is also able to implement marginal mean structure selection given a prespecified working correlation structure. The data is dropout missing and missing at random.
 #'@usage ELCIC.wgee(x,y,x_mis,r,id,time,candidate.sets=NULL,name.var.sets=NULL,
-#'      dist,candidate.cor.sets=c("independence","exchangeable", "ar1"), joints=TRUE)
+#'      dist,candidate.cor.sets=c("independence","exchangeable", "ar1"), joints=TRUE,lag=1)
 #'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept if the intercept is considered in the marginal mean.
 #'@param y A vector containing outcomes. Use NA to indicate missing outcomes.
 #'@param x_mis A matrix containing covariates for the missing data model. The first column should be all ones corresponding to the intercept if the intercept is expected in the missing data model. See more in details section.
@@ -536,10 +555,11 @@ ELCIC.gee<-function(x,y,r,id,time,candidate.sets=NULL,name.var.sets=NULL,dist,ca
 #'@param dist A specified distribution. It can be "gaussian", "poisson",and "binomial".
 #'@param candidate.cor.sets A vector containing condidate correlation structures. When joint=TRUE, it is c("independence","exchangeable", "ar1") as default. When joint=FALSE, it should be either of "independence","exchangeable", "ar1". See more in details section.
 #'@param joints A logic value for joint selection of marginal mean and working correlation structure. The default is TRUE. See more in details section.
+#'@param lag A numeric value indicating lag-response involved in the missing data model. It can be either 1 or 2. The default is 1.
 
 #'@return A matrix with each element containing ELCIC value for each candidate model.
 #'
-#'@details The argument "x_mis" includes all covariates to fit the missing data model. It typically contains a lag-1 variable based on the outcome y to indicate the data missing at random. Note that the lag-1 variable should be NA for the first observation from each subject.
+#'@details The argument "x_mis" includes all covariates to fit the missing data model. It does not contains a lag variable based on the outcome y. The argument "lag" in this function will automatically add lag-response variables to indicate the data missing at random.
 #'
 #'Either arguments "candidate.sets" or "name.var.sets" is used to identify the set of candidate mean model. If both arguments are provided, only the argument "name.var.sets" will be used.
 #'
@@ -548,13 +568,13 @@ ELCIC.gee<-function(x,y,r,id,time,candidate.sets=NULL,name.var.sets=NULL,dist,ca
 #'@examples
 #'## tests
 #'# load data
-#'data(wgeetoydata)
+#'data(wgeesimdata)
 #'dist<-"binomial"
-#'x<-wgeetoydata$x
-#'y<-wgeetoydata$y
-#'x_mis<-wgeetoydata$x_mis
-#'r<-wgeetoydata$obs_ind
-#'id<-wgeetoydata$id
+#'x<-wgeesimdata$x
+#'y<-wgeesimdata$y
+#'x_mis<-wgeesimdata$x_mis
+#'r<-wgeesimdata$obs_ind
+#'id<-wgeesimdata$id
 #'time<-3
 #'candidate.sets<-list(c(1,2,3))
 #'candidate.cor.sets<-c("exchangeable")
@@ -564,7 +584,7 @@ ELCIC.gee<-function(x,y,r,id,time,candidate.sets=NULL,name.var.sets=NULL,dist,ca
 #'
 #'@export
 
-ELCIC.wgee<-function(x,y,x_mis,r,id,time,candidate.sets=NULL,name.var.sets=NULL,dist,candidate.cor.sets=c("independence","exchangeable", "ar1"),joints=TRUE)
+ELCIC.wgee<-function(x,y,x_mis,r,id,time,candidate.sets=NULL,name.var.sets=NULL,dist,candidate.cor.sets=c("independence","exchangeable", "ar1"),joints=TRUE,lag=1)
 {
     if(joints)
     {
@@ -656,10 +676,10 @@ ELCIC.wgee<-function(x,y,x_mis,r,id,time,candidate.sets=NULL,name.var.sets=NULL,
 #'@examples
 #'## tests
 #'# load data
-#'data(geetoydata)
-#'x<-geetoydata$x
-#'y<-geetoydata$y
-#'id<-geetoydata$id
+#'data(geesimdata)
+#'x<-geesimdata$x
+#'y<-geesimdata$y
+#'id<-geesimdata$id
 #'r<-rep(1,nrow(x))
 #'time<-3
 #'candidate.sets<-list(c(1,2),c(1,2,3))
@@ -789,13 +809,13 @@ QICc.gee<-function (x,y,id,dist,candidate.sets=NULL,name.var.sets=NULL,candidate
 #'@examples
 #'## tests
 #'# load data
-#'data(wgeetoydata)
+#'data(wgeesimdata)
 #'dist<-"binomial"
-#'x<-wgeetoydata$x
-#'y<-wgeetoydata$y
-#'x_mis<-wgeetoydata$x_mis
-#'r<-wgeetoydata$obs_ind
-#'id<-wgeetoydata$id
+#'x<-wgeesimdata$x
+#'y<-wgeesimdata$y
+#'x_mis<-wgeesimdata$x_mis
+#'r<-wgeesimdata$obs_ind
+#'id<-wgeesimdata$id
 #'candidate.sets<-list(c(1,2,3))
 #'candidate.cor.sets<-c("exchangeable")
 #'criterion.mlic<-MLIC.wgee(x,y,x_mis,r,id,candidate.sets,
@@ -976,13 +996,13 @@ MLIC.wgee<-function(x,y,x_mis,r,id,candidate.sets=NULL,name.var.sets=NULL,dist,c
 #'@examples
 #'## tests
 #'# load data
-#'data(wgeetoydata)
+#'data(wgeesimdata)
 #'dist="binomial"
-#'x<-wgeetoydata$x
-#'y<-wgeetoydata$y
-#'x_mis<-wgeetoydata$x_mis
-#'r<-wgeetoydata$obs_ind
-#'id<-wgeetoydata$id
+#'x<-wgeesimdata$x
+#'y<-wgeesimdata$y
+#'x_mis<-wgeesimdata$x_mis
+#'r<-wgeesimdata$obs_ind
+#'id<-wgeesimdata$id
 #'candidate.sets<-list(c(1,2,3))
 #'candidate.cor.sets<-c("exchangeable")
 #'criterion.qicw<-QICW.wgee(x,y,x_mis,r,id,candidate.sets,
