@@ -24,9 +24,9 @@ A specified estimating equation for ELCIC under GLM. This estimating equation is
 \examples{
 ## tests
 # load data
-data(glmtoydata)
-x<-glmtoydata$x
-y<-glmtoydata$y
+data(glmsimdata)
+x<-glmsimdata$x
+y<-glmsimdata$y
 # obtain the estimates
 fit<-glm(y~x-1,family="poisson")
 betahat<-fit$coefficients
