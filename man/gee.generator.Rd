@@ -41,9 +41,9 @@ A function for generating longitudinal data without missingness. All covariates 
 \examples{
 beta<-c(-1,1,0.5,0)
 samplesize<-100
-geetoydata<-gee.generator(beta=beta,samplesize=samplesize,time=3,num.time.dep=2,
+geesimdata<-gee.generator(beta=beta,samplesize=samplesize,time=3,num.time.dep=2,
 num.time.indep=1,rho=0.4,x.rho=0.2,dist="poisson",cor.str="exchangeable",
 x.cor.str="exchangeable")
-geetoydata$y
+geesimdata$y
 
 }
