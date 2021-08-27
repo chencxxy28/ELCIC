@@ -29,9 +29,9 @@ Either arguments "index.var" or "name.var" is used to identify the candidate mea
 \examples{
 ## tests
 # load data
-data(glmtoydata)
-x<-glmtoydata$x
-y<-glmtoydata$y
+data(glmsimdata)
+x<-glmsimdata$x
+y<-glmsimdata$y
 #candidate model index
 name.var<-c("intercept","x1","x2")
 index.var<-c(1,2,3)
