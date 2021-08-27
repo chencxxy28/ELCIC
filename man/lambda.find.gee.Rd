@@ -34,15 +34,15 @@ This function provides an efficient algorithm to calculate the tuning parameters
 \examples{
 ## tests
 # load data
-data(geetoydata)
-x<-geetoydata$x
-y<-geetoydata$y
-id<-geetoydata$id
+data(geesimdata)
+x<-geesimdata$x
+y<-geesimdata$y
+id<-geesimdata$id
 corstr<-"exchangeable"
 dist<-"poisson"
 # obtain the estimates
 library(geepack)
-fit<-geeglm(y~x-1,data=geetoydata,family =dist,id=id,corstr = corstr)
+fit<-geeglm(y~x-1,data=geesimdata,family =dist,id=id,corstr = corstr)
 betahat<-fit$coefficients
 ro<-unlist(summary(fit)$corr[1])
 phi<-unlist(summary(fit)$dispersion[1])
