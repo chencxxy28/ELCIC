@@ -5,7 +5,7 @@
 \title{Calculate ELCIC value for a given candidate model under WGEE framework with dropout data}
 \usage{
 ELCIC.wgee.single(x,y,x_mis,r,id,time,index.var=NULL,
-                    name.var=NULL,dist,corstr,joints=TRUE)
+      name.var=NULL,dist,corstr,joints=TRUE,lag=1)
 }
 \arguments{
 \item{x}{A matrix containing covariates. The first column should be all ones corresponding to the intercept if the intercept is considered in the marginal mean.}
@@ -29,6 +29,8 @@ ELCIC.wgee.single(x,y,x_mis,r,id,time,index.var=NULL,
 \item{corstr}{A condidate correlation structure. It can be "independence","exchangeable", and "ar1".}
 
 \item{joints}{A logic value for joint selection of marginal mean and working correlation structure. The default is TRUE. See more in details section.}
+
+\item{lag}{A numeric value indicating lag-response involved in the missing data model. It can be one of 0, 1, and 2. The default is 1.}
 }
 \value{
 A matrix containing values of calculated estimating equations.
@@ -37,7 +39,7 @@ A matrix containing values of calculated estimating equations.
 The function \code{\link{ELCIC.wgee.single}} to calculate ELCIC value for a given candidate mean model with specified working correlation structure. It is able to simultaneously evaluate mean model and working correlation structure. The data is dropout missing and missing at random.
 }
 \details{
-The argument "x_mis" includes all covariates to fit the missing data model. It typically contains a lag-1 variable based on the outcome y to indicate the data missing at random. Note that the lag-1 variable should be NA for the first observation from each subject.
+The argument "x_mis" includes all covariates to fit the missing data model. It does not contains a lag variable based on the outcome y. The argument "lag" in this function will automatically add lag-response variables to indicate the data missing at random.
 
 Either arguments "index.var" or "name.var" is used to identify the candidate mean model. If both arguments are provided, only the argument "name.var" will be used.
 
@@ -46,17 +48,17 @@ When the argument "joints" is TRUE, \code{\link{ELCIC.wgee.single}} will calcula
 \examples{
 ## tests
 # load data
-data(wgeetoydata)
+data(wgeesimdata)
 corstr<-"exchangeable"
 dist<-"binomial"
-x<-wgeetoydata$x
-y<-wgeetoydata$y
-x_mis<-wgeetoydata$x_mis
-r<-wgeetoydata$obs_ind
-id<-wgeetoydata$id
+x<-wgeesimdata$x
+y<-wgeesimdata$y
+x_mis<-wgeesimdata$x_mis
+r<-wgeesimdata$obs_ind
+id<-wgeesimdata$id
 time<-3
 index.var<-c(1,2,3)
 ELCIC_value<-ELCIC.wgee.single(x,y,x_mis,r,id,time,index.var,name.var=NULL,
-                     dist,corstr,joints=TRUE)
+                     dist,corstr,joints=FALSE)
 ELCIC_value
 }
