@@ -255,6 +255,14 @@ ELCIC.wgee.single<-function(x,y,x_mis,r,id,time,index.var=NULL,name.var=NULL,dis
     }
     if(length(index.var)>ncol(x)|max(index.var)>ncol(x)|length(unique(index.var))<length(index.var)){stop("Invalid candidate model provided")}
 
+    if(lag>2 | lag>=time)
+    {
+    stop("Invalid type of lag. It should be less than 3 and time")
+    }else if(lag==0)
+    {
+        warning("No lag of response added may indicate missing completely at random. GEE may be used.")
+    }
+
     #generate ylag1
     if(lag!=0)
     {
