@@ -44,13 +44,13 @@ When joint=TRUE, the argument "candidate.cor.sets" can contain multiple correlat
 \examples{
 ## tests
 # load data
-data(wgeetoydata)
+data(wgeesimdata)
 dist<-"binomial"
-x<-wgeetoydata$x
-y<-wgeetoydata$y
-x_mis<-wgeetoydata$x_mis
-r<-wgeetoydata$obs_ind
-id<-wgeetoydata$id
+x<-wgeesimdata$x
+y<-wgeesimdata$y
+x_mis<-wgeesimdata$x_mis
+r<-wgeesimdata$obs_ind
+id<-wgeesimdata$id
 candidate.sets<-list(c(1,2,3))
 candidate.cor.sets<-c("exchangeable")
 criterion.mlic<-MLIC.wgee(x,y,x_mis,r,id,candidate.sets,
