@@ -25,6 +25,13 @@ test_that("output error: non-unique variable name",{expect_error(ELCIC.wgee.sing
 test_that("output error: invalid correlation structure for outcomes in gee without missing",{expect_error(ELCIC.wgee.single(x=wgeesimdata$x,y=(wgeesimdata$y)
                                                                                                                      ,x_mis=wgeesimdata$x_mis,r=wgeesimdata$obs_ind,id=wgeesimdata$id,time=3,index.var=NULL,name.var=c("intercept","x1","x2"),dist="binomial",corstr="ar2",joints=T),"Invalid type of correlation structure for outcomes. It should be one of ar1,exchangeable,independence")})
 
+test_that("output error: incorrect lag input",{expect_error(ELCIC.wgee.single(x=wgeesimdata$x,y=(wgeesimdata$y)
+                                                                                ,x_mis=wgeesimdata$x_mis,r=wgeesimdata$obs_ind,id=wgeesimdata$id,time=3,index.var=c(1,2,3),name.var=NULL,dist="poisson",corstr="exchangeable",joints=T,lag=3),"Invalid type of lag. It should be less than 3 and time")})
+
+test_that("output error: incorrect lag input",{expect_warning(ELCIC.wgee.single(x=wgeesimdata$x,y=(wgeesimdata$y)
+                                                                              ,x_mis=wgeesimdata$x_mis,r=wgeesimdata$obs_ind,id=wgeesimdata$id,time=3,index.var=c(1,2,3),name.var=NULL,dist="poisson",corstr="exchangeable",joints=T,lag=0),"No lag of response added may indicate missing completely at random. GEE may be used")})
+
+
 output1<-ELCIC.wgee.single(x=wgeesimdata$x,y=(wgeesimdata$y)
                     ,x_mis=wgeesimdata$x_mis,r=wgeesimdata$obs_ind,id=wgeesimdata$id,time=3,index.var=NULL,name.var=c("intercept","x1","x2"),dist="binomial",corstr="exchangeable",joints=T)
 output2<-ELCIC.wgee.single(x=wgeesimdata$x,y=(wgeesimdata$y)
