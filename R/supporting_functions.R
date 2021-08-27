@@ -142,10 +142,10 @@ glm.generator<-function(beta,samplesize,rho=0,dist,sd.gaussian=NULL,ov=NULL)
 #'@examples
 #'beta<-c(-1,1,0.5,0)
 #'samplesize<-100
-#'geetoydata<-gee.generator(beta=beta,samplesize=samplesize,time=3,num.time.dep=2,
+#'geesimdata<-gee.generator(beta=beta,samplesize=samplesize,time=3,num.time.dep=2,
 #'num.time.indep=1,rho=0.4,x.rho=0.2,dist="poisson",cor.str="exchangeable",
 #'x.cor.str="exchangeable")
-#'geetoydata$y
+#'geesimdata$y
 #'
 #'@export
 #'@importFrom mvtnorm rmvnorm
@@ -347,36 +347,40 @@ roo<-function(ro,time,corstr)
 
 #'@title Calculate conditional probabilities for observing records from each subject
 #'@description A function provides conditional probabilities.
-#'@usage prob.obs(x_mis,gamma)
+#'@usage prob.obs(x_mis,gamma,id,time)
 #'@param x_mis A matrix containing covariates for the missing data model. The first column should be all ones corresponding to the intercept.
 #'@param gamma coefficients calculated from missing data model
+#'@param id A vector indicating subject id.
+#'@param time The number of observations in total for each subject
+
 
 #'@return pi: a vector containing conditional probabilities.
 #'@examples
 #'## tests
 #'# load data
-#'data(wgeetoydata)
+#'data(wgeesimdata)
 #'library(wgeesel)
-#'data_wgee<-data.frame(do.call(cbind,wgeetoydata))
+#'data_wgee<-data.frame(do.call(cbind,wgeesimdata))
 #'corstr<-"exchangeable"
 #'dist<-"binomial"
 #'id<-data_wgee$id
 #'# obtain the estimates
 #'fit<-wgee(y~x1+x2+x3,data_wgee,id,family=dist,corstr =corstr,scale = NULL,
-#'          mismodel =obs_ind~x_mis1+x_mis2)
+#'          mismodel =obs_ind~x_mis1)
 #'beta<-as.vector(summary(fit)$beta)
 #'ro<-summary(fit)$corr
 #'phi<-summary(fit)$phi
 #'#calculate observing probabilies for all observations
 #'gamma<-as.vector(summary(fit$mis_fit)$coefficients[,1])
-#'x_mis<-wgeetoydata$x_mis
-#'pi<-prob.obs(x_mis,gamma)
+#'x_mis<-wgeesimdata$x_mis
+#'pi<-prob.obs(x_mis,gamma,id,time=3)
 #'
 #'@export
-prob.obs<-function(x_mis,gamma)
+prob.obs<-function(x_mis,gamma,id,time)
 {
+    samplesize<-length(unique(id))
     pi<-exp(x_mis%*%gamma)/(1+exp(x_mis%*%gamma))
-    pi[which(is.na(pi))]<-1
+    pi[rep(seq_len(time),time=samplesize)==1]<-1
     pi
 }
 
@@ -392,22 +396,22 @@ prob.obs<-function(x_mis,gamma)
 #'@examples
 #'## tests
 #'# load data
-#'data(wgeetoydata)
+#'data(wgeesimdata)
 #'library(wgeesel)
-#'data_wgee<-data.frame(do.call(cbind,wgeetoydata))
+#'data_wgee<-data.frame(do.call(cbind,wgeesimdata))
 #'corstr<-"exchangeable"
 #'dist<-"binomial"
 #'id<-data_wgee$id
 #'# obtain the estimates
 #'fit<-wgee(y~x1+x2+x3,data_wgee,id,family=dist,corstr =corstr,scale = NULL,
-#'          mismodel =obs_ind~x_mis1+x_mis2)
+#'          mismodel =obs_ind~x_mis1)
 #'beta<-as.vector(summary(fit)$beta)
 #'ro<-summary(fit)$corr
 #'phi<-summary(fit)$phi
 #'#calculate observing probabilies for all observations
 #'gamma<-as.vector(summary(fit$mis_fit)$coefficients[,1])
-#'x_mis<-wgeetoydata$x_mis
-#'pi<-prob.obs(x_mis,gamma)
+#'x_mis<-wgeesimdata$x_mis
+#'pi<-prob.obs(x_mis,gamma,id,time=3)
 #'joint_prob<-pii(pi)
 #'@export
 #'
