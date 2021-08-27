@@ -42,10 +42,10 @@ When the argument "joints" is TRUE, \code{\link{ELCIC.gee.single}} will calculat
 \examples{
 ## tests
 # load data
-data(geetoydata)
-x<-geetoydata$x
-y<-geetoydata$y
-id<-geetoydata$id
+data(geesimdata)
+x<-geesimdata$x
+y<-geesimdata$y
+id<-geesimdata$id
 r<-rep(1,nrow(x))
 time<-3
 corstr<-"exchangeable"
