@@ -1,7 +1,7 @@
-data(geetoydata)
-x<-geetoydata$x
-y<-geetoydata$y
-id<-geetoydata$id
+data(geesimdata)
+x<-geesimdata$x
+y<-geesimdata$y
+id<-geesimdata$id
 r<-rep(1,nrow(x))
 time<-3
 candidate.sets<-list(c(1,2))
