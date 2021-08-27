@@ -5,7 +5,7 @@
 \title{The whole procedure for joint selection of mean structure and correlation structure in longitudinal dropout data}
 \usage{
 ELCIC.wgee(x,y,x_mis,r,id,time,candidate.sets=NULL,name.var.sets=NULL,
-     dist,candidate.cor.sets=c("independence","exchangeable", "ar1"), joints=TRUE)
+     dist,candidate.cor.sets=c("independence","exchangeable", "ar1"), joints=TRUE,lag=1)
 }
 \arguments{
 \item{x}{A matrix containing covariates. The first column should be all ones corresponding to the intercept if the intercept is considered in the marginal mean.}
@@ -29,6 +29,8 @@ ELCIC.wgee(x,y,x_mis,r,id,time,candidate.sets=NULL,name.var.sets=NULL,
 \item{candidate.cor.sets}{A vector containing condidate correlation structures. When joint=TRUE, it is c("independence","exchangeable", "ar1") as default. When joint=FALSE, it should be either of "independence","exchangeable", "ar1". See more in details section.}
 
 \item{joints}{A logic value for joint selection of marginal mean and working correlation structure. The default is TRUE. See more in details section.}
+
+\item{lag}{A numeric value indicating lag-response involved in the missing data model. It can be either 1 or 2. The default is 1.}
 }
 \value{
 A matrix with each element containing ELCIC value for each candidate model.
@@ -37,7 +39,7 @@ A matrix with each element containing ELCIC value for each candidate model.
 The function \code{\link{ELCIC.wgee}} provides the overall procedure for joint selection of mean structure and correlation structure in longitudinal data missing at random. It is also able to implement marginal mean structure selection given a prespecified working correlation structure. The data is dropout missing and missing at random.
 }
 \details{
-The argument "x_mis" includes all covariates to fit the missing data model. It typically contains a lag-1 variable based on the outcome y to indicate the data missing at random. Note that the lag-1 variable should be NA for the first observation from each subject.
+The argument "x_mis" includes all covariates to fit the missing data model. It does not contains a lag variable based on the outcome y. The argument "lag" in this function will automatically add lag-response variables to indicate the data missing at random.
 
 Either arguments "candidate.sets" or "name.var.sets" is used to identify the set of candidate mean model. If both arguments are provided, only the argument "name.var.sets" will be used.
 
@@ -46,13 +48,13 @@ When joint=TRUE, the argument "candidate.cor.sets" can contain multiple correlat
 \examples{
 ## tests
 # load data
-data(wgeetoydata)
+data(wgeesimdata)
 dist<-"binomial"
-x<-wgeetoydata$x
-y<-wgeetoydata$y
-x_mis<-wgeetoydata$x_mis
-r<-wgeetoydata$obs_ind
-id<-wgeetoydata$id
+x<-wgeesimdata$x
+y<-wgeesimdata$y
+x_mis<-wgeesimdata$x_mis
+r<-wgeesimdata$obs_ind
+id<-wgeesimdata$id
 time<-3
 candidate.sets<-list(c(1,2,3))
 candidate.cor.sets<-c("exchangeable")
