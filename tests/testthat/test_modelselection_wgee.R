@@ -33,9 +33,9 @@ test_that("output error: incorrect lag input",{expect_warning(ELCIC.wgee.single(
 
 
 output1<-ELCIC.wgee.single(x=wgeesimdata$x,y=(wgeesimdata$y)
-                    ,x_mis=wgeesimdata$x_mis,r=wgeesimdata$obs_ind,id=wgeesimdata$id,time=3,index.var=NULL,name.var=c("intercept","x1","x2"),dist="binomial",corstr="exchangeable",joints=T)
+                    ,x_mis=wgeesimdata$x_mis,r=wgeesimdata$obs_ind,id=wgeesimdata$id,time=3,index.var=NULL,name.var=c("intercept","x1","x2"),dist="binomial",corstr="exchangeable",joints=T,lag=2)
 output2<-ELCIC.wgee.single(x=wgeesimdata$x,y=(wgeesimdata$y)
-                    ,x_mis=wgeesimdata$x_mis,r=wgeesimdata$obs_ind,id=wgeesimdata$id,time=3,index.var=c(1,2,3),name.var=c("intercept","x1","x2"),dist="binomial",corstr="exchangeable",joints=T)
+                    ,x_mis=wgeesimdata$x_mis,r=wgeesimdata$obs_ind,id=wgeesimdata$id,time=3,index.var=c(1,2,3),name.var=c("intercept","x1","x2"),dist="binomial",corstr="exchangeable",joints=T,lag=2)
 test_that("output equal: same output given both index and var.names, given joints=true",{expect_equal(output1,output2)})
 
 
