@@ -29,9 +29,9 @@ Either arguments "candidate.sets" or "name.var.sets" is used to identify the set
 \examples{
 ## tests
 # load data
-data(glmtoydata)
-x<-glmtoydata$x
-y<-glmtoydata$y
+data(glmsimdata)
+x<-glmsimdata$x
+y<-glmsimdata$y
 #candidate model index
 candidate.sets<-list(c(1,2),c(1,2,3),c(1,2,3,4))
 criteria<-ELCIC.glm(x, y, candidate.sets, name.var.sets = NULL, dist="poisson")
