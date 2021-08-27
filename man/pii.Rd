@@ -18,21 +18,21 @@ A function provides the inverse of joint probabilities for weight calculation in
 \examples{
 ## tests
 # load data
-data(wgeetoydata)
+data(wgeesimdata)
 library(wgeesel)
-data_wgee<-data.frame(do.call(cbind,wgeetoydata))
+data_wgee<-data.frame(do.call(cbind,wgeesimdata))
 corstr<-"exchangeable"
 dist<-"binomial"
 id<-data_wgee$id
 # obtain the estimates
 fit<-wgee(y~x1+x2+x3,data_wgee,id,family=dist,corstr =corstr,scale = NULL,
-         mismodel =obs_ind~x_mis1+x_mis2)
+         mismodel =obs_ind~x_mis1)
 beta<-as.vector(summary(fit)$beta)
 ro<-summary(fit)$corr
 phi<-summary(fit)$phi
 #calculate observing probabilies for all observations
 gamma<-as.vector(summary(fit$mis_fit)$coefficients[,1])
-x_mis<-wgeetoydata$x_mis
-pi<-prob.obs(x_mis,gamma)
+x_mis<-wgeesimdata$x_mis
+pi<-prob.obs(x_mis,gamma,id,time=3)
 joint_prob<-pii(pi)
 }
