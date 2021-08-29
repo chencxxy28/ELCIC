@@ -11,7 +11,7 @@ ee.wgee.onlymean(y,x,r,pi,id,time,beta,ro,phi,dist,corstr)
 
 \item{x}{A matrix containing covariates. The first column should be all ones corresponding to the intercept.}
 
-\item{r}{A vector indicating missingness: 1 for observed records, and 0 for unobserved records.}
+\item{r}{A vector indicating the observation of outcomes: 1 for observed records, and 0 for unobserved records.}
 
 \item{pi}{A vector containing observing probabilities across all observations.}
 
