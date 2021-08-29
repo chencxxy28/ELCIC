@@ -7,7 +7,9 @@
 #'@param name.var A vector containing names of candidate covariates. The names should be subset of column names of x matrix. See more in details section.
 #'@param dist A specified distribution. It can be "gaussian", "poisson",and "binomial".
 #'
-#'@details Either arguments "index.var" or "name.var" is used to identify the candidate mean model. If both arguments are provided, only the argument "name.var" will be used.
+#'@details "x" and "y" should be all observed. The corresponding individual data will be omitted in analysis if any missingness is detected.
+#'
+#'Either arguments "index.var" or "name.var" is used to identify the candidate mean model. If both arguments are provided, only the argument "name.var" will be used.
 #'
 #'@return A vector containing information criteria including ELCIC, AIC, BIC, and GIC.
 #'
@@ -32,6 +34,15 @@ ELCIC.glm.single<-function (x,y,index.var=NULL,name.var=NULL,dist)
     if(!is.matrix(x))
     {stop("x should be in a matrix format")}else if(!is.vector(y)){stop("y should be in a vector format")}else
         if (!dist %in% c("gaussian","binomial","poisson")){stop("Invalid type of dist. It should be one of gaussian,binomial,poisson")}
+
+    #delete individual data with missingness
+    data.comb<-cbind(x,y)
+    na.index<-which(is.na(data.comb),arr.ind=TRUE)
+    if(nrow(na.index)>0)
+    {
+    y<-y[-unique(na.index[,1])]
+    x<-x[-unique(na.index[,1]),]
+    }
 
     if(!is.null(name.var))
     {
@@ -70,9 +81,9 @@ ELCIC.glm.single<-function (x,y,index.var=NULL,name.var=NULL,dist)
 #'@description The function \code{\link{ELCIC.gee.single}} calculates ELCIC value for a given marginal mean candidate model with a specified working correlation structure. It is able to simultaneously evaluate mean model and working correlation structure.
 #'@usage ELCIC.gee.single(x, y, r, id, time, index.var=NULL, name.var = NULL,
 #'                      dist, corstr, joints=TRUE)
-#'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept.
-#'@param y A vector containing outcomes.
-#'@param r A vector indicating missingness: 1 for observed records, and 0 for unobserved records. The default setup is that all data are observed.
+#'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept. If y and x are missing completely at random, use NA to indicate missingness and specify argument "r".
+#'@param y A vector containing outcomes. If y and x are missing completely at random, use NA to indicate missing outcomes and specify argument "r".
+#'@param r A vector indicating the observation of data: 1 for observed records (both outcome and covariates are observed for a given subject), and 0 for unobserved records. The default setup is that all data are observed.
 #'@param id A vector indicating subject id.
 #'@param time The number of observations in total for each subject
 #'@param index.var A vector containing index corresponding to candidate covariates. See more in details section.
@@ -112,6 +123,7 @@ ELCIC.gee.single<-function(x,y,r,id,time,index.var=NULL,name.var=NULL,dist,corst
         if (!dist %in% c("gaussian","binomial","poisson")){stop("Invalid type of dist. It should be one of gaussian,binomial,poisson")}
     if (!corstr %in% c("ar1","exchangeable","independence")){stop("Invalid type of correlation structure for outcomes. It should be one of ar1,exchangeable,independence")}
 
+
     if(!is.null(name.var))
     {
         if(length(name.var)>ncol(x)|length(unique(name.var))<length(name.var)){stop("Invalid candidate model provided")}
@@ -123,12 +135,30 @@ ELCIC.gee.single<-function(x,y,r,id,time,index.var=NULL,name.var=NULL,dist,corst
     {
     samplesize<-length(unique(id))
     betahat<-rep(0,ncol(x))
-    x_candidate<-(x[,index.var])
-    colnames(x_candidate)<-seq_len(ncol(x_candidate))
-    y<-as.matrix(y,col=1)
-    data<-data.frame(y,x_candidate)
 
-        fit<-geeglm(y~x_candidate-1,data=data,family =dist,id=id,corstr = corstr)
+    #delete individual data with missingness, in order to run GEE
+    data.comb<-cbind(x,y,id)
+    na.index<-which(is.na(data.comb),arr.ind=TRUE)
+
+    y.gee<-y
+    id.gee<-id
+    x.gee<-x
+
+    if(nrow(na.index)>0)
+    {
+        y.gee<-y[-unique(na.index[,1])]
+        id.gee<-id[-unique(na.index[,1])]
+        x.gee<-x[-unique(na.index[,1]),]
+        y[unique(na.index[,1])]<-0  #only use observed values
+        x[unique(na.index[,1]),]<-0  #only use observed values
+    }
+
+    x_candidate<-(x.gee[,index.var])
+    colnames(x_candidate)<-seq_len(ncol(x_candidate))
+    y.gee<-as.matrix(y.gee,col=1)
+    data<-data.frame(y.gee,x_candidate)
+
+        fit<-geeglm(y.gee~x_candidate-1,data=data,family =dist,id=id.gee,corstr = corstr)
         betahat[index.var]<-fit$coefficients
         pbeta<-length(fit$coefficients)
 
@@ -158,12 +188,30 @@ ELCIC.gee.single<-function(x,y,r,id,time,index.var=NULL,name.var=NULL,dist,corst
     }else{
         samplesize<-length(unique(id))
         betahat<-rep(0,ncol(x))
-        x_candidate<-(x[,index.var])
-        colnames(x_candidate)<-seq_len(ncol(x_candidate))
-        y<-as.matrix(y,col=1)
-        data<-data.frame(y,x_candidate)
 
-        fit<-geeglm(y~x_candidate-1,data=data,family =dist,id=id,corstr = corstr)
+        #delete individual data with missingness, in order to run GEE
+        data.comb<-cbind(x,y,id)
+        na.index<-which(is.na(data.comb),arr.ind=TRUE)
+
+        y.gee<-y
+        id.gee<-id
+        x.gee<-x
+
+        if(nrow(na.index)>0)
+        {
+            y.gee<-y[-unique(na.index[,1])]
+            id.gee<-id[-unique(na.index[,1])]
+            x.gee<-x[-unique(na.index[,1]),]
+            y[unique(na.index[,1])]<-0
+            x[unique(na.index[,1]),]<-0
+        }
+
+        x_candidate<-(x.gee[,index.var])
+        colnames(x_candidate)<-seq_len(ncol(x_candidate))
+        y.gee<-as.matrix(y.gee,col=1)
+        data<-data.frame(y.gee,x_candidate)
+
+        fit<-geeglm(y.gee~x_candidate-1,data=data,family =dist,id=id.gee,corstr = corstr)
         betahat[index.var]<-fit$coefficients
         p<-length(fit$coefficients)
 
@@ -200,10 +248,10 @@ ELCIC.gee.single<-function(x,y,r,id,time,index.var=NULL,name.var=NULL,dist,corst
 #'@description The function \code{\link{ELCIC.wgee.single}} to calculate ELCIC value for a given candidate mean model with specified working correlation structure. It is able to simultaneously evaluate mean model and working correlation structure. The data is dropout missing and missing at random.
 #'@usage ELCIC.wgee.single(x,y,x_mis,r,id,time,index.var=NULL,
 #'       name.var=NULL,dist,corstr,joints=TRUE,lag=1)
-#'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept if the intercept is considered in the marginal mean.
+#'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept if the intercept is considered in the marginal mean. Covariate matrix should be complete. See more in details section.
 #'@param y A vector containing outcomes. Use NA to indicate missing outcomes.
-#'@param x_mis A matrix containing covariates for the missing data model. The first column should be all ones corresponding to the intercept if the intercept is considered in this missing data model. See more in details section.
-#'@param r A vector indicating missingness: 1 for observed records, and 0 for unobserved records.
+#'@param x_mis A matrix containing covariates for the missing data model. The first column should be all ones corresponding to the intercept if the intercept is considered in this missing data model. This covariate matrix should be complete and all observed. See more in details section.
+#'@param r A vector indicating the observation of outcomes: 1 for observed records, and 0 for unobserved records.
 #'@param id A vector indicating subject id.
 #'@param time The number of observations in total for each subject
 #'@param index.var A vector containing index corresponding to candidate covariates. See more in details section.
@@ -215,7 +263,9 @@ ELCIC.gee.single<-function(x,y,r,id,time,index.var=NULL,name.var=NULL,dist,corst
 
 #'@return A matrix containing values of calculated estimating equations.
 #'
-#'@details The argument "x_mis" includes all covariates to fit the missing data model. It does not contains a lag variable based on the outcome y. The argument "lag" in this function will automatically add lag-response variables to indicate the data missing at random.
+#'@details Covariate matrix "x" should be complete. If missing data are present in "x", the elements in covariate vector will be replaced by zeros for individuals who have missing covariates.
+#'
+#'The argument "x_mis" includes all covariates to fit the missing data model. It does not contains a lag variable based on the outcome y. The argument "lag" in this function will automatically add lag-response variables to indicate the data missing at random.
 #'
 #'Either arguments "index.var" or "name.var" is used to identify the candidate mean model. If both arguments are provided, only the argument "name.var" will be used.
 #'
@@ -247,6 +297,20 @@ ELCIC.wgee.single<-function(x,y,x_mis,r,id,time,index.var=NULL,name.var=NULL,dis
     {stop("x should be in a matrix format")}else if(!is.vector(y)){stop("y should be in a vector format")}else if(!is.matrix(x_mis)){stop("x_mis should be in a matrix format")}else
         if (!dist %in% c("gaussian","binomial","poisson")){stop("Invalid type of dist. It should be one of gaussian,binomial,poisson")}
     if (!corstr %in% c("ar1","exchangeable","independence")){stop("Invalid type of correlation structure for outcomes. It should be one of ar1,exchangeable,independence")}
+
+    #replace missingness with 0 in x matrix
+    na.index<-which(is.na(x),arr.ind=TRUE)
+    r.x<-rep(1,nrow(x))
+    r.x[unique(na.index[,1])]<-0
+    if(nrow(na.index)>0)
+    {
+        if (sum(r.x==r)!=nrow(x))
+        {
+            stop("missingness pattern in x should be the same to the missing pattern in y.")
+        }
+        x[unique(na.index[,1]),]<-0
+        warning("Covariate matrix x should be fully observed. The elements in covariate vector are replaced by zeros for individuals who have missing covariates.")
+    }
 
     if(!is.null(name.var))
     {
@@ -312,7 +376,7 @@ ELCIC.wgee.single<-function(x,y,x_mis,r,id,time,index.var=NULL,name.var=NULL,dis
         phi<-summary(fit)$phi
         gamma<-as.vector(summary(fit$mis_fit)$coefficients[,1])
         pi<-prob.obs(x_mis,gamma,id,time)
-        Z<-as.matrix(ee.wgee(y,x,r, pi,id,time=3,beta,ro,phi,dist,corstr))
+        Z<-as.matrix(ee.wgee(y,x,r, pi,id,time,beta,ro,phi,dist,corstr))
         # epi<-1/samplesize
         # model<-function(lambda)
         # {
@@ -320,7 +384,7 @@ ELCIC.wgee.single<-function(x,y,x_mis,r,id,time,index.var=NULL,name.var=NULL,dis
         #     {x/(1+t(lambda)%*%x)}
         #     else {2/epi*x-(1+t(lambda)%*%x)/(epi^2)*x})%*%rep(1,samplesize)
         # }
-        lambda<-lambda.find.wgee(y,x,r, pi,id,time=3,beta,ro,phi,dist,corstr)
+        lambda<-lambda.find.wgee(y,x,r, pi,id,time,beta,ro,phi,dist,corstr)
         # lambda<-multiroot(f = model, start = rep(0,length(betahat)+time-1))$root
         likelihood<-apply(Z,2,function(x) {
             2*log(1+t(lambda)%*%x)})%*%rep(1,samplesize)
@@ -393,7 +457,9 @@ ELCIC.wgee.single<-function(x,y,x_mis,r,id,time,index.var=NULL,name.var=NULL,dis
 #'
 #'@return A matrix with each element containing ELCIC value for each candidate model (in columns) and (in rows)
 #'
-#'@details Either arguments "candidate.sets" or "name.var.sets" is used to identify the set of candidate mean model. If both arguments are provided, only the argument "name.var.sets" will be used.
+#'@details "x" and "y" should be all observed. The corresponding individual data will be deleted if any missingness is detected.
+#'
+#'Either arguments "candidate.sets" or "name.var.sets" is used to identify the set of candidate mean model. If both arguments are provided, only the argument "name.var.sets" will be used.
 #'
 #'
 #'@examples
@@ -441,9 +507,9 @@ ELCIC.glm<-function(x,y,candidate.sets,name.var.sets=NULL,dist)
 #'@description The function \code{\link{ELCIC.gee}} provides the overall procedure for joint selection of mean structure and correlation structure in longitudinal data without missingness or missing completely at random.
 #'@usage ELCIC.gee(x,y,r,id,time,candidate.sets=NULL,name.var.sets=NULL,dist,
 #'       candidate.cor.sets=c("independence","exchangeable", "ar1"), joints=TRUE)
-#'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept if the intercept is expected in the marginal mean.
-#'@param y A vector containing outcomes.
-#'@param r A vector indicating missingness: 1 for observed records, and 0 for unobserved records. The default setup is that all data are observed.
+#'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept if the intercept is expected in the marginal mean. Covariate matrix should be complete. NA values will be replaced by 0 if missingness is detected in x.
+#'@param y A vector containing outcomes. If y is missing completely at random, use NA to indicate missing outcomes and specify argument "r".
+#'@param r A vector indicating the observation of data: 1 for observed records (both outcome and covariates are observed for a given subject), and 0 for unobserved records. The default setup is that all data are observed.
 #'@param id A vector indicating subject id.
 #'@param time The number of observations in total for each subject
 #'@param candidate.sets A list containing index corresponding to candidate covariates. See more in details section.
@@ -552,10 +618,10 @@ ELCIC.gee<-function(x,y,r,id,time,candidate.sets=NULL,name.var.sets=NULL,dist,ca
 #'@description The function \code{\link{ELCIC.wgee}} provides the overall procedure for joint selection of mean structure and correlation structure in longitudinal data missing at random. It is also able to implement marginal mean structure selection given a prespecified working correlation structure. The data is dropout missing and missing at random.
 #'@usage ELCIC.wgee(x,y,x_mis,r,id,time,candidate.sets=NULL,name.var.sets=NULL,
 #'      dist,candidate.cor.sets=c("independence","exchangeable", "ar1"), joints=TRUE,lag=1)
-#'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept if the intercept is considered in the marginal mean.
+#'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept if the intercept is considered in the marginal mean. Covariate matrix should be complete.
 #'@param y A vector containing outcomes. Use NA to indicate missing outcomes.
-#'@param x_mis A matrix containing covariates for the missing data model. The first column should be all ones corresponding to the intercept if the intercept is expected in the missing data model. See more in details section.
-#'@param r A vector indicating missingness: 1 for observed records, and 0 for unobserved records.
+#'@param x_mis A matrix containing covariates for the missing data model. The first column should be all ones corresponding to the intercept if the intercept is considered in this missing data model. This covariate matrix should be complete and all observed. See more in details section.
+#'@param r A vector indicating the observation of outcomes: 1 for observed records, and 0 for unobserved records.
 #'@param id A vector indicating subject id.
 #'@param time The number of observations in total for each subject
 #'@param candidate.sets A list containing index corresponding to candidate covariates. See more in details section.
@@ -567,7 +633,9 @@ ELCIC.gee<-function(x,y,r,id,time,candidate.sets=NULL,name.var.sets=NULL,dist,ca
 
 #'@return A matrix with each element containing ELCIC value for each candidate model.
 #'
-#'@details The argument "x_mis" includes all covariates to fit the missing data model. It does not contains a lag variable based on the outcome y. The argument "lag" in this function will automatically add lag-response variables to indicate the data missing at random.
+#'@details Covariate matrix "x" should be complete. If missing data are present in "x", the elements in covariate vector will be replaced by zeros for individuals who have missing covariates.
+#'
+#'The argument "x_mis" includes all covariates to fit the missing data model. It does not contains a lag variable based on the outcome y. The argument "lag" in this function will automatically add lag-response variables to indicate the data missing at random.
 #'
 #'Either arguments "candidate.sets" or "name.var.sets" is used to identify the set of candidate mean model. If both arguments are provided, only the argument "name.var.sets" will be used.
 #'
@@ -666,7 +734,7 @@ ELCIC.wgee<-function(x,y,x_mis,r,id,time,candidate.sets=NULL,name.var.sets=NULL,
 #'@description This function provides the Joint selection of marginal mean and correlation structures in longitudinal data based on QIC.
 #'@usage QICc.gee(x,y,id,dist,candidate.sets=NULL, name.var.sets=NULL,
 #'    candidate.cor.sets=c("independence","exchangeable", "ar1"), joints=TRUE)
-#'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept.
+#'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept. Covariate matrix should be complete.
 #'@param y A vector containing outcomes.
 #'@param id A vector indicating subject id.
 #'@param candidate.sets A list containing index corresponding to candidate covariates.
@@ -795,10 +863,10 @@ QICc.gee<-function (x,y,id,dist,candidate.sets=NULL,name.var.sets=NULL,candidate
 #'@description This function provides the overall MLIC procedure for joint selection of mean structure and correlation structure in longitudinal data missing at random. It is also able to implement marginal mean structure selection given a prespecified working correlation structure. The data is dropout missing and missing at random.
 #'@usage MLIC.wgee(x,y,x_mis,r,id,candidate.sets=NULL, name.var.sets=NULL,dist,
 #'       candidate.cor.sets=c("independence","exchangeable", "ar1"), joints=TRUE)
-#'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept if the intercept is expected in the marginal mean model.
+#'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept if the intercept is expected in the marginal mean model. Covariate matrix should be complete.
 #'@param y A vector containing outcomes. Use NA to indicate missing outcomes.
-#'@param x_mis A matrix containing covariates for the missing data model. The first column should be all ones corresponding to the intercept if the intercept is expected in the missing data model. See more in details section.
-#'@param r A vector indicating missingness: 1 for observed records, and 0 for unobserved records.
+#'@param x_mis A matrix containing covariates for the missing data model. The first column should be all ones corresponding to the intercept if the intercept is expected in the missing data model. This covariate matrix should be all observed. See more in details section.
+#'@param r A vector indicating the observation of outcomes: 1 for observed records, and 0 for unobserved records.
 #'@param id A vector indicating subject id.
 #'@param candidate.sets A list containing index corresponding to candidate covariates. See more in details section.
 #'@param name.var.sets A list containing names of candidate covariates. The names should be subset of column names of x matrix. See more in details section.
@@ -808,7 +876,9 @@ QICc.gee<-function (x,y,id,dist,candidate.sets=NULL,name.var.sets=NULL,candidate
 
 #'@return A vector with each element containing MLIC value for each candidate model. The row name of this vector is the selected correlation structure.
 #'
-#'@details The argument "x_mis" includes all covariates to fit the missing data model. It typically contains a lag-1 variable based on the outcome y to indicate the data missing at random. Note that the lag-1 variable should be NA for the first observation from each subject.
+#'@details Covariate matrix "x" should be complete. If missing data are present in "x", the elements in covariate vector will be replaced by zeros for individuals who have missing covariates.
+#'
+#'The argument "x_mis" includes all covariates to fit the missing data model. It typically contains a lag-1 variable based on the outcome y to indicate the data missing at random. Note that the lag-1 variable should be NA for the first observation from each subject.
 #'
 #'Either arguments "candidate.sets" or "name.var.sets" is used to identify the set of candidate mean model. If both arguments are provided, only the argument "name.var.sets" will be used.
 #'
@@ -835,6 +905,20 @@ QICc.gee<-function (x,y,id,dist,candidate.sets=NULL,name.var.sets=NULL,candidate
 
 MLIC.wgee<-function(x,y,x_mis,r,id,candidate.sets=NULL,name.var.sets=NULL,dist,candidate.cor.sets=c("independence","exchangeable", "ar1"),joints=TRUE)
 {
+    #replace missingness with 0 in x matrix
+    na.index<-which(is.na(x),arr.ind=TRUE)
+    r.x<-rep(1,nrow(x))
+    r.x[unique(na.index[,1])]<-0
+    if(nrow(na.index)>0)
+    {
+        if (sum(r.x==r)!=nrow(x))
+        {
+            stop("missingness pattern in x should be the same to the missing pattern in y.")
+        }
+        x[unique(na.index[,1]),]<-0
+        warning("Covariate matrix x should be fully observed. The elements in covariate vector are replaced by zeros for individuals who have missing covariates.")
+    }
+
     if(joints)
     {
         if(!is.null(name.var.sets))
@@ -982,10 +1066,10 @@ MLIC.wgee<-function(x,y,x_mis,r,id,candidate.sets=NULL,name.var.sets=NULL,dist,c
 #'@description This function provides the overall QICW procedure for joint selection of mean structure and correlation structure in longitudinal data missing at random. It is also able to implement marginal mean structure selection given a prespecified working correlation structure. The data is dropout missing and missing at random.
 #'@usage QICW.wgee(x,y,x_mis,r,id,candidate.sets,name.var.sets=NULL,
 #'      dist,candidate.cor.sets=c("independence","exchangeable", "ar1"), joints=TRUE)
-#'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept if the intercept is expected in the marginal mean model.
+#'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept if the intercept is expected in the marginal mean model. Covariate matrix should be complete.
 #'@param y A vector containing outcomes. Use NA to indicate missing outcomes.
-#'@param x_mis A matrix containing covariates for the missing data model. The first column should be all ones corresponding to the intercept if the intercept is expected in the missing data model. See more in details section.
-#'@param r A vector indicating missingness: 1 for observed records, and 0 for unobserved records.
+#'@param x_mis A matrix containing covariates for the missing data model. The first column should be all ones corresponding to the intercept if the intercept is expected in the missing data model. This covariate matrix should be all observed. See more in details section.
+#'@param r A vector indicating the observation of outcomes: 1 for observed records, and 0 for unobserved records.
 #'@param id A vector indicating subject id.
 #'@param candidate.sets A list containing index corresponding to candidate covariates. See more in details section.
 #'@param name.var.sets A list containing names of candidate covariates. The names should be subset of column names of x matrix. See more in details section.
@@ -995,7 +1079,9 @@ MLIC.wgee<-function(x,y,x_mis,r,id,candidate.sets=NULL,name.var.sets=NULL,dist,c
 
 #'@return A vector with each element containing QICW value for each candidate model. The row name of this vector is the selected correlation structure.
 #'
-#'@details The argument "x_mis" includes all covariates to fit the missing data model. It typically contains a lag-1 variable based on the outcome y to indicate the data missing at random. Note that the lag-1 variable should be NA for the first observation from each subject.
+#'@details Covariate matrix "x" should be complete. If missing data are present in "x", the elements in covariate vector will be replaced by zeros for individuals who have missing covariates.
+#'
+#'The argument "x_mis" includes all covariates to fit the missing data model. It typically contains a lag-1 variable based on the outcome y to indicate the data missing at random. Note that the lag-1 variable should be NA for the first observation from each subject.
 #'
 #'Either arguments "candidate.sets" or "name.var.sets" is used to identify the set of candidate mean model. If both arguments are provided, only the argument "name.var.sets" will be used.
 #'
@@ -1022,6 +1108,20 @@ MLIC.wgee<-function(x,y,x_mis,r,id,candidate.sets=NULL,name.var.sets=NULL,dist,c
 
 QICW.wgee<-function(x,y,x_mis,r,id,candidate.sets=NULL,name.var.sets=NULL,dist,candidate.cor.sets=c("independence","exchangeable", "ar1"),joints=TRUE)
 {
+    #replace missingness with 0 in x matrix
+    na.index<-which(is.na(x),arr.ind=TRUE)
+    r.x<-rep(1,nrow(x))
+    r.x[unique(na.index[,1])]<-0
+    if(nrow(na.index)>0)
+    {
+        if (sum(r.x==r)!=nrow(x))
+        {
+            stop("missingness pattern in x should be the same to the missing pattern in y.")
+        }
+        x[unique(na.index[,1]),]<-0
+        warning("Covariate matrix x should be fully observed. The elements in covariate vector are replaced by zeros for individuals who have missing covariates.")
+    }
+
     if(joints)
     {
         if(!is.null(name.var.sets))
