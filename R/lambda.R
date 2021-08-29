@@ -34,6 +34,8 @@ R0der<-function(lambda,ZZ)
 #'
 #'@return A value of lambda (tuning parameter) vector involved in the empirical likelihood.
 #'
+#'@note All "x" and "y" should be observed.
+#'
 #'@examples
 #'## tests
 #'# load data
@@ -98,7 +100,7 @@ lambda.find.glm<-function(x,y,betahat,dist)
 #'@usage lambda.find.gee(x, y, id, betahat, r, dist, ro, phi, corstr)
 #'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept.
 #'@param y A vector containing outcomes.
-#'@param r A vector indicating missingness: 1 for observed records, and 0 for unobserved records. The default setup is that all data are observed.
+#'@param r A vector indicating the observation of outcomes: 1 for observed records, and 0 for unobserved records. The default setup is that all data are observed. See more in details section.
 #'@param id A vector indicating subject id.
 #'@param dist A specified distribution. It can be "gaussian", "poisson",and "binomial".
 #'@param betahat A plug-in estimator solved by an external estimation procedure, such as GEE.
@@ -107,6 +109,8 @@ lambda.find.glm<-function(x,y,betahat,dist)
 #'@param corstr A condidate correlation structure. It can be "independence","exchangeable", and "ar1".
 #'
 #'@return Tuning parameter values.
+#'
+#'@details If the element in argument "r" equals zero, the corresponding rows of "x" and "y" should be all zeros.
 #'
 #'@examples
 #'## tests
@@ -181,7 +185,7 @@ lambda.find.gee<-function(x,y,id,betahat,r,dist,ro,phi,corstr)
 #'@usage lambda.find.wgee(y,x,r,pi,id,time,beta,ro,phi,dist,corstr)
 #'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept.
 #'@param y A vector containing outcomes. use NA to indicate missing outcomes.
-#'@param r A vector indicating missingness: 1 for observed records, and 0 for unobserved records.
+#'@param r A vector indicating the observation of outcomes: 1 for observed records, and 0 for unobserved records.
 #'@param pi A vector containing observing probabilities across all observations.
 #'@param time The number of observations for each subject
 #'@param id A vector indicating subject id.
@@ -266,12 +270,12 @@ lambda.find.wgee<-function(y,x,r,pi,id,time,beta,ro,phi,dist,corstr)
 
 
 #function to find lambda under marginal mean selection in gee
-#'@title Calculate the tuning parameters under marginal mean selection in gee
-#'@description This function provides an efficient algorithm to calculate the tuning parameters involved in marginal mean selection in gee.
+#'@title Calculate the tuning parameters under marginal mean selection in GEE
+#'@description This function provides an efficient algorithm to calculate the tuning parameters involved in marginal mean selection in GEE.
 #'@usage lambda.find.gee.onlymean(x, y, id, betahat, r, dist, ro, phi, corstr)
 #'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept.
 #'@param y A vector containing outcomes.
-#'@param r A vector indicating missingness: 1 for observed records, and 0 for unobserved records. The default setup is that all data are observed.
+#'@param r A vector indicating the observation of outcomes: 1 for observed records, and 0 for unobserved records. The default setup is that all data are observed. See more in details section.
 #'@param id A vector indicating subject id.
 #'@param dist A specified distribution. It can be "gaussian", "poisson",and "binomial".
 #'@param betahat A plug-in estimator solved by an external estimation procedure, such as GEE.
@@ -280,6 +284,8 @@ lambda.find.wgee<-function(y,x,r,pi,id,time,beta,ro,phi,dist,corstr)
 #'@param corstr A condidate correlation structure. It can be "independence","exchangeable", and "ar1".
 #'
 #'@return Tuning parameter values.
+#'
+#'@details If the element in argument "r" equals zero, the corresponding rows of "x" and "y" should be all zeros.
 #'
 #'@note corstr should be prespecified.
 #'
@@ -357,7 +363,7 @@ lambda.find.gee.onlymean<-function(x,y,id,betahat,r,dist,ro,phi,corstr)
 #'@usage lambda.find.wgee.onlymean(y,x,r,pi,id,time,beta,ro,phi,dist,corstr)
 #'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept.
 #'@param y A vector containing outcomes. use NA to indicate missing outcomes.
-#'@param r A vector indicating missingness: 1 for observed records, and 0 for unobserved records.
+#'@param r A vector indicating the observation of outcomes: 1 for observed records, and 0 for unobserved records.
 #'@param pi A vector containing observing probabilities across all observations.
 #'@param time The number of observations for each subject
 #'@param id A vector indicating subject id.
