@@ -8,11 +8,11 @@ ELCIC.gee.single(x, y, r, id, time, index.var=NULL, name.var = NULL,
                      dist, corstr, joints=TRUE)
 }
 \arguments{
-\item{x}{A matrix containing covariates. The first column should be all ones corresponding to the intercept.}
+\item{x}{A matrix containing covariates. The first column should be all ones corresponding to the intercept. If y and x are missing completely at random, use NA to indicate missingness and specify argument "r".}
 
-\item{y}{A vector containing outcomes.}
+\item{y}{A vector containing outcomes. If y and x are missing completely at random, use NA to indicate missing outcomes and specify argument "r".}
 
-\item{r}{A vector indicating missingness: 1 for observed records, and 0 for unobserved records. The default setup is that all data are observed.}
+\item{r}{A vector indicating the observation of data: 1 for observed records (both outcome and covariates are observed for a given subject), and 0 for unobserved records. The default setup is that all data are observed.}
 
 \item{id}{A vector indicating subject id.}
 
