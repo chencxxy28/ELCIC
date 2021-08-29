@@ -7,7 +7,7 @@
 ee.glm(x, y, betahat, dist)
 }
 \arguments{
-\item{x}{A matrix containing covariates. The first column should be all ones corresponding to the intercept.}
+\item{x}{A matrix containing covariates. The first column should be all ones corresponding to the intercept. See more details in}
 
 \item{y}{A vector containing outcomes.}
 
@@ -21,6 +21,9 @@ A matrix containing values of calculated estimating equations.
 \description{
 A specified estimating equation for ELCIC under GLM. This estimating equation is used for marginal mean selection.
 }
+\note{
+"x" and "y" should be all observed.
+}
 \examples{
 ## tests
 # load data
@@ -31,6 +34,6 @@ y<-glmsimdata$y
 fit<-glm(y~x-1,family="poisson")
 betahat<-fit$coefficients
 ee.matrix<-ee.glm(x, y, betahat, dist="poisson")
-dim(ee.matrix)
+apply(ee.matrix,1,mean)
 
 }
