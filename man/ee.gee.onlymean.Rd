@@ -11,7 +11,7 @@ ee.gee.onlymean(y,x,r,id,beta,ro,phi,dist,corstr)
 
 \item{x}{A matrix containing covariates. The first column should be all ones corresponding to the intercept.}
 
-\item{r}{A vector indicating missingness: 1 for observed records, and 0 for unobserved records. The default setup is that all data are observed.}
+\item{r}{A vector indicating the observation of outcomes: 1 for observed records, and 0 for unobserved records. The default setup is that all data are observed. See more in details section.}
 
 \item{id}{A vector indicating subject id.}
 
@@ -30,6 +30,9 @@ A matrix containing values of calculated estimating equations.
 }
 \description{
 Calculate estimating equation from GEE in ELCIC. This estimating equation is used for marginal mean selection.
+}
+\details{
+If the element in argument "r" equals zero, the corresponding rows of "x" and "y" should be all zeros.
 }
 \note{
 corstr should be prespecified.
