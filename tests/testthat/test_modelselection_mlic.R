@@ -34,3 +34,15 @@ output1<-MLIC.wgee(x=wgeesimdata$x,y=(wgeesimdata$y)
 output2<-MLIC.wgee(x=wgeesimdata$x,y=(wgeesimdata$y)
                              ,x_mis=wgeesimdata$x_mis,r=wgeesimdata$obs_ind,id=wgeesimdata$id,candidate.sets=list(c(1,2,3)),name.var.sets=NULL,dist="binomial",candidate.cor.sets="exchangeable",joints=FALSE)
 test_that("output equal: same output given both index and var.names, given joints=false",{expect_equal(output1,output2)})
+
+
+x.missing<-wgeesimdata$x
+x.missing[is.na(wgeesimdata$y),4]<-NA
+test_that("output warning: when x has missing data, given joints=false",{expect_warning(MLIC.wgee(x=x.missing,y=(wgeesimdata$y)
+                                                                                                  ,x_mis=wgeesimdata$x_mis,r=wgeesimdata$obs_ind,id=wgeesimdata$id,candidate.sets=list(c(1,2,3)),name.var.sets=NULL,dist="binomial",candidate.cor.sets="exchangeable",joints=FALSE),"Covariate matrix x should be fully observed. The elements in covariate vector are replaced by zeros for individuals who have missing covariates.")})
+
+x.missing<-wgeesimdata$x
+x.missing[!is.na(wgeesimdata$y),4]<-NA
+test_that("output error: when x has different missing pattern compared to y, given joints=false",{expect_error(MLIC.wgee(x=x.missing,y=(wgeesimdata$y)
+                                                                                                                         ,x_mis=wgeesimdata$x_mis,r=wgeesimdata$obs_ind,id=wgeesimdata$id,candidate.sets=list(c(1,2,3)),name.var.sets=NULL,dist="binomial",candidate.cor.sets="exchangeable",joints=FALSE),"missingness pattern in x should be the same to the missing pattern in y.")})
+
