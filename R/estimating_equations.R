@@ -3,12 +3,15 @@
 #'@title Estimating equation for ELCIC under GLM
 #'@description A specified estimating equation for ELCIC under GLM. This estimating equation is used for marginal mean selection.
 #'@usage ee.glm(x, y, betahat, dist)
-#'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept.
+#'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept. See more details in
 #'@param y A vector containing outcomes.
 #'@param betahat A plug-in estimator solved by an external estimating procedure.
 #'@param dist A specified distribution. It can be "gaussian", "poisson",and "binomial".
 #'
 #'@return A matrix containing values of calculated estimating equations.
+#'
+#'@note "x" and "y" should be all observed.
+#'
 #'@examples
 #'## tests
 #'# load data
@@ -19,7 +22,7 @@
 #'fit<-glm(y~x-1,family="poisson")
 #'betahat<-fit$coefficients
 #'ee.matrix<-ee.glm(x, y, betahat, dist="poisson")
-#'dim(ee.matrix)
+#'apply(ee.matrix,1,mean)
 #'
 #'@export
 
@@ -84,7 +87,7 @@ ee.glm<-function (x,y,betahat,dist)
 #'@usage ee.gee(y,x,r,id,beta,ro,phi,dist,corstr)
 #'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept.
 #'@param y A vector containing outcomes.
-#'@param r A vector indicating missingness: 1 for observed records, and 0 for unobserved records. The default setup is that all data are observed.
+#'@param r A vector indicating the observation of outcomes: 1 for observed records, and 0 for unobserved records. The default setup is that all data are observed. See more in details section.
 #'@param id A vector indicating subject id.
 #'@param beta A plug-in estimator solved by an external estimation procedure, such as GEE.
 #'@param ro A correlation coefficients obtained from an external estimation procedure, such as GEE.
@@ -93,6 +96,8 @@ ee.glm<-function (x,y,betahat,dist)
 #'@param corstr A condidate correlation structure. It can be "independence","exchangeable", and "ar1".
 #'
 #'@return A matrix containing values of calculated estimating equations.
+#'
+#'@details If the element in argument "r" equals zero, the corresponding rows of "x" and "y" should be all zeros.
 #'
 #'@examples
 #'## tests
@@ -129,7 +134,20 @@ ee.gee<-function(y,x,r,id,beta,ro,phi,dist,corstr)
     wgeef<-rep()
 
     #z.col<-ncol(z)
-
+    m_num_vector<-rep()
+     for(m in 1:(time-1))
+     {
+         m_num<-0
+         for (i in 1:n) #formula for ro
+         {
+         WW<-W*r[((i-1)*time+1):(i*time)]
+         for (j in 1:(time-m))
+         {
+             m_num<-m_num+WW[j+m,j+m]*WW[j,j]
+         }
+         }
+         m_num_vector<-c(m_num_vector,m_num)
+     }
 
     y[which(is.na(y))]<-0
     for (i in 1:n)
@@ -145,9 +163,9 @@ ee.gee<-function(y,x,r,id,beta,ro,phi,dist,corstr)
         {error<-0
         for (j in 1:(time-m))
         {
-            error<-error+e[j]*e[j+m]*WW[j+m,j+m]
+            error<-error+e[j]*e[j+m]*WW[j+m,j+m]*WW[j,j]
         }
-        error<-error-ro[m]*phi*(n*(time-m)-p)/n #directly use phi might be more efficient
+        error<-error-ro[m]*phi*(m_num_vector[m]-p)/n #NOT CORRECT!! directly use phi might be more efficient
         wgeei<-rbind(wgeei,error)
         }
 
@@ -165,7 +183,7 @@ ee.gee<-function(y,x,r,id,beta,ro,phi,dist,corstr)
 #'@usage ee.wgee(y,x,r,pi,id,time,beta,ro,phi,dist,corstr)
 #'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept.
 #'@param y A vector containing outcomes. use NA to indicate missing outcomes.
-#'@param r A vector indicating missingness: 1 for observed records, and 0 for unobserved records.
+#'@param r A vector indicating the observation of outcomes: 1 for observed records, and 0 for unobserved records.
 #'@param pi A vector containing observing probabilities across all observations.
 #'@param time The number of observations for each subject.
 #'@param id A vector indicating subject id.
@@ -256,7 +274,7 @@ ee.wgee<-function(y,x,r,pi,id,time,beta,ro,phi,dist,corstr)
 #'@usage ee.gee.onlymean(y,x,r,id,beta,ro,phi,dist,corstr)
 #'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept.
 #'@param y A vector containing outcomes.
-#'@param r A vector indicating missingness: 1 for observed records, and 0 for unobserved records. The default setup is that all data are observed.
+#'@param r A vector indicating the observation of outcomes: 1 for observed records, and 0 for unobserved records. The default setup is that all data are observed. See more in details section.
 #'@param id A vector indicating subject id.
 #'@param beta A plug-in estimator solved by an external estimation procedure, such as GEE.
 #'@param ro A correlation coefficients obtained from an external estimation procedure, such as GEE.
@@ -265,6 +283,8 @@ ee.wgee<-function(y,x,r,pi,id,time,beta,ro,phi,dist,corstr)
 #'@param corstr A condidate correlation structure. It can be "independence","exchangeable", and "ar1".
 #'
 #'@return A matrix containing values of calculated estimating equations.
+#'
+#'@details If the element in argument "r" equals zero, the corresponding rows of "x" and "y" should be all zeros.
 #'
 #'@note corstr should be prespecified.
 #'
@@ -337,7 +357,7 @@ ee.gee.onlymean<-function(y,x,r,id,beta,ro,phi,dist,corstr)
 #'@usage ee.wgee.onlymean(y,x,r,pi,id,time,beta,ro,phi,dist,corstr)
 #'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept.
 #'@param y A vector containing outcomes. use NA to indicate missing outcomes.
-#'@param r A vector indicating missingness: 1 for observed records, and 0 for unobserved records.
+#'@param r A vector indicating the observation of outcomes: 1 for observed records, and 0 for unobserved records.
 #'@param pi A vector containing observing probabilities across all observations.
 #'@param time The number of observations for each subject
 #'@param id A vector indicating subject id.
