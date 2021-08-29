@@ -8,13 +8,13 @@ QICW.wgee(x,y,x_mis,r,id,candidate.sets,name.var.sets=NULL,
      dist,candidate.cor.sets=c("independence","exchangeable", "ar1"), joints=TRUE)
 }
 \arguments{
-\item{x}{A matrix containing covariates. The first column should be all ones corresponding to the intercept if the intercept is expected in the marginal mean model.}
+\item{x}{A matrix containing covariates. The first column should be all ones corresponding to the intercept if the intercept is expected in the marginal mean model. Covariate matrix should be complete.}
 
 \item{y}{A vector containing outcomes. Use NA to indicate missing outcomes.}
 
-\item{x_mis}{A matrix containing covariates for the missing data model. The first column should be all ones corresponding to the intercept if the intercept is expected in the missing data model. See more in details section.}
+\item{x_mis}{A matrix containing covariates for the missing data model. The first column should be all ones corresponding to the intercept if the intercept is expected in the missing data model. This covariate matrix should be all observed. See more in details section.}
 
-\item{r}{A vector indicating missingness: 1 for observed records, and 0 for unobserved records.}
+\item{r}{A vector indicating the observation of outcomes: 1 for observed records, and 0 for unobserved records.}
 
 \item{id}{A vector indicating subject id.}
 
@@ -35,6 +35,8 @@ A vector with each element containing QICW value for each candidate model. The r
 This function provides the overall QICW procedure for joint selection of mean structure and correlation structure in longitudinal data missing at random. It is also able to implement marginal mean structure selection given a prespecified working correlation structure. The data is dropout missing and missing at random.
 }
 \details{
+Covariate matrix "x" should be complete. If missing data are present in "x", the elements in covariate vector will be replaced by zeros for individuals who have missing covariates.
+
 The argument "x_mis" includes all covariates to fit the missing data model. It typically contains a lag-1 variable based on the outcome y to indicate the data missing at random. Note that the lag-1 variable should be NA for the first observation from each subject.
 
 Either arguments "candidate.sets" or "name.var.sets" is used to identify the set of candidate mean model. If both arguments are provided, only the argument "name.var.sets" will be used.
