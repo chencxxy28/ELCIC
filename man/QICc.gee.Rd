@@ -8,7 +8,7 @@ QICc.gee(x,y,id,dist,candidate.sets=NULL, name.var.sets=NULL,
    candidate.cor.sets=c("independence","exchangeable", "ar1"), joints=TRUE)
 }
 \arguments{
-\item{x}{A matrix containing covariates. The first column should be all ones corresponding to the intercept.}
+\item{x}{A matrix containing covariates. The first column should be all ones corresponding to the intercept. Covariate matrix should be complete.}
 
 \item{y}{A vector containing outcomes.}
 
