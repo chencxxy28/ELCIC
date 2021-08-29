@@ -2,7 +2,7 @@
 % Please edit documentation in R/lambda.R
 \name{lambda.find.gee.onlymean}
 \alias{lambda.find.gee.onlymean}
-\title{Calculate the tuning parameters under marginal mean selection in gee}
+\title{Calculate the tuning parameters under marginal mean selection in GEE}
 \usage{
 lambda.find.gee.onlymean(x, y, id, betahat, r, dist, ro, phi, corstr)
 }
@@ -15,7 +15,7 @@ lambda.find.gee.onlymean(x, y, id, betahat, r, dist, ro, phi, corstr)
 
 \item{betahat}{A plug-in estimator solved by an external estimation procedure, such as GEE.}
 
-\item{r}{A vector indicating missingness: 1 for observed records, and 0 for unobserved records. The default setup is that all data are observed.}
+\item{r}{A vector indicating the observation of outcomes: 1 for observed records, and 0 for unobserved records. The default setup is that all data are observed. See more in details section.}
 
 \item{dist}{A specified distribution. It can be "gaussian", "poisson",and "binomial".}
 
@@ -29,7 +29,10 @@ lambda.find.gee.onlymean(x, y, id, betahat, r, dist, ro, phi, corstr)
 Tuning parameter values.
 }
 \description{
-This function provides an efficient algorithm to calculate the tuning parameters involved in marginal mean selection in gee.
+This function provides an efficient algorithm to calculate the tuning parameters involved in marginal mean selection in GEE.
+}
+\details{
+If the element in argument "r" equals zero, the corresponding rows of "x" and "y" should be all zeros.
 }
 \note{
 corstr should be prespecified.
