@@ -8,13 +8,13 @@ ELCIC.wgee.single(x,y,x_mis,r,id,time,index.var=NULL,
       name.var=NULL,dist,corstr,joints=TRUE,lag=1)
 }
 \arguments{
-\item{x}{A matrix containing covariates. The first column should be all ones corresponding to the intercept if the intercept is considered in the marginal mean.}
+\item{x}{A matrix containing covariates. The first column should be all ones corresponding to the intercept if the intercept is considered in the marginal mean. Covariate matrix should be complete. See more in details section.}
 
 \item{y}{A vector containing outcomes. Use NA to indicate missing outcomes.}
 
-\item{x_mis}{A matrix containing covariates for the missing data model. The first column should be all ones corresponding to the intercept if the intercept is considered in this missing data model. See more in details section.}
+\item{x_mis}{A matrix containing covariates for the missing data model. The first column should be all ones corresponding to the intercept if the intercept is considered in this missing data model. This covariate matrix should be complete and all observed. See more in details section.}
 
-\item{r}{A vector indicating missingness: 1 for observed records, and 0 for unobserved records.}
+\item{r}{A vector indicating the observation of outcomes: 1 for observed records, and 0 for unobserved records.}
 
 \item{id}{A vector indicating subject id.}
 
@@ -39,6 +39,8 @@ A matrix containing values of calculated estimating equations.
 The function \code{\link{ELCIC.wgee.single}} to calculate ELCIC value for a given candidate mean model with specified working correlation structure. It is able to simultaneously evaluate mean model and working correlation structure. The data is dropout missing and missing at random.
 }
 \details{
+Covariate matrix "x" should be complete. If missing data are present in "x", the elements in covariate vector will be replaced by zeros for individuals who have missing covariates.
+
 The argument "x_mis" includes all covariates to fit the missing data model. It does not contains a lag variable based on the outcome y. The argument "lag" in this function will automatically add lag-response variables to indicate the data missing at random.
 
 Either arguments "index.var" or "name.var" is used to identify the candidate mean model. If both arguments are provided, only the argument "name.var" will be used.
