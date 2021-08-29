@@ -8,11 +8,11 @@ ELCIC.gee(x,y,r,id,time,candidate.sets=NULL,name.var.sets=NULL,dist,
       candidate.cor.sets=c("independence","exchangeable", "ar1"), joints=TRUE)
 }
 \arguments{
-\item{x}{A matrix containing covariates. The first column should be all ones corresponding to the intercept if the intercept is expected in the marginal mean.}
+\item{x}{A matrix containing covariates. The first column should be all ones corresponding to the intercept if the intercept is expected in the marginal mean. Covariate matrix should be complete. NA values will be replaced by 0 if missingness is detected in x.}
 
-\item{y}{A vector containing outcomes.}
+\item{y}{A vector containing outcomes. If y is missing completely at random, use NA to indicate missing outcomes and specify argument "r".}
 
-\item{r}{A vector indicating missingness: 1 for observed records, and 0 for unobserved records. The default setup is that all data are observed.}
+\item{r}{A vector indicating the observation of data: 1 for observed records (both outcome and covariates are observed for a given subject), and 0 for unobserved records. The default setup is that all data are observed.}
 
 \item{id}{A vector indicating subject id.}
 
