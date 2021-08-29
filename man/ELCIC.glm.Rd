@@ -24,6 +24,8 @@ A matrix with each element containing ELCIC value for each candidate model (in c
 The function \code{\link{ELCIC.glm}} provides the overall procedure for variable selection in GLM.
 }
 \details{
+"x" and "y" should be all observed. The corresponding individual data will be deleted if any missingness is detected.
+
 Either arguments "candidate.sets" or "name.var.sets" is used to identify the set of candidate mean model. If both arguments are provided, only the argument "name.var.sets" will be used.
 }
 \examples{
