@@ -3,7 +3,7 @@
 \docType{data}
 \name{wgeesimdata}
 \alias{wgeesimdata}
-\title{Toydata generated for variable selection under GEE framework without missingness or missing completely at random}
+\title{Toydata generated for model selection under WGEE framework for longitudinal dropout data.}
 \format{
 An object of class \code{"data.frame"}
 \describe{
@@ -18,7 +18,7 @@ An object of class \code{"data.frame"}
 data(wgeesimdata)
 }
 \description{
-Toydata generated for variable selection under GEE framework without missingness or missing completely at random
+Toydata generated for model selection under WGEE framework for longitudinal dropout data.
 }
 \examples{
 
