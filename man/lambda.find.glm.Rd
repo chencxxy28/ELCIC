@@ -21,6 +21,9 @@ A value of lambda (tuning parameter) vector involved in the empirical likelihood
 \description{
 This function aims to efficiently calculate the tuning parameter lambda in ELCIC.
 }
+\note{
+All "x" and "y" should be observed.
+}
 \examples{
 ## tests
 # load data
