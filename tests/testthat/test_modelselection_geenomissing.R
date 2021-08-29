@@ -54,6 +54,21 @@ output1<-ELCIC.gee(x=(geesimdata$x),y=(geesimdata$y),r=rep(1,nrow(x)),id=geesimd
 output2<-ELCIC.gee(x=(geesimdata$x),y=(geesimdata$y),r=rep(1,nrow(x)),id=geesimdata$id,time=3,candidate.sets=list(c(1,2,3)),name.var.sets=list(c("intercept","x1","x2")),dist="poisson",candidate.cor.sets=c("independence","exchangeable"),joint=FALSE)
 test_that("output equal: equal values given more than 1 correlation structures, when joint=false",{expect_equal(output1,output2)})
 
+r<-rep(1,nrow(x))
+time_index<-rep(seq_len(3),times=nrow(x)/3)
+r[time_index==3]<-rbinom(nrow(x)/3,1,0.5)
+x.missing<-geesimdata$x
+y.missing<-geesimdata$y
+x.missing[r==0,-1]<-NA
+y.missing[r==0]<-NA
+output1<-ELCIC.gee(x=x.missing,y=(geesimdata$y),r=r,id=geesimdata$id,time=3,candidate.sets=list(c(1,2)),name.var.sets=list(c("intercept","x1","x2")),dist="poisson",candidate.cor.sets="exchangeable",joint=TRUE)
+output2<-ELCIC.gee(x=x.missing,y=y.missing,r=r,id=geesimdata$id,time=3,candidate.sets=list(c(1,2)),name.var.sets=list(c("intercept","x1","x2")),dist="poisson",candidate.cor.sets=c("exchangeable"),joint=TRUE)
+test_that("output equal: equal values given more than 1 correlation structures, when joint=TRUE",{expect_equal(output1,output2)})
+
+output1<-ELCIC.gee(x=x.missing,y=(geesimdata$y),r=r,id=geesimdata$id,time=3,candidate.sets=list(c(1,2,3)),name.var.sets=list(c("intercept","x1","x2")),dist="poisson",candidate.cor.sets="exchangeable",joint=FALSE)
+output2<-ELCIC.gee(x=x.missing,y=y.missing,r=r,id=geesimdata$id,time=3,candidate.sets=list(c(1,2,3)),name.var.sets=list(c("intercept","x1","x2")),dist="poisson",candidate.cor.sets=c("exchangeable"),joint=FALSE)
+test_that("output equal: equal values given more than 1 correlation structures, when joint=FALSE",{expect_equal(output1,output2)})
+
 
 #generate other dist
 set.seed(515413)
