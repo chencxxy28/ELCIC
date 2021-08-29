@@ -24,6 +24,8 @@ A vector containing information criteria including ELCIC, AIC, BIC, and GIC.
 The function \code{\link{ELCIC.glm.single}} provides values of several model selection criteria including AIC, BIC, GIC, and ELCIC, given a candidate mean model.
 }
 \details{
+"x" and "y" should be all observed. The corresponding individual data will be omitted in analysis if any missingness is detected.
+
 Either arguments "index.var" or "name.var" is used to identify the candidate mean model. If both arguments are provided, only the argument "name.var" will be used.
 }
 \examples{
