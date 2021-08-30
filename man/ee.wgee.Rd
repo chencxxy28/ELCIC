@@ -4,7 +4,7 @@
 \alias{ee.wgee}
 \title{Estimating equation for weighted GEE (WGEE) with data missing at random}
 \usage{
-ee.wgee(y,x,r,pi,id,time,beta,ro,phi,dist,corstr)
+ee.wgee(y,x,r,pi,id,time,beta,rho,phi,dist,corstr)
 }
 \arguments{
 \item{y}{A vector containing outcomes. use NA to indicate missing outcomes.}
@@ -21,7 +21,7 @@ ee.wgee(y,x,r,pi,id,time,beta,ro,phi,dist,corstr)
 
 \item{beta}{A plug-in estimator solved by an external estimation procedure, such as WGEE.}
 
-\item{ro}{A correlation coefficients obtained from an external estimation procedure, such as WGEE.}
+\item{rho}{A correlation coefficients obtained from an external estimation procedure, such as WGEE.}
 
 \item{phi}{An over-dispersion parameter obtained from an external estimation procedure, such as GEE.}
 
@@ -48,14 +48,14 @@ id<-data_wgee$id
 fit<-wgee(y~x1+x2+x3,data_wgee,id,family=dist,corstr =corstr,
      scale = NULL,mismodel =obs_ind~x_mis1)
 beta<-as.vector(summary(fit)$beta)
-ro<-summary(fit)$corr
+rho<-summary(fit)$corr
 phi<-summary(fit)$phi
 #calculate observing probabilies for all observations
 gamma<-as.vector(summary(fit$mis_fit)$coefficients[,1])
 x_mis<-wgeesimdata$x_mis
-pi<-prob.obs(x_mis,gamma,id,time=3)
+pi<-cond.prob(x_mis,gamma,id,time=3)
 wgee.matrix<-ee.wgee(y=wgeesimdata$y,x=wgeesimdata$x,r=wgeesimdata$obs_ind,
-pi=pi,id=wgeesimdata$id,time=3,beta=beta,ro=ro,phi=phi,dist=dist,corstr=corstr)
+pi=pi,id=wgeesimdata$id,time=3,beta=beta,rho=rho,phi=phi,dist=dist,corstr=corstr)
 apply(wgee.matrix,1,mean)
 
 }
