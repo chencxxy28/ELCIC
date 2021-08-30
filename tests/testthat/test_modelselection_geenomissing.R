@@ -73,7 +73,7 @@ test_that("output equal: equal values given more than 1 correlation structures, 
 #generate other dist
 set.seed(515413)
 samplesize<-200
-time=3
+time<-3
 geesimdata<-gee.generator(beta=c(-1,1,0.5,0),samplesize=samplesize,time=time,num.time.dep=2,num.time.indep=1,rho=0.4,x.rho=0.2,dist="gaussian",cor.str="exchangeable",x.cor.str="exchangeable")
 rownames(geesimdata$x)<-seq_len(nrow(geesimdata$x))
 colnames(geesimdata$x)<-c("intercept","x1","x2","x3")
