@@ -4,7 +4,7 @@
 \alias{lambda.find.gee}
 \title{Calculate the tuning parameters involved in ELCIC under GEE}
 \usage{
-lambda.find.gee(x, y, id, betahat, r, dist, ro, phi, corstr)
+lambda.find.gee(x, y, id, betahat, r, dist, rho, phi, corstr)
 }
 \arguments{
 \item{x}{A matrix containing covariates. The first column should be all ones corresponding to the intercept.}
@@ -19,7 +19,7 @@ lambda.find.gee(x, y, id, betahat, r, dist, ro, phi, corstr)
 
 \item{dist}{A specified distribution. It can be "gaussian", "poisson",and "binomial".}
 
-\item{ro}{A correlation coefficients obtained from an external estimation procedure, such as GEE.}
+\item{rho}{A correlation coefficients obtained from an external estimation procedure, such as GEE.}
 
 \item{phi}{An over-dispersion parameter obtained from an external estimation procedure, such as GEE.}
 
@@ -47,10 +47,10 @@ dist<-"poisson"
 library(geepack)
 fit<-geeglm(y~x-1,data=geesimdata,family =dist,id=id,corstr = corstr)
 betahat<-fit$coefficients
-ro<-unlist(summary(fit)$corr[1])
+rho<-unlist(summary(fit)$corr[1])
 phi<-unlist(summary(fit)$dispersion[1])
 r=rep(1,nrow(x))
-lambda<-lambda.find.gee(x,y,id,betahat,r,dist,ro,phi,corstr)
+lambda<-lambda.find.gee(x,y,id,betahat,r,dist,rho,phi,corstr)
 lambda
 
 }
