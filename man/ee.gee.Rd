@@ -4,7 +4,7 @@
 \alias{ee.gee}
 \title{Estimating equation for GEE without missingness or missing completely at random}
 \usage{
-ee.gee(y,x,r,id,beta,ro,phi,dist,corstr)
+ee.gee(y,x,r,id,beta,rho,phi,dist,corstr)
 }
 \arguments{
 \item{y}{A vector containing outcomes.}
@@ -17,7 +17,7 @@ ee.gee(y,x,r,id,beta,ro,phi,dist,corstr)
 
 \item{beta}{A plug-in estimator solved by an external estimation procedure, such as GEE.}
 
-\item{ro}{A correlation coefficients obtained from an external estimation procedure, such as GEE.}
+\item{rho}{A correlation coefficients obtained from an external estimation procedure, such as GEE.}
 
 \item{phi}{An over-dispersion parameter obtained from an external estimation procedure, such as GEE.}
 
@@ -47,10 +47,10 @@ dist<-"poisson"
 library(geepack)
 fit<-geeglm(y~x-1,data=geesimdata,family =dist,id=id,corstr = "ar1")
 beta<-fit$coefficients
-ro<-unlist(summary(fit)$corr[1])
+rho<-unlist(summary(fit)$corr[1])
 phi<-unlist(summary(fit)$dispersion[1])
 r<-rep(1,nrow(x))
-ee.matrix<-ee.gee(y,x,r,id,beta,ro,phi,dist,corstr)
+ee.matrix<-ee.gee(y,x,r,id,beta,rho,phi,dist,corstr)
 apply(ee.matrix,1,mean)
 
 }
