@@ -101,17 +101,17 @@ test_that("output error: when x has different missing pattern compared to y, giv
 #try different distributions
 set.seed(515413)
 library(wgeesel)
-n=200
-time=3
-rho=0.5
-id=rep(1:n,each=time)
+n<-200
+time<-3
+rho<-0.5
+id<-rep(1:n,each=time)
 truecorstr<-"exchangeable" #"ar1","exchangeable"
 truedist<-"poisson" #"binary","poisson"
 xf <- cbind(1, rep(runif(n), each=time), rep(0:(time-1),times=n), rnorm(time*n))
 xT<-xf[,1:3]
-betaT=c(-1,1,0.4)
-x_mis=cbind(matrix(1,nrow=length(id),ncol=1),runif(n*time,-0.5,0.5))
-para=c(1.74,0.5,-0.8)
+betaT<-c(-1,1,0.4)
+x_mis<-cbind(matrix(1,nrow=length(id),ncol=1),runif(n*time,-0.5,0.5))
+para<-c(1.74,0.5,-0.8)
 data_gernated<-data_sim(id,rho,phi,xT,betaT,x_mis,para,truecorstr,truedist,lag_level = 1)
 
 x<-xf
