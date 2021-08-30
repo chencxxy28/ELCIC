@@ -84,13 +84,13 @@ ee.glm<-function (x,y,betahat,dist)
 
 #'@title Estimating equation for GEE without missingness or missing completely at random
 #'@description Calculate estimating equation from GEE in ELCIC without missingness or missing completely at random. This estimating equation is used for joint selection of marginal mean and working correlation structure.
-#'@usage ee.gee(y,x,r,id,beta,ro,phi,dist,corstr)
+#'@usage ee.gee(y,x,r,id,beta,rho,phi,dist,corstr)
 #'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept.
 #'@param y A vector containing outcomes.
 #'@param r A vector indicating the observation of outcomes: 1 for observed records, and 0 for unobserved records. The default setup is that all data are observed. See more in details section.
 #'@param id A vector indicating subject id.
 #'@param beta A plug-in estimator solved by an external estimation procedure, such as GEE.
-#'@param ro A correlation coefficients obtained from an external estimation procedure, such as GEE.
+#'@param rho A correlation coefficients obtained from an external estimation procedure, such as GEE.
 #'@param phi An over-dispersion parameter obtained from an external estimation procedure, such as GEE.
 #'@param dist A specified distribution. It can be "gaussian", "poisson",and "binomial".
 #'@param corstr A condidate correlation structure. It can be "independence","exchangeable", and "ar1".
@@ -112,23 +112,23 @@ ee.glm<-function (x,y,betahat,dist)
 #'library(geepack)
 #'fit<-geeglm(y~x-1,data=geesimdata,family =dist,id=id,corstr = "ar1")
 #'beta<-fit$coefficients
-#'ro<-unlist(summary(fit)$corr[1])
+#'rho<-unlist(summary(fit)$corr[1])
 #'phi<-unlist(summary(fit)$dispersion[1])
 #'r<-rep(1,nrow(x))
-#'ee.matrix<-ee.gee(y,x,r,id,beta,ro,phi,dist,corstr)
+#'ee.matrix<-ee.gee(y,x,r,id,beta,rho,phi,dist,corstr)
 #'apply(ee.matrix,1,mean)
 #'
 #'@export
 #'
 ######for longitudinal data gee
-ee.gee<-function(y,x,r,id,beta,ro,phi,dist,corstr)
+ee.gee<-function(y,x,r,id,beta,rho,phi,dist,corstr)
 { #full wgee
     n<-length(unique(id))
     p<-length(beta)
     time<-length(id)/n
     A<-diag(1,time,time)
-    ro<-roo(ro,time,corstr)
-    R<-R(ro,id)
+    rho<-roo(rho,time,corstr)
+    R<-R(rho,id)
     W<-diag(1,time,time)
     V<-v(x,beta,dist)
     wgeef<-rep()
@@ -138,7 +138,7 @@ ee.gee<-function(y,x,r,id,beta,ro,phi,dist,corstr)
      for(m in 1:(time-1))
      {
          m_num<-0
-         for (i in 1:n) #formula for ro
+         for (i in 1:n) #formula for rho
          {
          WW<-W*r[((i-1)*time+1):(i*time)]
          for (j in 1:(time-m))
@@ -159,13 +159,13 @@ ee.gee<-function(y,x,r,id,beta,ro,phi,dist,corstr)
         e<-y[((i-1)*time+1):(i*time)]-V$mu[((i-1)*time+1):(i*time)]
         wgeei<-1/phi*t(V$der[((i-1)*time+1):(i*time),])%*%AA%*%solve(R)%*%AA%*%WW%*%e
         e<-e*(V$v[((i-1)*time+1):(i*time)])^(-0.5)
-        for (m in 1:(time-1)) #formula for ro
+        for (m in 1:(time-1)) #formula for rho
         {error<-0
         for (j in 1:(time-m))
         {
             error<-error+e[j]*e[j+m]*WW[j+m,j+m]*WW[j,j]
         }
-        error<-error-ro[m]*phi*(m_num_vector[m]-p)/n #NOT CORRECT!! directly use phi might be more efficient
+        error<-error-rho[m]*phi*(m_num_vector[m]-p)/n #NOT CORRECT!! directly use phi might be more efficient
         wgeei<-rbind(wgeei,error)
         }
 
@@ -180,7 +180,7 @@ ee.gee<-function(y,x,r,id,beta,ro,phi,dist,corstr)
 
 #'@title Estimating equation for weighted GEE (WGEE) with data missing at random
 #'@description Calculate estimating equation from WGEE in ELCIC with data missing at random. This estimating equation is used for joint selection of marginal mean and working correlation structure.
-#'@usage ee.wgee(y,x,r,pi,id,time,beta,ro,phi,dist,corstr)
+#'@usage ee.wgee(y,x,r,pi,id,time,beta,rho,phi,dist,corstr)
 #'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept.
 #'@param y A vector containing outcomes. use NA to indicate missing outcomes.
 #'@param r A vector indicating the observation of outcomes: 1 for observed records, and 0 for unobserved records.
@@ -188,7 +188,7 @@ ee.gee<-function(y,x,r,id,beta,ro,phi,dist,corstr)
 #'@param time The number of observations for each subject.
 #'@param id A vector indicating subject id.
 #'@param beta A plug-in estimator solved by an external estimation procedure, such as WGEE.
-#'@param ro A correlation coefficients obtained from an external estimation procedure, such as WGEE.
+#'@param rho A correlation coefficients obtained from an external estimation procedure, such as WGEE.
 #'@param phi An over-dispersion parameter obtained from an external estimation procedure, such as GEE.
 #'@param dist A specified distribution. It can be "gaussian", "poisson",and "binomial".
 #'@param corstr A condidate correlation structure. It can be "independence","exchangeable", and "ar1".
@@ -208,25 +208,25 @@ ee.gee<-function(y,x,r,id,beta,ro,phi,dist,corstr)
 #'fit<-wgee(y~x1+x2+x3,data_wgee,id,family=dist,corstr =corstr,
 #'      scale = NULL,mismodel =obs_ind~x_mis1)
 #'beta<-as.vector(summary(fit)$beta)
-#'ro<-summary(fit)$corr
+#'rho<-summary(fit)$corr
 #'phi<-summary(fit)$phi
 #'#calculate observing probabilies for all observations
 #'gamma<-as.vector(summary(fit$mis_fit)$coefficients[,1])
 #'x_mis<-wgeesimdata$x_mis
-#'pi<-prob.obs(x_mis,gamma,id,time=3)
+#'pi<-cond.prob(x_mis,gamma,id,time=3)
 #'wgee.matrix<-ee.wgee(y=wgeesimdata$y,x=wgeesimdata$x,r=wgeesimdata$obs_ind,
-#'pi=pi,id=wgeesimdata$id,time=3,beta=beta,ro=ro,phi=phi,dist=dist,corstr=corstr)
+#'pi=pi,id=wgeesimdata$id,time=3,beta=beta,rho=rho,phi=phi,dist=dist,corstr=corstr)
 #'apply(wgee.matrix,1,mean)
 #'
 #'@export
 
-ee.wgee<-function(y,x,r,pi,id,time,beta,ro,phi,dist,corstr)
+ee.wgee<-function(y,x,r,pi,id,time,beta,rho,phi,dist,corstr)
 { #full wgee
     n<-length(unique(id))
     p<-length(beta)
-    ro<-roo(ro,time,corstr)
+    rho<-roo(rho,time,corstr)
     A<-diag(1,time,time)
-    R<-R(ro,id)
+    R<-R(rho,id)
     W<-diag(1,time,time)
     V<-v(x,beta,dist)
     wgeef<-rep()
@@ -240,19 +240,19 @@ ee.wgee<-function(y,x,r,pi,id,time,beta,ro,phi,dist,corstr)
     y[which(is.na(y))]<-0
     for (i in 1:n)
     {
-        piii<-pii(pi[((i-1)*time+1):(i*time)])
+        piii<-marg.prob(pi[((i-1)*time+1):(i*time)])
         AA<-A*V$v[((i-1)*time+1):(i*time)]^(-0.5)
         WW<-W*r[((i-1)*time+1):(i*time)]*piii
         e<-y[((i-1)*time+1):(i*time)]-V$mu[((i-1)*time+1):(i*time)]
         wgeei<-1/phi*t(V$der[((i-1)*time+1):(i*time),])%*%AA%*%solve(R)%*%AA%*%WW%*%e
         e<-e*(V$v[((i-1)*time+1):(i*time)])^(-0.5)
-        for (m in 1:(time-1)) #formula for ro
+        for (m in 1:(time-1)) #formula for rho
         {error<-0
         for (j in 1:(time-m))
         {
             error<-error+e[j]*e[j+m]*WW[j+m,j+m]
         }
-        error<-error-ro[m]*phi*(n*(time-m)-p)/n #directly use phi might be more efficient
+        error<-error-rho[m]*phi*(n*(time-m)-p)/n #directly use phi might be more efficient
         wgeei<-rbind(wgeei,error)
         }
 
@@ -271,13 +271,13 @@ ee.wgee<-function(y,x,r,pi,id,time,beta,ro,phi,dist,corstr)
 
 #'@title Estimating equation of marginal mean for GEE without missing
 #'@description Calculate estimating equation from GEE in ELCIC. This estimating equation is used for marginal mean selection.
-#'@usage ee.gee.onlymean(y,x,r,id,beta,ro,phi,dist,corstr)
+#'@usage ee.gee.mean(y,x,r,id,beta,rho,phi,dist,corstr)
 #'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept.
 #'@param y A vector containing outcomes.
 #'@param r A vector indicating the observation of outcomes: 1 for observed records, and 0 for unobserved records. The default setup is that all data are observed. See more in details section.
 #'@param id A vector indicating subject id.
 #'@param beta A plug-in estimator solved by an external estimation procedure, such as GEE.
-#'@param ro A correlation coefficients obtained from an external estimation procedure, such as GEE.
+#'@param rho A correlation coefficients obtained from an external estimation procedure, such as GEE.
 #'@param phi An over-dispersion parameter obtained from an external estimation procedure, such as GEE.
 #'@param dist A specified distribution. It can be "gaussian", "poisson",and "binomial".
 #'@param corstr A condidate correlation structure. It can be "independence","exchangeable", and "ar1".
@@ -301,21 +301,21 @@ ee.wgee<-function(y,x,r,pi,id,time,beta,ro,phi,dist,corstr)
 #'library(geepack)
 #'fit<-geeglm(y~x-1,data=geesimdata,family =dist,id=id,corstr = corstr)
 #'beta<-fit$coefficients
-#'ro<-unlist(summary(fit)$corr[1])
+#'rho<-unlist(summary(fit)$corr[1])
 #'phi<-unlist(summary(fit)$dispersion[1])
 #'r<-rep(1,nrow(x))
-#'ee.matrix<-ee.gee.onlymean(y,x,r,id,beta,ro,phi,dist,corstr)
+#'ee.matrix<-ee.gee.mean(y,x,r,id,beta,rho,phi,dist,corstr)
 #'apply(ee.matrix,1,mean)
 #'
 #'@export
-ee.gee.onlymean<-function(y,x,r,id,beta,ro,phi,dist,corstr)
+ee.gee.mean<-function(y,x,r,id,beta,rho,phi,dist,corstr)
 { #full wgee
     n<-length(unique(id))
     p<-length(beta)
     time<-length(id)/n
     A<-diag(1,time,time)
-    ro<-roo(ro,time,corstr)
-    R<-R(ro,id)
+    rho<-roo(rho,time,corstr)
+    R<-R(rho,id)
     W<-diag(1,time,time)
     V<-v(x,beta,dist)
     wgeef<-rep()
@@ -333,13 +333,13 @@ ee.gee.onlymean<-function(y,x,r,id,beta,ro,phi,dist,corstr)
         e<-y[((i-1)*time+1):(i*time)]-V$mu[((i-1)*time+1):(i*time)]
         wgeei<-1/phi*t(V$der[((i-1)*time+1):(i*time),])%*%AA%*%solve(R)%*%AA%*%WW%*%e
         # e<-e*(V$v[((i-1)*time+1):(i*time)])^(-0.5)
-        # for (m in 1:(time-1)) #formula for ro
+        # for (m in 1:(time-1)) #formula for rho
         # {error<-0
         # for (j in 1:(time-m))
         # {
         #     error<-error+e[j]*e[j+m]*WW[j+m,j+m]
         # }
-        # error<-error-ro[m]*phi*(n*(time-m)-p)/n #directly use phi might be more efficient
+        # error<-error-rho[m]*phi*(n*(time-m)-p)/n #directly use phi might be more efficient
         # wgeei<-rbind(wgeei,error)
         # }
         #
@@ -354,7 +354,7 @@ ee.gee.onlymean<-function(y,x,r,id,beta,ro,phi,dist,corstr)
 
 #'@title Estimating equation for marginal mean under weighted GEE(WGEE) with data missing at random
 #'@description Calculate estimating equation from WGEE in ELCIC. This estimating equation is used for marginal mean selection.
-#'@usage ee.wgee.onlymean(y,x,r,pi,id,time,beta,ro,phi,dist,corstr)
+#'@usage ee.wgee.mean(y,x,r,pi,id,time,beta,rho,phi,dist,corstr)
 #'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept.
 #'@param y A vector containing outcomes. use NA to indicate missing outcomes.
 #'@param r A vector indicating the observation of outcomes: 1 for observed records, and 0 for unobserved records.
@@ -362,7 +362,7 @@ ee.gee.onlymean<-function(y,x,r,id,beta,ro,phi,dist,corstr)
 #'@param time The number of observations for each subject
 #'@param id A vector indicating subject id.
 #'@param beta A plug-in estimator solved by an external estimation procedure, such as WGEE.
-#'@param ro A correlation coefficients obtained from an external estimation procedure, such as WGEE.
+#'@param rho A correlation coefficients obtained from an external estimation procedure, such as WGEE.
 #'@param phi An over-dispersion parameter obtained from an external estimation procedure, such as GEE.
 #'@param dist A specified distribution. It can be "gaussian", "poisson",and "binomial".
 #'@param corstr A condidate correlation structure. It can be "independence","exchangeable", and "ar1".
@@ -384,24 +384,24 @@ ee.gee.onlymean<-function(y,x,r,id,beta,ro,phi,dist,corstr)
 #'fit<-wgee(y~x1+x2+x3,data_wgee,id,family=dist,corstr =corstr,
 #'      scale = NULL,mismodel =obs_ind~x_mis1)
 #'beta<-as.vector(summary(fit)$beta)
-#'ro<-summary(fit)$corr
+#'rho<-summary(fit)$corr
 #'phi<-summary(fit)$phi
 #'#calculate observing probabilies for all observations
 #'gamma<-as.vector(summary(fit$mis_fit)$coefficients[,1])
 #'x_mis<-wgeesimdata$x_mis
-#'pi<-prob.obs(x_mis,gamma,id,time=3)
-#'wgee.matrix<-ee.wgee.onlymean(y=wgeesimdata$y,x=wgeesimdata$x,r=wgeesimdata$obs_ind,
-#'pi=pi,id=wgeesimdata$id,time=3,beta=beta,ro=ro,phi=phi,dist=dist,corstr=corstr)
+#'pi<-cond.prob(x_mis,gamma,id,time=3)
+#'wgee.matrix<-ee.wgee.mean(y=wgeesimdata$y,x=wgeesimdata$x,r=wgeesimdata$obs_ind,
+#'pi=pi,id=wgeesimdata$id,time=3,beta=beta,rho=rho,phi=phi,dist=dist,corstr=corstr)
 #'apply(wgee.matrix,1,mean)
 #'@export
 
-ee.wgee.onlymean<-function(y,x,r,pi,id,time,beta,ro,phi,dist,corstr)
+ee.wgee.mean<-function(y,x,r,pi,id,time,beta,rho,phi,dist,corstr)
 { #full wgee
     n<-length(unique(id))
     p<-length(beta)
-    ro<-roo(ro,time,corstr)
+    rho<-roo(rho,time,corstr)
     A<-diag(1,time,time)
-    R<-R(ro,id)
+    R<-R(rho,id)
     W<-diag(1,time,time)
     V<-v(x,beta,dist)
     wgeef<-rep()
@@ -415,19 +415,19 @@ ee.wgee.onlymean<-function(y,x,r,pi,id,time,beta,ro,phi,dist,corstr)
     y[which(is.na(y))]<-0
     for (i in 1:n)
     {
-        piii<-pii(pi[((i-1)*time+1):(i*time)])
+        piii<-marg.prob(pi[((i-1)*time+1):(i*time)])
         AA<-A*V$v[((i-1)*time+1):(i*time)]^(-0.5)
         WW<-W*r[((i-1)*time+1):(i*time)]*piii
         e<-y[((i-1)*time+1):(i*time)]-V$mu[((i-1)*time+1):(i*time)]
         wgeei<-1/phi*t(V$der[((i-1)*time+1):(i*time),])%*%AA%*%solve(R)%*%AA%*%WW%*%e
         # e<-e*(V$v[((i-1)*time+1):(i*time)])^(-0.5)
-        # for (m in 1:(time-1)) #formula for ro
+        # for (m in 1:(time-1)) #formula for rho
         # {error<-0
         # for (j in 1:(time-m))
         # {
         #     error<-error+e[j]*e[j+m]*WW[j+m,j+m]
         # }
-        # error<-error-ro[m]*phi*(n*(time-m)-p)/n #directly use phi might be more efficient
+        # error<-error-rho[m]*phi*(n*(time-m)-p)/n #directly use phi might be more efficient
         # wgeei<-rbind(wgeei,error)
         # }
 
