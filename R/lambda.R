@@ -97,14 +97,14 @@ lambda.find.glm<-function(x,y,betahat,dist)
 
 #'@title Calculate the tuning parameters involved in ELCIC under GEE
 #'@description This function provides an efficient algorithm to calculate the tuning parameters involved in ELCIC under GEE.
-#'@usage lambda.find.gee(x, y, id, betahat, r, dist, ro, phi, corstr)
+#'@usage lambda.find.gee(x, y, id, betahat, r, dist, rho, phi, corstr)
 #'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept.
 #'@param y A vector containing outcomes.
 #'@param r A vector indicating the observation of outcomes: 1 for observed records, and 0 for unobserved records. The default setup is that all data are observed. See more in details section.
 #'@param id A vector indicating subject id.
 #'@param dist A specified distribution. It can be "gaussian", "poisson",and "binomial".
 #'@param betahat A plug-in estimator solved by an external estimation procedure, such as GEE.
-#'@param ro A correlation coefficients obtained from an external estimation procedure, such as GEE.
+#'@param rho A correlation coefficients obtained from an external estimation procedure, such as GEE.
 #'@param phi An over-dispersion parameter obtained from an external estimation procedure, such as GEE.
 #'@param corstr A condidate correlation structure. It can be "independence","exchangeable", and "ar1".
 #'
@@ -125,20 +125,20 @@ lambda.find.glm<-function(x,y,betahat,dist)
 #'library(geepack)
 #'fit<-geeglm(y~x-1,data=geesimdata,family =dist,id=id,corstr = corstr)
 #'betahat<-fit$coefficients
-#'ro<-unlist(summary(fit)$corr[1])
+#'rho<-unlist(summary(fit)$corr[1])
 #'phi<-unlist(summary(fit)$dispersion[1])
 #'r=rep(1,nrow(x))
-#'lambda<-lambda.find.gee(x,y,id,betahat,r,dist,ro,phi,corstr)
+#'lambda<-lambda.find.gee(x,y,id,betahat,r,dist,rho,phi,corstr)
 #'lambda
 #'
 #'@export
 
 #function to find lambda, given beta and an
-lambda.find.gee<-function(x,y,id,betahat,r,dist,ro,phi,corstr)
+lambda.find.gee<-function(x,y,id,betahat,r,dist,rho,phi,corstr)
 {
     samplesize<-length(unique(id))
 
-    ZZ<-ee.gee(y=y,x=x,r=r,id=id,beta=betahat,ro=ro,phi=phi,dist=dist,corstr=corstr)[,1:(samplesize)]
+    ZZ<-ee.gee(y=y,x=x,r=r,id=id,beta=betahat,rho=rho,phi=phi,dist=dist,corstr=corstr)[,1:(samplesize)]
     #ZZ<-ee.glm(x=x,y=y,betahat=betahat,dist=dist)[,1:(samplesize)]
     #ZZ<-wgeef(beta=beta,adata,r=r,id=id,dist=dist,time=time)[,1:(n+1)]
     dim(ZZ)
@@ -182,7 +182,7 @@ lambda.find.gee<-function(x,y,id,betahat,r,dist,ro,phi,corstr)
 
 #'@title Calculate the tuning parameters involved in ELCIC under WGEE with data missing at random
 #'@description This function provides an efficient algorithm to calculate the tuning parameters involved in ELCIC under WGEE with data missing at random.
-#'@usage lambda.find.wgee(y,x,r,pi,id,time,beta,ro,phi,dist,corstr)
+#'@usage lambda.find.wgee(y,x,r,pi,id,time,beta,rho,phi,dist,corstr)
 #'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept.
 #'@param y A vector containing outcomes. use NA to indicate missing outcomes.
 #'@param r A vector indicating the observation of outcomes: 1 for observed records, and 0 for unobserved records.
@@ -190,7 +190,7 @@ lambda.find.gee<-function(x,y,id,betahat,r,dist,ro,phi,corstr)
 #'@param time The number of observations for each subject
 #'@param id A vector indicating subject id.
 #'@param beta A plug-in estimator solved by an external estimation procedure, such as WGEE.
-#'@param ro A correlation coefficients obtained from an external estimation procedure, such as WGEE.
+#'@param rho A correlation coefficients obtained from an external estimation procedure, such as WGEE.
 #'@param phi An over-dispersion parameter obtained from an external estimation procedure, such as GEE.
 #'@param dist A specified distribution. It can be "gaussian", "poisson",and "binomial".
 #'@param corstr A condidate correlation structure. It can be "independence","exchangeable", and "ar1".
@@ -210,23 +210,23 @@ lambda.find.gee<-function(x,y,id,betahat,r,dist,ro,phi,corstr)
 #'fit<-wgee(y~x1+x2+x3,data_wgee,id,family=dist,corstr =corstr,scale = NULL,
 #'          mismodel =obs_ind~x_mis1)
 #'beta<-as.vector(summary(fit)$beta)
-#'ro<-summary(fit)$corr
+#'rho<-summary(fit)$corr
 #'phi<-summary(fit)$phi
 #'#calculate observing probabilies for all observations
 #'gamma<-as.vector(summary(fit$mis_fit)$coefficients[,1])
 #'x_mis<-wgeesimdata$x_mis
-#'pi<-prob.obs(x_mis,gamma,id,time=3)
+#'pi<-cond.prob(x_mis,gamma,id,time=3)
 #'lambda<-lambda.find.wgee(y=wgeesimdata$y,x=wgeesimdata$x,r=wgeesimdata$obs_ind,
-#'pi=pi,id=wgeesimdata$id,time=3,beta=beta,ro=ro,phi=phi,dist=dist,corstr=corstr)
+#'pi=pi,id=wgeesimdata$id,time=3,beta=beta,rho=rho,phi=phi,dist=dist,corstr=corstr)
 #'lambda
 #'
 #'@export
 
-lambda.find.wgee<-function(y,x,r,pi,id,time,beta,ro,phi,dist,corstr)
+lambda.find.wgee<-function(y,x,r,pi,id,time,beta,rho,phi,dist,corstr)
 {
     samplesize<-length(unique(id))
 
-    ZZ<-ee.wgee(y,x,r,pi,id,time,beta,ro,phi,dist,corstr)[,1:(samplesize)]
+    ZZ<-ee.wgee(y,x,r,pi,id,time,beta,rho,phi,dist,corstr)[,1:(samplesize)]
     #ZZ<-ee.glm(x=x,y=y,betahat=betahat,dist=dist)[,1:(samplesize)]
     #ZZ<-wgeef(beta=beta,adata,r=r,id=id,dist=dist,time=time)[,1:(n+1)]
     dim(ZZ)
@@ -272,14 +272,14 @@ lambda.find.wgee<-function(y,x,r,pi,id,time,beta,ro,phi,dist,corstr)
 #function to find lambda under marginal mean selection in gee
 #'@title Calculate the tuning parameters under marginal mean selection in GEE
 #'@description This function provides an efficient algorithm to calculate the tuning parameters involved in marginal mean selection in GEE.
-#'@usage lambda.find.gee.onlymean(x, y, id, betahat, r, dist, ro, phi, corstr)
+#'@usage lambda.find.gee.mean(x, y, id, betahat, r, dist, rho, phi, corstr)
 #'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept.
 #'@param y A vector containing outcomes.
 #'@param r A vector indicating the observation of outcomes: 1 for observed records, and 0 for unobserved records. The default setup is that all data are observed. See more in details section.
 #'@param id A vector indicating subject id.
 #'@param dist A specified distribution. It can be "gaussian", "poisson",and "binomial".
 #'@param betahat A plug-in estimator solved by an external estimation procedure, such as GEE.
-#'@param ro A correlation coefficients obtained from an external estimation procedure, such as GEE.
+#'@param rho A correlation coefficients obtained from an external estimation procedure, such as GEE.
 #'@param phi An over-dispersion parameter obtained from an external estimation procedure, such as GEE.
 #'@param corstr A condidate correlation structure. It can be "independence","exchangeable", and "ar1".
 #'
@@ -302,19 +302,19 @@ lambda.find.wgee<-function(y,x,r,pi,id,time,beta,ro,phi,dist,corstr)
 #'library(geepack)
 #'fit<-geeglm(y~x-1,data=geesimdata,family =dist,id=id,corstr = corstr)
 #'betahat<-fit$coefficients
-#'ro<-unlist(summary(fit)$corr[1])
+#'rho<-unlist(summary(fit)$corr[1])
 #'phi<-unlist(summary(fit)$dispersion[1])
 #'r<-rep(1,nrow(x))
-#'lambda<-lambda.find.gee.onlymean(x,y,id,betahat,r,dist,ro,phi,corstr)
+#'lambda<-lambda.find.gee.mean(x,y,id,betahat,r,dist,rho,phi,corstr)
 #'lambda
 #'
 #'@export
 #'
-lambda.find.gee.onlymean<-function(x,y,id,betahat,r,dist,ro,phi,corstr)
+lambda.find.gee.mean<-function(x,y,id,betahat,r,dist,rho,phi,corstr)
 {
     samplesize<-length(unique(id))
 
-    ZZ<-ee.gee.onlymean(y=y,x=x,r=r,id=id,beta=betahat,ro=ro,phi=phi,dist=dist,corstr=corstr)[,1:(samplesize)]
+    ZZ<-ee.gee.mean(y=y,x=x,r=r,id=id,beta=betahat,rho=rho,phi=phi,dist=dist,corstr=corstr)[,1:(samplesize)]
     #ZZ<-ee.glm(x=x,y=y,betahat=betahat,dist=dist)[,1:(samplesize)]
     #ZZ<-wgeef(beta=beta,adata,r=r,id=id,dist=dist,time=time)[,1:(n+1)]
     dim(ZZ)
@@ -360,7 +360,7 @@ lambda.find.gee.onlymean<-function(x,y,id,betahat,r,dist,ro,phi,corstr)
 
 #'@title Calculate the tuning parameters involved in marginal mean selection under WGEE with data missing at random
 #'@description This function provides an efficient algorithm to calculate the tuning parameters involved in marginal mean selection under WGEE with data missing at random.
-#'@usage lambda.find.wgee.onlymean(y,x,r,pi,id,time,beta,ro,phi,dist,corstr)
+#'@usage lambda.find.wgee.mean(y,x,r,pi,id,time,beta,rho,phi,dist,corstr)
 #'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept.
 #'@param y A vector containing outcomes. use NA to indicate missing outcomes.
 #'@param r A vector indicating the observation of outcomes: 1 for observed records, and 0 for unobserved records.
@@ -368,7 +368,7 @@ lambda.find.gee.onlymean<-function(x,y,id,betahat,r,dist,ro,phi,corstr)
 #'@param time The number of observations for each subject
 #'@param id A vector indicating subject id.
 #'@param beta A plug-in estimator solved by an external estimation procedure, such as WGEE.
-#'@param ro A correlation coefficients obtained from an external estimation procedure, such as WGEE.
+#'@param rho A correlation coefficients obtained from an external estimation procedure, such as WGEE.
 #'@param phi An over-dispersion parameter obtained from an external estimation procedure, such as GEE.
 #'@param dist A specified distribution. It can be "gaussian", "poisson",and "binomial".
 #'@param corstr A condidate correlation structure. It can be "independence","exchangeable", and "ar1".
@@ -390,24 +390,24 @@ lambda.find.gee.onlymean<-function(x,y,id,betahat,r,dist,ro,phi,corstr)
 #'fit<-wgee(y~x1+x2+x3,data_wgee,id,family=dist,corstr =corstr,scale = NULL,
 #'          mismodel =obs_ind~x_mis1)
 #'beta<-as.vector(summary(fit)$beta)
-#'ro<-summary(fit)$corr
+#'rho<-summary(fit)$corr
 #'phi<-summary(fit)$phi
 #'#calculate observing probabilies for all observations
 #'gamma<-as.vector(summary(fit$mis_fit)$coefficients[,1])
 #'x_mis<-wgeesimdata$x_mis
-#'pi<-prob.obs(x_mis,gamma,id,time=3)
-#'lambda<-lambda.find.wgee.onlymean(y=wgeesimdata$y,x=wgeesimdata$x,r=wgeesimdata$obs_ind,
-#'pi=pi,id=wgeesimdata$id,time=3,beta=beta,ro=ro,phi=phi,dist=dist,corstr=corstr)
+#'pi<-cond.prob(x_mis,gamma,id,time=3)
+#'lambda<-lambda.find.wgee.mean(y=wgeesimdata$y,x=wgeesimdata$x,r=wgeesimdata$obs_ind,
+#'pi=pi,id=wgeesimdata$id,time=3,beta=beta,rho=rho,phi=phi,dist=dist,corstr=corstr)
 #'lambda
 #'
 #'@export
 
 #function to find lambda under marginal mean selection in wgee
-lambda.find.wgee.onlymean<-function(y,x,r,pi,id,time,beta,ro,phi,dist,corstr)
+lambda.find.wgee.mean<-function(y,x,r,pi,id,time,beta,rho,phi,dist,corstr)
 {
     samplesize<-length(unique(id))
 
-    ZZ<-ee.wgee.onlymean(y,x,r,pi,id,time,beta,ro,phi,dist,corstr)[,1:(samplesize)]
+    ZZ<-ee.wgee.mean(y,x,r,pi,id,time,beta,rho,phi,dist,corstr)[,1:(samplesize)]
     #ZZ<-ee.glm(x=x,y=y,betahat=betahat,dist=dist)[,1:(samplesize)]
     #ZZ<-wgeef(beta=beta,adata,r=r,id=id,dist=dist,time=time)[,1:(n+1)]
     dim(ZZ)
