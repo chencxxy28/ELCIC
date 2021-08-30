@@ -96,7 +96,7 @@ ELCIC.glm.single<-function (x,y,index.var=NULL,name.var=NULL,dist)
 #'
 #'@details Either arguments "index.var" or "name.var" is used to identify the candidate mean model. If both arguments are provided, only the argument "name.var" will be used.
 #'
-#'When the argument "joints" is TRUE, \code{\link{ELCIC.gee.single}} will calculate ELCIC value based on the function \code{\link{lambda.find.gee}} and \code{\link{ee.gee}}, which involve both marginal mean and correlation coefficient estimating equations. When the argument "joints" is FALSE, \code{\link{ELCIC.gee.single}} will calculate ELCIC value based on the function \code{\link{lambda.find.gee.onlymean}} and \code{\link{ee.gee.onlymean}}, which only involve marginal mean estimating equations.
+#'When the argument "joints" is TRUE, \code{\link{ELCIC.gee.single}} will calculate ELCIC value based on the function \code{\link{lambda.find.gee}} and \code{\link{ee.gee}}, which involve both marginal mean and correlation coefficient estimating equations. When the argument "joints" is FALSE, \code{\link{ELCIC.gee.single}} will calculate ELCIC value based on the function \code{\link{lambda.find.gee.mean}} and \code{\link{ee.gee.mean}}, which only involve marginal mean estimating equations.
 #'
 #'@examples
 #'## tests
@@ -164,14 +164,14 @@ ELCIC.gee.single<-function(x,y,r,id,time,index.var=NULL,name.var=NULL,dist,corst
 
         if(corstr=="independence")
         {
-            ro<-0
+            rho<-0
             p<-pbeta
         }else{
-            ro<-unlist(summary(fit)$corr[1]) #correlation coefficients
+            rho<-unlist(summary(fit)$corr[1]) #correlation coefficients
             p<-pbeta+1
         }
         phihat<-unlist(summary(fit)$dispersion[1])
-        Z<-as.matrix(ee.gee(y=y,x=x,r=r,id=id,beta=betahat,ro=ro,phi=phihat,dist=dist,corstr=corstr))
+        Z<-as.matrix(ee.gee(y=y,x=x,r=r,id=id,beta=betahat,rho=rho,phi=phihat,dist=dist,corstr=corstr))
         # epi<-1/samplesize
         # model<-function(lambda)
         # {
@@ -179,7 +179,7 @@ ELCIC.gee.single<-function(x,y,r,id,time,index.var=NULL,name.var=NULL,dist,corst
         #     {x/(1+t(lambda)%*%x)}
         #     else {2/epi*x-(1+t(lambda)%*%x)/(epi^2)*x})%*%rep(1,samplesize)
         # }
-        lambda<-lambda.find.gee(x=x,y=y,id=id,betahat=betahat,r=r,dist=dist,ro=ro,phi=phihat,corstr=corstr)
+        lambda<-lambda.find.gee(x=x,y=y,id=id,betahat=betahat,r=r,dist=dist,rho=rho,phi=phihat,corstr=corstr)
         # lambda<-multiroot(f = model, start = rep(0,length(betahat)+time-1))$root
         likelihood<-apply(Z,2,function(x) {
             2*log(1+t(lambda)%*%x)})%*%rep(1,samplesize)
@@ -217,14 +217,14 @@ ELCIC.gee.single<-function(x,y,r,id,time,index.var=NULL,name.var=NULL,dist,corst
 
         if(corstr=="independence")
         {
-            ro<-0
+            rho<-0
             #p<-pbeta
         }else{
-            ro<-unlist(summary(fit)$corr[1]) #correlation coefficients
+            rho<-unlist(summary(fit)$corr[1]) #correlation coefficients
             #p<-pbeta+1
         }
         phihat<-unlist(summary(fit)$dispersion[1])
-        Z<-as.matrix(ee.gee.onlymean(y=y,x=x,r=r,id=id,beta=betahat,ro=ro,phi=phihat,dist=dist,corstr=corstr))
+        Z<-as.matrix(ee.gee.mean(y=y,x=x,r=r,id=id,beta=betahat,rho=rho,phi=phihat,dist=dist,corstr=corstr))
         # epi<-1/samplesize
         # model<-function(lambda)
         # {
@@ -232,7 +232,7 @@ ELCIC.gee.single<-function(x,y,r,id,time,index.var=NULL,name.var=NULL,dist,corst
         #     {x/(1+t(lambda)%*%x)}
         #     else {2/epi*x-(1+t(lambda)%*%x)/(epi^2)*x})%*%rep(1,samplesize)
         # }
-        lambda<-lambda.find.gee.onlymean(x=x,y=y,id=id,betahat=betahat,r=r,dist=dist,ro=ro,phi=phihat,corstr=corstr)
+        lambda<-lambda.find.gee.mean(x=x,y=y,id=id,betahat=betahat,r=r,dist=dist,rho=rho,phi=phihat,corstr=corstr)
         # lambda<-multiroot(f = model, start = rep(0,length(betahat)+time-1))$root
         likelihood<-apply(Z,2,function(x) {
             2*log(1+t(lambda)%*%x)})%*%rep(1,samplesize)
@@ -269,7 +269,7 @@ ELCIC.gee.single<-function(x,y,r,id,time,index.var=NULL,name.var=NULL,dist,corst
 #'
 #'Either arguments "index.var" or "name.var" is used to identify the candidate mean model. If both arguments are provided, only the argument "name.var" will be used.
 #'
-#'When the argument "joints" is TRUE, \code{\link{ELCIC.wgee.single}} will calculate ELCIC value based on the function \code{\link{lambda.find.wgee}} and \code{\link{ee.wgee}}, which involve both marginal mean and correlation coefficient estimating equations. When the argument "joints" is FALSE, \code{\link{ELCIC.wgee.single}} will calculate ELCIC value based on the function \code{\link{lambda.find.wgee.onlymean}} and \code{\link{ee.wgee.onlymean}}, which only involve marginal mean estimating equations.
+#'When the argument "joints" is TRUE, \code{\link{ELCIC.wgee.single}} will calculate ELCIC value based on the function \code{\link{lambda.find.wgee}} and \code{\link{ee.wgee}}, which involve both marginal mean and correlation coefficient estimating equations. When the argument "joints" is FALSE, \code{\link{ELCIC.wgee.single}} will calculate ELCIC value based on the function \code{\link{lambda.find.wgee.mean}} and \code{\link{ee.wgee.mean}}, which only involve marginal mean estimating equations.
 #'
 #'@examples
 #'## tests
@@ -367,16 +367,16 @@ ELCIC.wgee.single<-function(x,y,x_mis,r,id,time,index.var=NULL,name.var=NULL,dis
 
         if(corstr=="independence")
         {
-            ro<-0
+            rho<-0
             p<-pbeta
         }else{
-            ro<-summary(fit)$corr
+            rho<-summary(fit)$corr
             p<-pbeta+1
         }
         phi<-summary(fit)$phi
         gamma<-as.vector(summary(fit$mis_fit)$coefficients[,1])
-        pi<-prob.obs(x_mis,gamma,id,time)
-        Z<-as.matrix(ee.wgee(y,x,r, pi,id,time,beta,ro,phi,dist,corstr))
+        pi<-cond.prob(x_mis,gamma,id,time)
+        Z<-as.matrix(ee.wgee(y,x,r, pi,id,time,beta,rho,phi,dist,corstr))
         # epi<-1/samplesize
         # model<-function(lambda)
         # {
@@ -384,7 +384,7 @@ ELCIC.wgee.single<-function(x,y,x_mis,r,id,time,index.var=NULL,name.var=NULL,dis
         #     {x/(1+t(lambda)%*%x)}
         #     else {2/epi*x-(1+t(lambda)%*%x)/(epi^2)*x})%*%rep(1,samplesize)
         # }
-        lambda<-lambda.find.wgee(y,x,r, pi,id,time,beta,ro,phi,dist,corstr)
+        lambda<-lambda.find.wgee(y,x,r, pi,id,time,beta,rho,phi,dist,corstr)
         # lambda<-multiroot(f = model, start = rep(0,length(betahat)+time-1))$root
         likelihood<-apply(Z,2,function(x) {
             2*log(1+t(lambda)%*%x)})%*%rep(1,samplesize)
@@ -414,16 +414,16 @@ ELCIC.wgee.single<-function(x,y,x_mis,r,id,time,index.var=NULL,name.var=NULL,dis
 
         if(corstr=="independence")
         {
-            ro<-0
+            rho<-0
             #p<-pbeta
         }else{
-            ro<-summary(fit)$corr
+            rho<-summary(fit)$corr
             #p<-pbeta+1
         }
         phi<-summary(fit)$phi
         gamma<-as.vector(summary(fit$mis_fit)$coefficients[,1])
-        pi<-prob.obs(x_mis,gamma,id,time)
-        Z<-as.matrix(ee.wgee.onlymean(y,x,r, pi,id,time=3,beta,ro,phi,dist,corstr))
+        pi<-cond.prob(x_mis,gamma,id,time)
+        Z<-as.matrix(ee.wgee.mean(y,x,r, pi,id,time=3,beta,rho,phi,dist,corstr))
         # epi<-1/samplesize
         # model<-function(lambda)
         # {
@@ -431,7 +431,7 @@ ELCIC.wgee.single<-function(x,y,x_mis,r,id,time,index.var=NULL,name.var=NULL,dis
         #     {x/(1+t(lambda)%*%x)}
         #     else {2/epi*x-(1+t(lambda)%*%x)/(epi^2)*x})%*%rep(1,samplesize)
         # }
-        lambda<-lambda.find.wgee.onlymean(y,x,r, pi,id,time=3,beta,ro,phi,dist,corstr)
+        lambda<-lambda.find.wgee.mean(y,x,r, pi,id,time=3,beta,rho,phi,dist,corstr)
         # lambda<-multiroot(f = model, start = rep(0,length(betahat)+time-1))$root
         likelihood<-apply(Z,2,function(x) {
             2*log(1+t(lambda)%*%x)})%*%rep(1,samplesize)
@@ -747,7 +747,7 @@ ELCIC.wgee<-function(x,y,x_mis,r,id,time,candidate.sets=NULL,name.var.sets=NULL,
 #'
 #'@details Either arguments "index.var" or "name.var" is used to identify the candidate mean model. If both arguments are provided, only the argument "name.var" will be used.
 #'
-#'When the argument "joints" is TRUE, \code{\link{ELCIC.gee}} will calculate ELCIC value based on the function \code{\link{lambda.find.gee}} and \code{\link{ee.gee}}, which involve both marginal mean and correlation coefficient estimating equations. When the argument "joints" is FALSE, \code{\link{ELCIC.gee}} will calculate ELCIC value based on the function \code{\link{lambda.find.gee.onlymean}} and \code{\link{ee.gee.onlymean}}, which only involve marginal mean estimating equations.
+#'When the argument "joints" is TRUE, \code{\link{ELCIC.gee}} will calculate ELCIC value based on the function \code{\link{lambda.find.gee}} and \code{\link{ee.gee}}, which involve both marginal mean and correlation coefficient estimating equations. When the argument "joints" is FALSE, \code{\link{ELCIC.gee}} will calculate ELCIC value based on the function \code{\link{lambda.find.gee.mean}} and \code{\link{ee.gee.mean}}, which only involve marginal mean estimating equations.
 #'
 #'@examples
 #'## tests
