@@ -310,34 +310,34 @@ v<-function(x,beta,dist) #function used to calculate variance, mean, and derivat
 }
 
 
-R<-function(ro,id) #working correlation matrix
+R<-function(rho,id) #working correlation matrix
 {
     time<-length(id)/length(unique(id))
     R<-diag(1,time,time)
-    ro<-c(1,ro)
+    rho<-c(1,rho)
     for (i in 1:time)
     {
         for (j in 1:time)
         {
-            R[i,j]<-ro[abs(i-j)+1]
+            R[i,j]<-rho[abs(i-j)+1]
         }
     }
     return(R)
 }
 
-roo<-function(ro,time,corstr)
+roo<-function(rho,time,corstr)
 {
-    if (ro>0.99)
-    {ro<-0.99}
+    if (rho>0.99)
+    {rho<-0.99}
     roo<-rep(0,(time-1))
     if (corstr=="ar1")
     {
         for (i in 1:(time-1))
-        {roo[i]<-ro^i}
+        {roo[i]<-rho^i}
     }
     else if (corstr=="exchangeable")
     {
-        roo<-rep(ro,(time-1))
+        roo<-rep(rho,(time-1))
     }
     return(roo)
 }
@@ -345,16 +345,16 @@ roo<-function(ro,time,corstr)
 
 
 
-#'@title Calculate conditional probabilities for observing records from each subject
-#'@description A function provides conditional probabilities.
-#'@usage prob.obs(x_mis,gamma,id,time)
+#'@title Calculate conditional probabilities for observing records at each time point
+#'@description A function calculates conditional probabilities.
+#'@usage cond.prob(x_mis,gamma,id,time)
 #'@param x_mis A matrix containing covariates for the missing data model. The first column should be all ones corresponding to the intercept.
 #'@param gamma coefficients calculated from missing data model
 #'@param id A vector indicating subject id.
 #'@param time The number of observations in total for each subject
 
 
-#'@return pi: a vector containing conditional probabilities.
+#'@return a vector containing conditional probabilities.
 #'@examples
 #'## tests
 #'# load data
@@ -368,15 +368,15 @@ roo<-function(ro,time,corstr)
 #'fit<-wgee(y~x1+x2+x3,data_wgee,id,family=dist,corstr =corstr,scale = NULL,
 #'          mismodel =obs_ind~x_mis1)
 #'beta<-as.vector(summary(fit)$beta)
-#'ro<-summary(fit)$corr
+#'rho<-summary(fit)$corr
 #'phi<-summary(fit)$phi
 #'#calculate observing probabilies for all observations
 #'gamma<-as.vector(summary(fit$mis_fit)$coefficients[,1])
 #'x_mis<-wgeesimdata$x_mis
-#'pi<-prob.obs(x_mis,gamma,id,time=3)
+#'pi<-cond.prob(x_mis,gamma,id,time=3)
 #'
 #'@export
-prob.obs<-function(x_mis,gamma,id,time)
+cond.prob<-function(x_mis,gamma,id,time)
 {
     samplesize<-length(unique(id))
     pi<-exp(x_mis%*%gamma)/(1+exp(x_mis%*%gamma))
@@ -387,12 +387,12 @@ prob.obs<-function(x_mis,gamma,id,time)
 
 
 
-#'@title Calculate the inverse of joint probability for observing records from each subject
-#'@description A function provides the inverse of joint probabilities for weight calculation involved in WGEE.
-#'@usage pii(pi)
+#'@title Calculate the inverse of marginal probability for observing records at each time point
+#'@description A function calculates the inverse of joint probabilities for weight calculation involved in WGEE.
+#'@usage marg.prob(pi)
 #'@param pi A matrix containing covariates for the missing data model. The first column should be all ones corresponding to the intercept.
 
-#'@return pii: a vector containing the inverse of joint probabilities.
+#'@return a vector containing the inverse of joint probabilities.
 #'@examples
 #'## tests
 #'# load data
@@ -406,16 +406,16 @@ prob.obs<-function(x_mis,gamma,id,time)
 #'fit<-wgee(y~x1+x2+x3,data_wgee,id,family=dist,corstr =corstr,scale = NULL,
 #'          mismodel =obs_ind~x_mis1)
 #'beta<-as.vector(summary(fit)$beta)
-#'ro<-summary(fit)$corr
+#'rho<-summary(fit)$corr
 #'phi<-summary(fit)$phi
 #'#calculate observing probabilies for all observations
 #'gamma<-as.vector(summary(fit$mis_fit)$coefficients[,1])
 #'x_mis<-wgeesimdata$x_mis
-#'pi<-prob.obs(x_mis,gamma,id,time=3)
-#'joint_prob<-pii(pi)
+#'pi<-cond.prob(x_mis,gamma,id,time=3)
+#'joint_prob<-marg.prob(pi)
 #'@export
 #'
-pii<-function(pi) #missing prob
+marg.prob<-function(pi) #missing prob
 { pi[which(pi<0.00001)]<-0.00001
 pii<-1/pi
 time<-length(pi)
