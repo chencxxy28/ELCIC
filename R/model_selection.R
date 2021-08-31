@@ -250,7 +250,7 @@ ELCIC.gee.single<-function(x,y,r,id,time,index.var=NULL,name.var=NULL,dist,corst
 #'       name.var=NULL,dist,corstr,joints=TRUE,lag=1)
 #'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept if the intercept is considered in the marginal mean. Covariate matrix should be complete. See more in details section.
 #'@param y A vector containing outcomes. Use NA to indicate missing outcomes.
-#'@param x_mis A matrix containing covariates for the missing data model. The first column should be all ones corresponding to the intercept if the intercept is considered in this missing data model. This covariate matrix should be complete and all observed. See more in details section.
+#'@param x_mis A matrix containing covariates for the missing data model. The first column should be all ones corresponding to the intercept. This covariate matrix should be complete and all observed. See more in details section.
 #'@param r A vector indicating the observation of outcomes: 1 for observed records, and 0 for unobserved records.
 #'@param id A vector indicating subject id.
 #'@param time The number of observations in total for each subject
@@ -622,7 +622,7 @@ ELCIC.gee<-function(x,y,r,id,time,candidate.sets=NULL,name.var.sets=NULL,dist,ca
 #'      dist,candidate.cor.sets=c("independence","exchangeable", "ar1"), joints=TRUE,lag=1)
 #'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept if the intercept is considered in the marginal mean. Covariate matrix should be complete.
 #'@param y A vector containing outcomes. Use NA to indicate missing outcomes.
-#'@param x_mis A matrix containing covariates for the missing data model. The first column should be all ones corresponding to the intercept if the intercept is considered in this missing data model. This covariate matrix should be complete and all observed. See more in details section.
+#'@param x_mis A matrix containing covariates for the missing data model. The first column should be all ones corresponding to the intercept. This covariate matrix should be complete and all observed. See more in details section.
 #'@param r A vector indicating the observation of outcomes: 1 for observed records, and 0 for unobserved records.
 #'@param id A vector indicating subject id.
 #'@param time The number of observations in total for each subject
@@ -867,7 +867,7 @@ QICc.gee<-function (x,y,id,dist,candidate.sets=NULL,name.var.sets=NULL,candidate
 #'       candidate.cor.sets=c("independence","exchangeable", "ar1"), joints=TRUE,lag=1)
 #'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept if the intercept is expected in the marginal mean model. Covariate matrix should be complete.
 #'@param y A vector containing outcomes. Use NA to indicate missing outcomes.
-#'@param x_mis A matrix containing covariates for the missing data model. The first column should be all ones corresponding to the intercept if the intercept is expected in the missing data model. This covariate matrix should be all observed. See more in details section.
+#'@param x_mis A matrix containing covariates for the missing data model. The first column should be all ones corresponding to the intercept. This covariate matrix should be complete and all observed. See more in details section.
 #'@param r A vector indicating the observation of outcomes: 1 for observed records, and 0 for unobserved records.
 #'@param id A vector indicating subject id.
 #'@param time The number of observations in total for each subject.
@@ -1100,7 +1100,7 @@ MLIC.wgee<-function(x,y,x_mis,r,id,time,candidate.sets=NULL,name.var.sets=NULL,d
 #'      dist,candidate.cor.sets=c("independence","exchangeable", "ar1"), joints=TRUE,lag=1)
 #'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept if the intercept is expected in the marginal mean model. Covariate matrix should be complete.
 #'@param y A vector containing outcomes. Use NA to indicate missing outcomes.
-#'@param x_mis A matrix containing covariates for the missing data model. The first column should be all ones corresponding to the intercept if the intercept is expected in the missing data model. This covariate matrix should be all observed. See more in details section.
+#'@param x_mis A matrix containing covariates for the missing data model. The first column should be all ones corresponding to the intercept. This covariate matrix should be complete and all observed. See more in details section.
 #'@param r A vector indicating the observation of outcomes: 1 for observed records, and 0 for unobserved records.
 #'@param id A vector indicating subject id.
 #'@param time The number of observations in total for each subject.
