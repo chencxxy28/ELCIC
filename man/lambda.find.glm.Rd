@@ -4,14 +4,14 @@
 \alias{lambda.find.glm}
 \title{To calculate tuning parameter involved in ELCIC under GLM}
 \usage{
-lambda.find.glm(x, y, betahat, dist)
+lambda.find.glm(x, y, beta, dist)
 }
 \arguments{
 \item{x}{A matrix containing covariates. The first column should contain all ones corresponding to the intercept.}
 
 \item{y}{A vector containing outcomes.}
 
-\item{betahat}{A plug-in estimator solved by an external estimating procedure.}
+\item{beta}{A plug-in estimator solved by an external estimating procedure.}
 
 \item{dist}{A specified distribution. It can be "gaussian", "poisson",and "binomial".}
 }
@@ -32,8 +32,8 @@ x<-glmsimdata$x
 y<-glmsimdata$y
 # obtain the estimates
 fit<-glm(y~x-1,family="poisson")
-betahat<-fit$coefficients
-lambda<-lambda.find.glm(x, y, betahat, dist="poisson")
+beta<-fit$coefficients
+lambda<-lambda.find.glm(x, y, beta, dist="poisson")
 lambda
 
 }
