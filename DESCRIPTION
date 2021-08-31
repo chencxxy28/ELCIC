@@ -2,8 +2,10 @@ Package: ELCIC
 Type: Package
 Title: The Empirical Likelihood-Based Consistent Information Criterion
 Version: 0.2.0
-Author: Chixiang Chen <chixiang.chen@pennmedicine.upenn.edu>
-Maintainer: Chixiang Chen <chixiang.chen@pennmedicine.upenn.edu>
+Author: Chixiang Chen <chixiang.chen@som.umaryland.edu>;
+        Biyi Shen <bshen@pennstatehealth.psu.edu>;
+        Ming Wang <mwang@phs.psu.edu>
+Maintainer: Chixiang Chen <chixiang.chen@som.umaryland.edu>
 Description: The empirical likelihood-Based consistent information criterion (ELCIC) conducts robust model selection for semiparametric models. It is free of distribution specification and powerful to locate the true model given large sample size. This package provides several usage of ELCIC with applications in generalized linear model (GLM), generalized estimating equation (GEE) for longitudinal data, and weighted GEE (WGEE) for missing longitudinal data under the mechanism of missing at random and drop-out. 
 License: Artistic-2.0
 Encoding: UTF-8
