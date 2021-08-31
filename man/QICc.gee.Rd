@@ -20,7 +20,7 @@ QICc.gee(x,y,id,dist,candidate.sets=NULL, name.var.sets=NULL,
 
 \item{name.var.sets}{A list containing names of candidate covariates. The names should be subset of column names of x matrix.}
 
-\item{candidate.cor.sets}{A vector containing condidate correlation structures. When joints=TRUE, it is c("independence","exchangeable", "ar1") as default. When joints=FALSE, it should be one of c("independence","exchangeable", "ar1").}
+\item{candidate.cor.sets}{A vector containing condidate correlation structures. When joints=TRUE, it can be any subset of c("independence","exchangeable", "ar1"). The default is c("independence","exchangeable", "ar1"). When joints=FALSE, it should be either of "independence","exchangeable", "ar1". See more in details section.}
 
 \item{joints}{A logic value for joint selection of marginal mean and working correlation structure. The default is TRUE.}
 }
@@ -33,7 +33,7 @@ This function provides the Joint selection of marginal mean and correlation stru
 \details{
 Either arguments "index.var" or "name.var" is used to identify the candidate mean model. If both arguments are provided, only the argument "name.var" will be used.
 
-When the argument "joints" is TRUE, \code{\link{ELCIC.gee}} will calculate ELCIC value based on the function \code{\link{lambda.find.gee}} and \code{\link{ee.gee}}, which involve estimating equations for both marginal mean and correlation coefficient. When the argument "joints" is FALSE, \code{\link{ELCIC.gee}} will calculate ELCIC value based on the function \code{\link{lambda.find.gee.mean}} and \code{\link{ee.gee.mean}}, which only involve estimating equations for marginal mean.
+When joints=TRUE, the argument "candidate.cor.sets" can contain multiple correlation structures; however, when joints=FALSE, it should contain either of "independence","exchangeable", "ar1". If multiple correlation structures are provided, only the first one will be used.
 }
 \examples{
 ## tests
