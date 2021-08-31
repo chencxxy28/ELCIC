@@ -2,7 +2,7 @@
 % Please edit documentation in R/estimating_equations.R
 \name{ee.wgee}
 \alias{ee.wgee}
-\title{Estimating equation for weighted GEE (WGEE) with data missing at random}
+\title{Estimating equation for weighted GEE (WGEE) for missing longitudinal data under the mechanism of missing at random and drop-out}
 \usage{
 ee.wgee(y,x,r,pi,id,time,beta,rho,phi,dist,corstr)
 }
@@ -33,7 +33,7 @@ ee.wgee(y,x,r,pi,id,time,beta,rho,phi,dist,corstr)
 A matrix containing values of calculated estimating equations.
 }
 \description{
-Calculate estimating equation from WGEE in ELCIC with data missing at random. This estimating equation is used for joint selection of marginal mean and working correlation structure.
+Calculate estimating equation from WGEE for missing longitudinal data under the mechanism of missing at random and drop-out. This estimating equation is used for joint selection of marginal mean and "working" correlation structure.
 }
 \examples{
 ## tests
@@ -44,7 +44,8 @@ data_wgee<-data.frame(do.call(cbind,wgeesimdata))
 corstr<-"exchangeable"
 dist<-"binomial"
 id<-data_wgee$id
-# obtain the estimates
+# obtain the estimates.
+# Note that "obs_ind" is an indicator of observations in the missing data model.
 fit<-wgee(y~x1+x2+x3,data_wgee,id,family=dist,corstr =corstr,
      scale = NULL,mismodel =obs_ind~x_mis1)
 beta<-as.vector(summary(fit)$beta)
