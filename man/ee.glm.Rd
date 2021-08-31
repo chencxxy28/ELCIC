@@ -4,14 +4,14 @@
 \alias{ee.glm}
 \title{Estimating equation for ELCIC under GLM}
 \usage{
-ee.glm(x, y, betahat, dist)
+ee.glm(x, y, beta, dist)
 }
 \arguments{
 \item{x}{A matrix containing covariates. The first column should be all ones corresponding to the intercept. See more details in}
 
 \item{y}{A vector containing outcomes.}
 
-\item{betahat}{A plug-in estimator solved by an external estimating procedure.}
+\item{beta}{A plug-in estimator solved by an external estimating procedure.}
 
 \item{dist}{A specified distribution. It can be "gaussian", "poisson",and "binomial".}
 }
@@ -30,10 +30,10 @@ A specified estimating equation for ELCIC under GLM. This estimating equation is
 data(glmsimdata)
 x<-glmsimdata$x
 y<-glmsimdata$y
-# obtain the estimates
+# obtain the estimates. Note that x matrix already contains intercept.
 fit<-glm(y~x-1,family="poisson")
-betahat<-fit$coefficients
-ee.matrix<-ee.glm(x, y, betahat, dist="poisson")
+beta<-fit$coefficients
+ee.matrix<-ee.glm(x, y, beta, dist="poisson")
 apply(ee.matrix,1,mean)
 
 }
