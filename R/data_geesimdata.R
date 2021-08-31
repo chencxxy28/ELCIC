@@ -1,4 +1,4 @@
-#' Toydata generated for model selection under GEE framework without missingness or missing completely at random
+#' Data simulated for model selection under GEE framework without missingness
 #'
 #'
 #' @docType data
