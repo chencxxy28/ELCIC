@@ -2,7 +2,7 @@
 % Please edit documentation in R/model_selection.R
 \name{ELCIC.gee.single}
 \alias{ELCIC.gee.single}
-\title{Calculate ELCIC value for a given candidate model under GEE framework}
+\title{Calculate ELCIC value for a given candidate model under GEE framework with complete longitudinal data or data missing completely at random}
 \usage{
 ELCIC.gee.single(x, y, r, id, time, index.var=NULL, name.var = NULL,
                      dist, corstr, joints=TRUE)
@@ -37,7 +37,7 @@ The function \code{\link{ELCIC.gee.single}} calculates ELCIC value for a given m
 \details{
 Either arguments "index.var" or "name.var" is used to identify the candidate mean model. If both arguments are provided, only the argument "name.var" will be used.
 
-When the argument "joints" is TRUE, \code{\link{ELCIC.gee.single}} will calculate ELCIC value based on the function \code{\link{lambda.find.gee}} and \code{\link{ee.gee}}, which involve both marginal mean and correlation coefficient estimating equations. When the argument "joints" is FALSE, \code{\link{ELCIC.gee.single}} will calculate ELCIC value based on the function \code{\link{lambda.find.gee.mean}} and \code{\link{ee.gee.mean}}, which only involve marginal mean estimating equations.
+When the argument "joints" is TRUE, \code{\link{ELCIC.gee.single}} will calculate ELCIC value based on the function \code{\link{lambda.find.gee}} and \code{\link{ee.gee}}, which involve estimating equations for both marginal mean and correlation coefficient. When the argument "joints" is FALSE, \code{\link{ELCIC.gee.single}} will calculate ELCIC value based on the function \code{\link{lambda.find.gee.mean}} and \code{\link{ee.gee.mean}}, which only involve estimating equations for marginal mean.
 }
 \examples{
 ## tests
