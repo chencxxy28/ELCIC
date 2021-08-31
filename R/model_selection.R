@@ -285,7 +285,7 @@ ELCIC.gee.single<-function(x,y,r,id,time,index.var=NULL,name.var=NULL,dist,corst
 #'time<-3
 #'index.var<-c(1,2,3)
 #'ELCIC_value<-ELCIC.wgee.single(x,y,x_mis,r,id,time,index.var,name.var=NULL,
-#'                      dist,corstr,joints=FALSE)
+#'                      dist,corstr,joints=TRUE)
 #'ELCIC_value
 
 #'@export
@@ -349,14 +349,15 @@ ELCIC.wgee.single<-function(x,y,x_mis,r,id,time,index.var=NULL,name.var=NULL,dis
         x_candidate<-(x[,index.var])
         colnames(x_candidate)<-seq_len(ncol(x_candidate))
         y<-as.matrix(y,col=1)
-        data_wgee<-data.frame(y,x_candidate,r,x_mis)
+        #data_wgee<-data.frame(y,x_candidate,r,x_mis)
+        data_wgee<-data.frame(r,x_mis)
 
-        mismodel_formula<-paste("r~",colnames(x_mis)[2])
-        if(ncol(x_mis)>2)
+        mismodel_formula<-paste("r~",colnames(data_wgee)[3])
+        if(ncol(data_wgee)>3)
         {
-        for(jj in 3:ncol(x_mis))
+        for(jj in 4:ncol(data_wgee))
         {
-        mismodel_formula<-paste(mismodel_formula,"+",colnames(x_mis)[jj])
+        mismodel_formula<-paste(mismodel_formula,"+",colnames(data_wgee)[jj])
         }
         }
         mismodel_formula<-as.formula(mismodel_formula)
@@ -396,14 +397,15 @@ ELCIC.wgee.single<-function(x,y,x_mis,r,id,time,index.var=NULL,name.var=NULL,dis
         x_candidate<-(x[,index.var])
         colnames(x_candidate)<-seq_len(ncol(x_candidate))
         y<-as.matrix(y,col=1)
-        data_wgee<-data.frame(y,x_candidate,r,x_mis)
+        #data_wgee<-data.frame(y,x_candidate,r,x_mis)
+        data_wgee<-data.frame(r,x_mis)
 
-        mismodel_formula<-paste("r~",colnames(x_mis)[2])
-        if(ncol(x_mis)>2)
+        mismodel_formula<-paste("r~",colnames(data_wgee)[3])
+        if(ncol(data_wgee)>3)
         {
-            for(jj in 3:ncol(x_mis))
+            for(jj in 4:ncol(data_wgee))
             {
-                mismodel_formula<-paste(mismodel_formula,"+",colnames(x_mis)[jj])
+                mismodel_formula<-paste(mismodel_formula,"+",colnames(data_wgee)[jj])
             }
         }
         mismodel_formula<-as.formula(mismodel_formula)
@@ -673,7 +675,7 @@ ELCIC.wgee<-function(x,y,x_mis,r,id,time,candidate.sets=NULL,name.var.sets=NULL,
                 criterion.all<-rep()
                 for (i in seq_len(length(name.var.sets)))
                 {
-                    criterion<-ELCIC.wgee.single(x,y,x_mis,r,id,time,index.var=NULL,name.var=name.var.sets[[i]],dist,corstr,joints=TRUE)
+                    criterion<-ELCIC.wgee.single(x,y,x_mis,r,id,time,index.var=NULL,name.var=name.var.sets[[i]],dist,corstr,joints=TRUE,lag=lag)
                     criterion.all<-c(criterion.all,criterion)
                 }
                 criterion.elcic<-rbind(criterion.elcic,criterion.all)
@@ -690,7 +692,7 @@ ELCIC.wgee<-function(x,y,x_mis,r,id,time,candidate.sets=NULL,name.var.sets=NULL,
                 criterion.all<-rep()
                 for (i in seq_len(length(candidate.sets)))
                 {
-                    criterion<-ELCIC.wgee.single(x,y,x_mis,r,id,time,index.var=candidate.sets[[i]],name.var=NULL,dist,corstr,joints=TRUE)
+                    criterion<-ELCIC.wgee.single(x,y,x_mis,r,id,time,index.var=candidate.sets[[i]],name.var=NULL,dist,corstr,joints=TRUE,lag=lag)
                     criterion.all<-c(criterion.all,criterion)
                 }
                 criterion.elcic<-rbind(criterion.elcic,criterion.all)
@@ -707,7 +709,7 @@ ELCIC.wgee<-function(x,y,x_mis,r,id,time,candidate.sets=NULL,name.var.sets=NULL,
                 corstr<-candidate.cor.sets[1]
                 for (i in seq_len(length(name.var.sets)))
                 {
-                    criterion<-ELCIC.wgee.single(x,y,x_mis,r,id,time,index.var=NULL,name.var=name.var.sets[[i]],dist,corstr,joints=FALSE)
+                    criterion<-ELCIC.wgee.single(x,y,x_mis,r,id,time,index.var=NULL,name.var=name.var.sets[[i]],dist,corstr,joints=FALSE,lag=lag)
                     criterion.elcic<-c(criterion.elcic,criterion)
                 }
 
@@ -718,7 +720,7 @@ ELCIC.wgee<-function(x,y,x_mis,r,id,time,candidate.sets=NULL,name.var.sets=NULL,
                 corstr<-candidate.cor.sets[1]
                 for (i in seq_len(length(candidate.sets)))
                 {
-                    criterion<-ELCIC.wgee.single(x,y,x_mis,r,id,time,index.var=candidate.sets[[i]],name.var=NULL,dist,corstr,joints=FALSE)
+                    criterion<-ELCIC.wgee.single(x,y,x_mis,r,id,time,index.var=candidate.sets[[i]],name.var=NULL,dist,corstr,joints=FALSE,lag=lag)
                     criterion.elcic<-c(criterion.elcic,criterion)
                 }
 
@@ -861,24 +863,26 @@ QICc.gee<-function (x,y,id,dist,candidate.sets=NULL,name.var.sets=NULL,candidate
 
 #'@title The whole MLIC procedure for joint selection of mean structure and correlation structure for missing longitudinal data under the mechanism of missing at random and drop-out
 #'@description This function provides the overall MLIC procedure for joint selection of mean structure and correlation structure in longitudinal data missing at random. It is also able to implement marginal mean structure selection given a prespecified working correlation structure. The data is dropout missing and missing at random.
-#'@usage MLIC.wgee(x,y,x_mis,r,id,candidate.sets=NULL, name.var.sets=NULL,dist,
-#'       candidate.cor.sets=c("independence","exchangeable", "ar1"), joints=TRUE)
+#'@usage MLIC.wgee(x,y,x_mis,r,id,time,candidate.sets=NULL, name.var.sets=NULL,dist,
+#'       candidate.cor.sets=c("independence","exchangeable", "ar1"), joints=TRUE,lag=1)
 #'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept if the intercept is expected in the marginal mean model. Covariate matrix should be complete.
 #'@param y A vector containing outcomes. Use NA to indicate missing outcomes.
 #'@param x_mis A matrix containing covariates for the missing data model. The first column should be all ones corresponding to the intercept if the intercept is expected in the missing data model. This covariate matrix should be all observed. See more in details section.
 #'@param r A vector indicating the observation of outcomes: 1 for observed records, and 0 for unobserved records.
 #'@param id A vector indicating subject id.
+#'@param time The number of observations in total for each subject.
 #'@param candidate.sets A list containing index corresponding to candidate covariates. See more in details section.
 #'@param name.var.sets A list containing names of candidate covariates. The names should be subset of column names of x matrix. See more in details section.
 #'@param dist A specified distribution. It can be "gaussian", "poisson",and "binomial".
 #'@param candidate.cor.sets A vector containing condidate correlation structures. When joints=TRUE, it is c("independence","exchangeable", "ar1") as default. When joints=FALSE, it should be either of "independence","exchangeable", "ar1". See more in details section.
 #'@param joints A logic value for joint selection of marginal mean and working correlation structure. The default is TRUE. See more in details section.
+#'@param lag A numeric value indicating lag-response involved in the missing data model. It can be either 1 or 2. The default is 1.
 
 #'@return A vector with each element containing MLIC value for each candidate model. The row name of this vector is the selected correlation structure.
 #'
 #'@details Covariate matrix "x" should be complete. If missing data are present in "x", the elements in covariate vector will be replaced by zeros for individuals who have missing covariates.
 #'
-#'The argument "x_mis" includes all covariates to fit the missing data model. It typically contains a lag-1 variable based on the outcome y to indicate the data missing at random. Note that the lag-1 variable should be NA for the first observation from each subject.
+#'The argument "x_mis" includes all covariates to fit the missing data model. It does not contains a lag variable based on the outcome y. The argument "lag" in this function will automatically add lag-response variables to indicate the data missing at random.
 #'
 #'Either arguments "candidate.sets" or "name.var.sets" is used to identify the set of candidate mean model. If both arguments are provided, only the argument "name.var.sets" will be used.
 #'
@@ -894,16 +898,17 @@ QICc.gee<-function (x,y,id,dist,candidate.sets=NULL,name.var.sets=NULL,candidate
 #'x_mis<-wgeesimdata$x_mis
 #'r<-wgeesimdata$obs_ind
 #'id<-wgeesimdata$id
+#'time=3
 #'candidate.sets<-list(c(1,2,3))
 #'candidate.cor.sets<-c("exchangeable")
-#'criterion.mlic<-MLIC.wgee(x,y,x_mis,r,id,candidate.sets,
+#'criterion.mlic<-MLIC.wgee(x,y,x_mis,r,id,time,candidate.sets,
 #'             name.var.sets=NULL,dist,candidate.cor.sets,joints=FALSE)
 #'criterion.mlic
 
 #'@export
 #'@importFrom wgeesel wgee data_sim MLIC.gee QICW.gee
 
-MLIC.wgee<-function(x,y,x_mis,r,id,candidate.sets=NULL,name.var.sets=NULL,dist,candidate.cor.sets=c("independence","exchangeable", "ar1"),joints=TRUE)
+MLIC.wgee<-function(x,y,x_mis,r,id,time,candidate.sets=NULL,name.var.sets=NULL,dist,candidate.cor.sets=c("independence","exchangeable", "ar1"),joints=TRUE,lag=1)
 {
     #replace missingness with 0 in x matrix
     na.index<-which(is.na(x),arr.ind=TRUE)
@@ -919,19 +924,43 @@ MLIC.wgee<-function(x,y,x_mis,r,id,candidate.sets=NULL,name.var.sets=NULL,dist,c
         warning("Covariate matrix x should be fully observed. The elements in covariate vector are replaced by zeros for individuals who have missing covariates.")
     }
 
+    if(lag>2 | lag>=time)
+    {
+        stop("Invalid type of lag. It should be less than 3 and time")
+    }else if(lag==0)
+    {
+        warning("No lag of response added may indicate missing completely at random. GEE may be used.")
+    }
+
+    #generate ylag1
+    if(lag!=0)
+    {
+        samplesize<-length(unique(id))
+        ylag.cov<-ylag(y=y,id=id,lag=1)
+        ylag.cov[is.na(ylag.cov)]<-0
+        ylag.cov[rep(seq_len(time),time=samplesize)==1]<-NA
+        x_mis<-cbind(x_mis,ylag1.cov=ylag.cov)
+    }
+    if(lag==2){
+        #generate ylag2
+        ylag.cov<-ylag(y=y,id=id,lag=lag)
+        x_mis<-cbind(x_mis,ylag2.cov=ylag.cov)
+    }
+
     if(joints)
     {
         if(!is.null(name.var.sets))
         {
             y<-as.matrix(y,col=1)
-            data_wgee<-data.frame(y,x,r,x_mis)
+            #data_wgee<-data.frame(y,x,r,x_mis)
+            data_wgee<-data.frame(r,x_mis)
 
-            mismodel_formula<-paste("r~",colnames(x_mis)[2])
-            if(ncol(x_mis)>2)
+            mismodel_formula<-paste("r~",colnames(data_wgee)[3])
+            if(ncol(data_wgee)>3)
             {
-                for(jj in 3:ncol(x_mis))
+                for(jj in 4:ncol(data_wgee))
                 {
-                    mismodel_formula<-paste(mismodel_formula,"+",colnames(x_mis)[jj])
+                    mismodel_formula<-paste(mismodel_formula,"+",colnames(data_wgee)[jj])
                 }
             }
             mismodel_formula<-as.formula(mismodel_formula)
@@ -959,14 +988,15 @@ MLIC.wgee<-function(x,y,x_mis,r,id,candidate.sets=NULL,name.var.sets=NULL,dist,c
             criterion.mean
         }else{
             y<-as.matrix(y,col=1)
-            data_wgee<-data.frame(y,x,r,x_mis)
+            #data_wgee<-data.frame(y,x,r,x_mis)
+            data_wgee<-data.frame(r,x_mis)
 
-            mismodel_formula<-paste("r~",colnames(x_mis)[2])
-            if(ncol(x_mis)>2)
+            mismodel_formula<-paste("r~",colnames(data_wgee)[3])
+            if(ncol(data_wgee)>3)
             {
-                for(jj in 3:ncol(x_mis))
+                for(jj in 4:ncol(data_wgee))
                 {
-                    mismodel_formula<-paste(mismodel_formula,"+",colnames(x_mis)[jj])
+                    mismodel_formula<-paste(mismodel_formula,"+",colnames(data_wgee)[jj])
                 }
             }
             mismodel_formula<-as.formula(mismodel_formula)
@@ -997,14 +1027,15 @@ MLIC.wgee<-function(x,y,x_mis,r,id,candidate.sets=NULL,name.var.sets=NULL,dist,c
         if(!is.null(name.var.sets))
         {
             y<-as.matrix(y,col=1)
-            data_wgee<-data.frame(y,x,r,x_mis)
+            #data_wgee<-data.frame(y,x,r,x_mis)
+            data_wgee<-data.frame(r,x_mis)
 
-            mismodel_formula<-paste("r~",colnames(x_mis)[2])
-            if(ncol(x_mis)>2)
+            mismodel_formula<-paste("r~",colnames(data_wgee)[3])
+            if(ncol(data_wgee)>3)
             {
-                for(jj in 3:ncol(x_mis))
+                for(jj in 4:ncol(data_wgee))
                 {
-                    mismodel_formula<-paste(mismodel_formula,"+",colnames(x_mis)[jj])
+                    mismodel_formula<-paste(mismodel_formula,"+",colnames(data_wgee)[jj])
                 }
             }
             mismodel_formula<-as.formula(mismodel_formula)
@@ -1027,14 +1058,15 @@ MLIC.wgee<-function(x,y,x_mis,r,id,candidate.sets=NULL,name.var.sets=NULL,dist,c
             criterion.mean
         }else{
             y<-as.matrix(y,col=1)
-            data_wgee<-data.frame(y,x,r,x_mis)
+            #data_wgee<-data.frame(y,x,r,x_mis)
+            data_wgee<-data.frame(r,x_mis)
 
-            mismodel_formula<-paste("r~",colnames(x_mis)[2])
-            if(ncol(x_mis)>2)
+            mismodel_formula<-paste("r~",colnames(data_wgee)[3])
+            if(ncol(data_wgee)>3)
             {
-                for(jj in 3:ncol(x_mis))
+                for(jj in 4:ncol(data_wgee))
                 {
-                    mismodel_formula<-paste(mismodel_formula,"+",colnames(x_mis)[jj])
+                    mismodel_formula<-paste(mismodel_formula,"+",colnames(data_wgee)[jj])
                 }
             }
             mismodel_formula<-as.formula(mismodel_formula)
@@ -1064,24 +1096,26 @@ MLIC.wgee<-function(x,y,x_mis,r,id,candidate.sets=NULL,name.var.sets=NULL,dist,c
 
 #'@title The whole QICW procedure for joint selection of mean structure and correlation structure for missing longitudinal data under the mechanism of missing at random and drop-out
 #'@description This function provides the overall QICW procedure for joint selection of mean structure and correlation structure in longitudinal data missing at random. It is also able to implement marginal mean structure selection given a prespecified working correlation structure. The data is dropout missing and missing at random.
-#'@usage QICW.wgee(x,y,x_mis,r,id,candidate.sets,name.var.sets=NULL,
-#'      dist,candidate.cor.sets=c("independence","exchangeable", "ar1"), joints=TRUE)
+#'@usage QICW.wgee(x,y,x_mis,r,id,time,candidate.sets,name.var.sets=NULL,
+#'      dist,candidate.cor.sets=c("independence","exchangeable", "ar1"), joints=TRUE,lag=1)
 #'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept if the intercept is expected in the marginal mean model. Covariate matrix should be complete.
 #'@param y A vector containing outcomes. Use NA to indicate missing outcomes.
 #'@param x_mis A matrix containing covariates for the missing data model. The first column should be all ones corresponding to the intercept if the intercept is expected in the missing data model. This covariate matrix should be all observed. See more in details section.
 #'@param r A vector indicating the observation of outcomes: 1 for observed records, and 0 for unobserved records.
 #'@param id A vector indicating subject id.
+#'@param time The number of observations in total for each subject.
 #'@param candidate.sets A list containing index corresponding to candidate covariates. See more in details section.
 #'@param name.var.sets A list containing names of candidate covariates. The names should be subset of column names of x matrix. See more in details section.
 #'@param dist A specified distribution. It can be "gaussian", "poisson",and "binomial".
 #'@param candidate.cor.sets A vector containing condidate correlation structures. When joints=TRUE, it is c("independence","exchangeable", "ar1") as default. When joints=FALSE, it should be either of "independence","exchangeable", "ar1". See more in details section.
 #'@param joints A logic value for joint selection of marginal mean and working correlation structure. The default is TRUE. See more in details section.
+#'@param lag A numeric value indicating lag-response involved in the missing data model. It can be either 1 or 2. The default is 1.
 
 #'@return A vector with each element containing QICW value for each candidate model. The row name of this vector is the selected correlation structure.
 #'
 #'@details Covariate matrix "x" should be complete. If missing data are present in "x", the elements in covariate vector will be replaced by zeros for individuals who have missing covariates.
 #'
-#'The argument "x_mis" includes all covariates to fit the missing data model. It typically contains a lag-1 variable based on the outcome y to indicate the data missing at random. Note that the lag-1 variable should be NA for the first observation from each subject.
+#'The argument "x_mis" includes all covariates to fit the missing data model. It does not contains a lag variable based on the outcome y. The argument "lag" in this function will automatically add lag-response variables to indicate the data missing at random.
 #'
 #'Either arguments "candidate.sets" or "name.var.sets" is used to identify the set of candidate mean model. If both arguments are provided, only the argument "name.var.sets" will be used.
 #'
@@ -1097,16 +1131,17 @@ MLIC.wgee<-function(x,y,x_mis,r,id,candidate.sets=NULL,name.var.sets=NULL,dist,c
 #'x_mis<-wgeesimdata$x_mis
 #'r<-wgeesimdata$obs_ind
 #'id<-wgeesimdata$id
+#'time=3
 #'candidate.sets<-list(c(1,2,3))
 #'candidate.cor.sets<-c("exchangeable")
-#'criterion.qicw<-QICW.wgee(x,y,x_mis,r,id,candidate.sets,
+#'criterion.qicw<-QICW.wgee(x,y,x_mis,r,id,time,candidate.sets,
 #'           name.var.sets=NULL,dist,candidate.cor.sets,joints=FALSE)
 #'criterion.qicw
 #'
 #'@export
 #'@importFrom wgeesel wgee data_sim MLIC.gee QICW.gee
 
-QICW.wgee<-function(x,y,x_mis,r,id,candidate.sets=NULL,name.var.sets=NULL,dist,candidate.cor.sets=c("independence","exchangeable", "ar1"),joints=TRUE)
+QICW.wgee<-function(x,y,x_mis,r,id,time,candidate.sets=NULL,name.var.sets=NULL,dist,candidate.cor.sets=c("independence","exchangeable", "ar1"),joints=TRUE,lag=1)
 {
     #replace missingness with 0 in x matrix
     na.index<-which(is.na(x),arr.ind=TRUE)
@@ -1122,19 +1157,43 @@ QICW.wgee<-function(x,y,x_mis,r,id,candidate.sets=NULL,name.var.sets=NULL,dist,c
         warning("Covariate matrix x should be fully observed. The elements in covariate vector are replaced by zeros for individuals who have missing covariates.")
     }
 
+    if(lag>2 | lag>=time)
+    {
+        stop("Invalid type of lag. It should be less than 3 and time")
+    }else if(lag==0)
+    {
+        warning("No lag of response added may indicate missing completely at random. GEE may be used.")
+    }
+
+    #generate ylag1
+    if(lag!=0)
+    {
+        samplesize<-length(unique(id))
+        ylag.cov<-ylag(y=y,id=id,lag=1)
+        ylag.cov[is.na(ylag.cov)]<-0
+        ylag.cov[rep(seq_len(time),time=samplesize)==1]<-NA
+        x_mis<-cbind(x_mis,ylag1.cov=ylag.cov)
+    }
+    if(lag==2){
+        #generate ylag2
+        ylag.cov<-ylag(y=y,id=id,lag=lag)
+        x_mis<-cbind(x_mis,ylag2.cov=ylag.cov)
+    }
+
     if(joints)
     {
         if(!is.null(name.var.sets))
         {
             y<-as.matrix(y,col=1)
-            data_wgee<-data.frame(y,x,r,x_mis)
+            #data_wgee<-data.frame(y,x,r,x_mis)
+            data_wgee<-data.frame(r,x_mis)
 
-            mismodel_formula<-paste("r~",colnames(x_mis)[2])
-            if(ncol(x_mis)>2)
+            mismodel_formula<-paste("r~",colnames(data_wgee)[3])
+            if(ncol(data_wgee)>3)
             {
-                for(jj in 3:ncol(x_mis))
+                for(jj in 4:ncol(data_wgee))
                 {
-                    mismodel_formula<-paste(mismodel_formula,"+",colnames(x_mis)[jj])
+                    mismodel_formula<-paste(mismodel_formula,"+",colnames(data_wgee)[jj])
                 }
             }
             mismodel_formula<-as.formula(mismodel_formula)
@@ -1159,14 +1218,15 @@ QICW.wgee<-function(x,y,x_mis,r,id,candidate.sets=NULL,name.var.sets=NULL,dist,c
             criterion.mean
         }else{
             y<-as.matrix(y,col=1)
-            data_wgee<-data.frame(y,x,r,x_mis)
+            #data_wgee<-data.frame(y,x,r,x_mis)
+            data_wgee<-data.frame(r,x_mis)
 
-            mismodel_formula<-paste("r~",colnames(x_mis)[2])
-            if(ncol(x_mis)>2)
+            mismodel_formula<-paste("r~",colnames(data_wgee)[3])
+            if(ncol(data_wgee)>3)
             {
-                for(jj in 3:ncol(x_mis))
+                for(jj in 4:ncol(data_wgee))
                 {
-                    mismodel_formula<-paste(mismodel_formula,"+",colnames(x_mis)[jj])
+                    mismodel_formula<-paste(mismodel_formula,"+",colnames(data_wgee)[jj])
                 }
             }
             mismodel_formula<-as.formula(mismodel_formula)
@@ -1194,14 +1254,15 @@ QICW.wgee<-function(x,y,x_mis,r,id,candidate.sets=NULL,name.var.sets=NULL,dist,c
         if(!is.null(name.var.sets))
         {
             y<-as.matrix(y,col=1)
-            data_wgee<-data.frame(y,x,r,x_mis)
+            #data_wgee<-data.frame(y,x,r,x_mis)
+            data_wgee<-data.frame(r,x_mis)
 
-            mismodel_formula<-paste("r~",colnames(x_mis)[2])
-            if(ncol(x_mis)>2)
+            mismodel_formula<-paste("r~",colnames(data_wgee)[3])
+            if(ncol(data_wgee)>3)
             {
-                for(jj in 3:ncol(x_mis))
+                for(jj in 4:ncol(data_wgee))
                 {
-                    mismodel_formula<-paste(mismodel_formula,"+",colnames(x_mis)[jj])
+                    mismodel_formula<-paste(mismodel_formula,"+",colnames(data_wgee)[jj])
                 }
             }
             mismodel_formula<-as.formula(mismodel_formula)
@@ -1220,14 +1281,15 @@ QICW.wgee<-function(x,y,x_mis,r,id,candidate.sets=NULL,name.var.sets=NULL,dist,c
             criterion.mean
         }else{
             y<-as.matrix(y,col=1)
-            data_wgee<-data.frame(y,x,r,x_mis)
+            #data_wgee<-data.frame(y,x,r,x_mis)
+            data_wgee<-data.frame(r,x_mis)
 
-            mismodel_formula<-paste("r~",colnames(x_mis)[2])
-            if(ncol(x_mis)>2)
+            mismodel_formula<-paste("r~",colnames(data_wgee)[3])
+            if(ncol(data_wgee)>3)
             {
-                for(jj in 3:ncol(x_mis))
+                for(jj in 4:ncol(data_wgee))
                 {
-                    mismodel_formula<-paste(mismodel_formula,"+",colnames(x_mis)[jj])
+                    mismodel_formula<-paste(mismodel_formula,"+",colnames(data_wgee)[jj])
                 }
             }
             mismodel_formula<-as.formula(mismodel_formula)
