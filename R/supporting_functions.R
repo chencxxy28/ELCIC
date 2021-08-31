@@ -1,26 +1,26 @@
 ##calculate I  #Now works for gaussian, poisson, and binomial distribution
-II<-function (x,y,betahat,size,samplesize,dist)
+II<-function (x,y,beta,size,samplesize,dist)
 {
     I_G<-matrix(0,nrow=size,ncol=size)
     if(dist=="gaussian")
     {
     for (i in 1:samplesize)
     {
-        fitted<-as.matrix(x[i,],ncol=1)%*%(y[i]-(t(as.matrix(x[i,],ncol=1))%*%betahat))
+        fitted<-as.matrix(x[i,],ncol=1)%*%(y[i]-(t(as.matrix(x[i,],ncol=1))%*%beta))
         I_G<-I_G+fitted%*%t(fitted)
     }
     }else if(dist=="poisson")
     {
         for (i in 1:samplesize)
         {
-            fitted<-as.matrix(x[i,],ncol=1)%*%(y[i]-exp(t(as.matrix(x[i,],ncol=1))%*%betahat))
+            fitted<-as.matrix(x[i,],ncol=1)%*%(y[i]-exp(t(as.matrix(x[i,],ncol=1))%*%beta))
             I_G<-I_G+fitted%*%t(fitted)
         }
     }else if(dist=="binomial")
     {
         for (i in 1:samplesize)
         {
-            fitted<-as.matrix(x[i,],ncol=1)%*%(y[i]-1/(exp(-t(as.matrix(x[i,],ncol=1))%*%betahat)+1))
+            fitted<-as.matrix(x[i,],ncol=1)%*%(y[i]-1/(exp(-t(as.matrix(x[i,],ncol=1))%*%beta)+1))
             I_G<-I_G+fitted%*%t(fitted)
         }
     }
@@ -28,7 +28,7 @@ II<-function (x,y,betahat,size,samplesize,dist)
 }
 
 #calcuate J #Now works for gaussian, poisson, and binomial distribution
-JJ<-function (x,y,betahat,size,samplesize,dist)
+JJ<-function (x,y,beta,size,samplesize,dist)
 {
     J_G<-matrix(0,nrow=size,ncol=size)
     if(dist=="gaussian")
@@ -42,14 +42,14 @@ JJ<-function (x,y,betahat,size,samplesize,dist)
     {
         for (i in 1:samplesize)
         {
-            fitted<-as.vector(exp(t(as.matrix(x[i,],ncol=1))%*%betahat))*as.matrix(x[i,],ncol=1)%*%t(as.matrix(x[i,],ncol=1))
+            fitted<-as.vector(exp(t(as.matrix(x[i,],ncol=1))%*%beta))*as.matrix(x[i,],ncol=1)%*%t(as.matrix(x[i,],ncol=1))
             J_G<-J_G+fitted
         }
     }else if (dist=="binomial")
     {
         for (i in 1:samplesize)
         {
-            pi_i<-1/(exp(-t(as.matrix(x[i,],ncol=1))%*%betahat)+1)
+            pi_i<-1/(exp(-t(as.matrix(x[i,],ncol=1))%*%beta)+1)
             fitted<-as.vector(pi*(1-pi))*as.matrix(x[i,],ncol=1)%*%t(as.matrix(x[i,],ncol=1))
             J_G<-J_G+fitted
         }
@@ -57,7 +57,7 @@ JJ<-function (x,y,betahat,size,samplesize,dist)
     J_G
 }
 
-#'@title Data generation under GLM
+#'@title Cross-sectional data generation under GLM
 #'@description A function provides simulated outcomes as well as covariates under the framework of GLM. All covariates (except for intercept) are normally distributed.
 #'@usage glm.generator(beta, samplesize, rho = 0, dist, sd.gaussian = NULL, ov = NULL)
 #'@param beta The underlying true coefficient for each covariates in the model (including the intercept).
