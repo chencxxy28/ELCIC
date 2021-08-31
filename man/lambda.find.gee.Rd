@@ -4,7 +4,7 @@
 \alias{lambda.find.gee}
 \title{Calculate the tuning parameters involved in ELCIC under GEE}
 \usage{
-lambda.find.gee(x, y, id, betahat, r, dist, rho, phi, corstr)
+lambda.find.gee(x, y, id, beta, r, dist, rho, phi, corstr)
 }
 \arguments{
 \item{x}{A matrix containing covariates. The first column should be all ones corresponding to the intercept.}
@@ -13,7 +13,7 @@ lambda.find.gee(x, y, id, betahat, r, dist, rho, phi, corstr)
 
 \item{id}{A vector indicating subject id.}
 
-\item{betahat}{A plug-in estimator solved by an external estimation procedure, such as GEE.}
+\item{beta}{A plug-in estimator solved by an external estimation procedure, such as GEE.}
 
 \item{r}{A vector indicating the observation of outcomes: 1 for observed records, and 0 for unobserved records. The default setup is that all data are observed. See more in details section.}
 
@@ -46,11 +46,11 @@ dist<-"poisson"
 # obtain the estimates
 library(geepack)
 fit<-geeglm(y~x-1,data=geesimdata,family =dist,id=id,corstr = corstr)
-betahat<-fit$coefficients
+beta<-fit$coefficients
 rho<-unlist(summary(fit)$corr[1])
 phi<-unlist(summary(fit)$dispersion[1])
 r=rep(1,nrow(x))
-lambda<-lambda.find.gee(x,y,id,betahat,r,dist,rho,phi,corstr)
+lambda<-lambda.find.gee(x,y,id,beta,r,dist,rho,phi,corstr)
 lambda
 
 }
