@@ -2,7 +2,7 @@
 % Please edit documentation in R/estimating_equations.R
 \name{ee.wgee.mean}
 \alias{ee.wgee.mean}
-\title{Estimating equation for marginal mean under weighted GEE(WGEE) with data missing at random}
+\title{Estimating equation for marginal mean under WGEE for missing longitudinal data under the mechanism of missing at random and drop-out}
 \usage{
 ee.wgee.mean(y,x,r,pi,id,time,beta,rho,phi,dist,corstr)
 }
@@ -47,7 +47,8 @@ data_wgee<-data.frame(do.call(cbind,wgeesimdata))
 corstr<-"exchangeable"
 dist<-"binomial"
 id<-data_wgee$id
-# obtain the estimates
+# obtain the estimates.
+# Note that "obs_ind" is an indicator of observations in the missing data model.
 fit<-wgee(y~x1+x2+x3,data_wgee,id,family=dist,corstr =corstr,
      scale = NULL,mismodel =obs_ind~x_mis1)
 beta<-as.vector(summary(fit)$beta)
