@@ -61,6 +61,6 @@ id<-wgeesimdata$id
 time<-3
 index.var<-c(1,2,3)
 ELCIC_value<-ELCIC.wgee.single(x,y,x_mis,r,id,time,index.var,name.var=NULL,
-                     dist,corstr,joints=FALSE)
+                     dist,corstr,joints=TRUE)
 ELCIC_value
 }
