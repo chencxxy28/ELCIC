@@ -51,15 +51,15 @@ ELCIC.glm.single<-function (x,y,index.var=NULL,name.var=NULL,dist)
     }
         if(length(index.var)>ncol(x)|max(index.var)>ncol(x)|length(unique(index.var))<length(index.var)){stop("Invalid candidate model provided")}
         samplesize<-nrow(x)
-        betahat<-rep(0,ncol(x))
+        beta<-rep(0,ncol(x))
         x_candidate<-x[,index.var]
         reg<-glm(y~x_candidate-1, family = dist)
-        betahat[index.var]<-reg$coefficients
+        beta[index.var]<-reg$coefficients
         p<-length(reg$coefficients)
 
 
-    lambda<-lambda.find.glm(x=x,y=y,betahat=betahat, dist=dist)
-    Z<-ee.glm(x,y,betahat,dist)
+    lambda<-lambda.find.glm(x=x,y=y,beta=beta, dist=dist)
+    Z<-ee.glm(x,y,beta,dist)
 
     likelihood<-apply(Z,2,function(x) {
     2*log(1+t(lambda)%*%x)})%*%rep(1,samplesize)
@@ -67,7 +67,7 @@ ELCIC.glm.single<-function (x,y,index.var=NULL,name.var=NULL,dist)
 
     #get aic, bic, and gic
     AIC<-reg$aic
-    tr_matrix<-II(x=x_candidate,y=y,betahat=reg$coefficients,size=length(index.var),samplesize=samplesize, dist=dist)%*%ginv(JJ(x=x_candidate,y=y,betahat=reg$coefficients,size=length(index.var),samplesize=samplesize,dist=dist))
+    tr_matrix<-II(x=x_candidate,y=y,beta=reg$coefficients,size=length(index.var),samplesize=samplesize, dist=dist)%*%ginv(JJ(x=x_candidate,y=y,beta=reg$coefficients,size=length(index.var),samplesize=samplesize,dist=dist))
     GIC<-AIC-2*p+2*sum(diag(tr_matrix))
     BIC<-AIC-2*p+p*log(samplesize)
     return(c(ELCIC=ELCIC, AIC=AIC, BIC=BIC, GIC=GIC))
@@ -77,7 +77,7 @@ ELCIC.glm.single<-function (x,y,index.var=NULL,name.var=NULL,dist)
 
 
 
-#'@title Calculate ELCIC value for a given candidate model under GEE framework
+#'@title Calculate ELCIC value for a given candidate model under GEE framework with complete longitudinal data or data missing completely at random
 #'@description The function \code{\link{ELCIC.gee.single}} calculates ELCIC value for a given marginal mean candidate model with a specified working correlation structure. It is able to simultaneously evaluate mean model and working correlation structure.
 #'@usage ELCIC.gee.single(x, y, r, id, time, index.var=NULL, name.var = NULL,
 #'                      dist, corstr, joints=TRUE)
@@ -96,7 +96,7 @@ ELCIC.glm.single<-function (x,y,index.var=NULL,name.var=NULL,dist)
 #'
 #'@details Either arguments "index.var" or "name.var" is used to identify the candidate mean model. If both arguments are provided, only the argument "name.var" will be used.
 #'
-#'When the argument "joints" is TRUE, \code{\link{ELCIC.gee.single}} will calculate ELCIC value based on the function \code{\link{lambda.find.gee}} and \code{\link{ee.gee}}, which involve both marginal mean and correlation coefficient estimating equations. When the argument "joints" is FALSE, \code{\link{ELCIC.gee.single}} will calculate ELCIC value based on the function \code{\link{lambda.find.gee.mean}} and \code{\link{ee.gee.mean}}, which only involve marginal mean estimating equations.
+#'When the argument "joints" is TRUE, \code{\link{ELCIC.gee.single}} will calculate ELCIC value based on the function \code{\link{lambda.find.gee}} and \code{\link{ee.gee}}, which involve estimating equations for both marginal mean and correlation coefficient. When the argument "joints" is FALSE, \code{\link{ELCIC.gee.single}} will calculate ELCIC value based on the function \code{\link{lambda.find.gee.mean}} and \code{\link{ee.gee.mean}}, which only involve estimating equations for marginal mean.
 #'
 #'@examples
 #'## tests
@@ -134,7 +134,7 @@ ELCIC.gee.single<-function(x,y,r,id,time,index.var=NULL,name.var=NULL,dist,corst
     if(joints)
     {
     samplesize<-length(unique(id))
-    betahat<-rep(0,ncol(x))
+    beta<-rep(0,ncol(x))
 
     #delete individual data with missingness, in order to run GEE
     data.comb<-cbind(x,y,id)
@@ -159,7 +159,7 @@ ELCIC.gee.single<-function(x,y,r,id,time,index.var=NULL,name.var=NULL,dist,corst
     data<-data.frame(y.gee,x_candidate)
 
         fit<-geeglm(y.gee~x_candidate-1,data=data,family =dist,id=id.gee,corstr = corstr)
-        betahat[index.var]<-fit$coefficients
+        beta[index.var]<-fit$coefficients
         pbeta<-length(fit$coefficients)
 
         if(corstr=="independence")
@@ -171,7 +171,7 @@ ELCIC.gee.single<-function(x,y,r,id,time,index.var=NULL,name.var=NULL,dist,corst
             p<-pbeta+1
         }
         phihat<-unlist(summary(fit)$dispersion[1])
-        Z<-as.matrix(ee.gee(y=y,x=x,r=r,id=id,beta=betahat,rho=rho,phi=phihat,dist=dist,corstr=corstr))
+        Z<-as.matrix(ee.gee(y=y,x=x,r=r,id=id,beta=beta,rho=rho,phi=phihat,dist=dist,corstr=corstr))
         # epi<-1/samplesize
         # model<-function(lambda)
         # {
@@ -179,15 +179,15 @@ ELCIC.gee.single<-function(x,y,r,id,time,index.var=NULL,name.var=NULL,dist,corst
         #     {x/(1+t(lambda)%*%x)}
         #     else {2/epi*x-(1+t(lambda)%*%x)/(epi^2)*x})%*%rep(1,samplesize)
         # }
-        lambda<-lambda.find.gee(x=x,y=y,id=id,betahat=betahat,r=r,dist=dist,rho=rho,phi=phihat,corstr=corstr)
-        # lambda<-multiroot(f = model, start = rep(0,length(betahat)+time-1))$root
+        lambda<-lambda.find.gee(x=x,y=y,id=id,beta=beta,r=r,dist=dist,rho=rho,phi=phihat,corstr=corstr)
+        # lambda<-multiroot(f = model, start = rep(0,length(beta)+time-1))$root
         likelihood<-apply(Z,2,function(x) {
             2*log(1+t(lambda)%*%x)})%*%rep(1,samplesize)
         ELCIC<-likelihood+p*log(samplesize)
     return(ELCIC=ELCIC)
     }else{
         samplesize<-length(unique(id))
-        betahat<-rep(0,ncol(x))
+        beta<-rep(0,ncol(x))
 
         #delete individual data with missingness, in order to run GEE
         data.comb<-cbind(x,y,id)
@@ -212,7 +212,7 @@ ELCIC.gee.single<-function(x,y,r,id,time,index.var=NULL,name.var=NULL,dist,corst
         data<-data.frame(y.gee,x_candidate)
 
         fit<-geeglm(y.gee~x_candidate-1,data=data,family =dist,id=id.gee,corstr = corstr)
-        betahat[index.var]<-fit$coefficients
+        beta[index.var]<-fit$coefficients
         p<-length(fit$coefficients)
 
         if(corstr=="independence")
@@ -224,7 +224,7 @@ ELCIC.gee.single<-function(x,y,r,id,time,index.var=NULL,name.var=NULL,dist,corst
             #p<-pbeta+1
         }
         phihat<-unlist(summary(fit)$dispersion[1])
-        Z<-as.matrix(ee.gee.mean(y=y,x=x,r=r,id=id,beta=betahat,rho=rho,phi=phihat,dist=dist,corstr=corstr))
+        Z<-as.matrix(ee.gee.mean(y=y,x=x,r=r,id=id,beta=beta,rho=rho,phi=phihat,dist=dist,corstr=corstr))
         # epi<-1/samplesize
         # model<-function(lambda)
         # {
@@ -232,8 +232,8 @@ ELCIC.gee.single<-function(x,y,r,id,time,index.var=NULL,name.var=NULL,dist,corst
         #     {x/(1+t(lambda)%*%x)}
         #     else {2/epi*x-(1+t(lambda)%*%x)/(epi^2)*x})%*%rep(1,samplesize)
         # }
-        lambda<-lambda.find.gee.mean(x=x,y=y,id=id,betahat=betahat,r=r,dist=dist,rho=rho,phi=phihat,corstr=corstr)
-        # lambda<-multiroot(f = model, start = rep(0,length(betahat)+time-1))$root
+        lambda<-lambda.find.gee.mean(x=x,y=y,id=id,beta=beta,r=r,dist=dist,rho=rho,phi=phihat,corstr=corstr)
+        # lambda<-multiroot(f = model, start = rep(0,length(beta)+time-1))$root
         likelihood<-apply(Z,2,function(x) {
             2*log(1+t(lambda)%*%x)})%*%rep(1,samplesize)
         ELCIC<-likelihood+p*log(samplesize)
@@ -244,7 +244,7 @@ ELCIC.gee.single<-function(x,y,r,id,time,index.var=NULL,name.var=NULL,dist,corst
 
 
 
-#'@title Calculate ELCIC value for a given candidate model under WGEE framework with dropout data
+#'@title Calculate ELCIC value for a given candidate model under WGEE framework for missing longitudinal data under the mechanism of missing at random and drop-out
 #'@description The function \code{\link{ELCIC.wgee.single}} to calculate ELCIC value for a given candidate mean model with specified working correlation structure. It is able to simultaneously evaluate mean model and working correlation structure. The data is dropout missing and missing at random.
 #'@usage ELCIC.wgee.single(x,y,x_mis,r,id,time,index.var=NULL,
 #'       name.var=NULL,dist,corstr,joints=TRUE,lag=1)
@@ -269,7 +269,7 @@ ELCIC.gee.single<-function(x,y,r,id,time,index.var=NULL,name.var=NULL,dist,corst
 #'
 #'Either arguments "index.var" or "name.var" is used to identify the candidate mean model. If both arguments are provided, only the argument "name.var" will be used.
 #'
-#'When the argument "joints" is TRUE, \code{\link{ELCIC.wgee.single}} will calculate ELCIC value based on the function \code{\link{lambda.find.wgee}} and \code{\link{ee.wgee}}, which involve both marginal mean and correlation coefficient estimating equations. When the argument "joints" is FALSE, \code{\link{ELCIC.wgee.single}} will calculate ELCIC value based on the function \code{\link{lambda.find.wgee.mean}} and \code{\link{ee.wgee.mean}}, which only involve marginal mean estimating equations.
+#'When the argument "joints" is TRUE, \code{\link{ELCIC.wgee.single}} will calculate ELCIC value based on the function \code{\link{lambda.find.wgee}} and \code{\link{ee.wgee}}, which involve estimating equations for both marginal mean and correlation coefficient. When the argument "joints" is FALSE, \code{\link{ELCIC.wgee.single}} will calculate ELCIC value based on the function \code{\link{lambda.find.wgee.mean}} and \code{\link{ee.wgee.mean}}, which only involve estimating equations for marginal mean.
 #'
 #'@examples
 #'## tests
@@ -385,7 +385,7 @@ ELCIC.wgee.single<-function(x,y,x_mis,r,id,time,index.var=NULL,name.var=NULL,dis
         #     else {2/epi*x-(1+t(lambda)%*%x)/(epi^2)*x})%*%rep(1,samplesize)
         # }
         lambda<-lambda.find.wgee(y,x,r, pi,id,time,beta,rho,phi,dist,corstr)
-        # lambda<-multiroot(f = model, start = rep(0,length(betahat)+time-1))$root
+        # lambda<-multiroot(f = model, start = rep(0,length(beta)+time-1))$root
         likelihood<-apply(Z,2,function(x) {
             2*log(1+t(lambda)%*%x)})%*%rep(1,samplesize)
         ELCIC<-likelihood+p*log(samplesize)
@@ -432,7 +432,7 @@ ELCIC.wgee.single<-function(x,y,x_mis,r,id,time,index.var=NULL,name.var=NULL,dis
         #     else {2/epi*x-(1+t(lambda)%*%x)/(epi^2)*x})%*%rep(1,samplesize)
         # }
         lambda<-lambda.find.wgee.mean(y,x,r, pi,id,time=3,beta,rho,phi,dist,corstr)
-        # lambda<-multiroot(f = model, start = rep(0,length(betahat)+time-1))$root
+        # lambda<-multiroot(f = model, start = rep(0,length(beta)+time-1))$root
         likelihood<-apply(Z,2,function(x) {
             2*log(1+t(lambda)%*%x)})%*%rep(1,samplesize)
         ELCIC<-likelihood+p*log(samplesize)
@@ -515,14 +515,14 @@ ELCIC.glm<-function(x,y,candidate.sets,name.var.sets=NULL,dist)
 #'@param candidate.sets A list containing index corresponding to candidate covariates. See more in details section.
 #'@param name.var.sets A list containing names of candidate covariates. The names should be subset of column names of x matrix. See more in details section.
 #'@param dist A specified distribution. It can be "gaussian", "poisson",and "binomial".
-#'@param candidate.cor.sets A vector containing condidate correlation structures. When joint=TRUE, it is c("independence","exchangeable", "ar1") as default. When joint=FALSE, it should be either of "independence","exchangeable", "ar1". See more in details section.
+#'@param candidate.cor.sets A vector containing condidate correlation structures. When joints=TRUE, it is c("independence","exchangeable", "ar1") as default. When joints=FALSE, it should be either of "independence","exchangeable", "ar1". See more in details section.
 #'@param joints A logic value for joint selection of marginal mean and working correlation structure. The default is TRUE. See more in details section.
 #'
 #'@return A matrix with each element containing ELCIC value for each candidate model.
 #'
 #'@details Either arguments "candidate.sets" or "name.var.sets" is used to identify the set of candidate mean model. If both arguments are provided, only the argument "name.var.sets" will be used.
 #'
-#'When joint=TRUE, the argument "candidate.cor.sets" can contain multiple correlation structures; however, when joint=FALSE, it should contain either of "independence","exchangeable", "ar1". If multiple correlation structures are provided, only the first one will be used.
+#'When joints=TRUE, the argument "candidate.cor.sets" can contain multiple correlation structures; however, when joints=FALSE, it should contain either of "independence","exchangeable", "ar1". If multiple correlation structures are provided, only the first one will be used.
 #'
 #'@examples
 #'## tests
@@ -614,8 +614,8 @@ ELCIC.gee<-function(x,y,r,id,time,candidate.sets=NULL,name.var.sets=NULL,dist,ca
 
 
 
-#'@title The whole procedure for joint selection of mean structure and correlation structure in longitudinal dropout data
-#'@description The function \code{\link{ELCIC.wgee}} provides the overall procedure for joint selection of mean structure and correlation structure in longitudinal data missing at random. It is also able to implement marginal mean structure selection given a prespecified working correlation structure. The data is dropout missing and missing at random.
+#'@title The whole procedure for joint selection of mean structure and correlation structure for missing longitudinal data under the mechanism of missing at random and drop-out
+#'@description The function \code{\link{ELCIC.wgee}} provides the overall procedure for joint selection of mean structure and correlation structure in longitudinal data under missing at random. It is also able to implement marginal mean structure selection given a prespecified working correlation structure. The data is dropout missing and missing at random.
 #'@usage ELCIC.wgee(x,y,x_mis,r,id,time,candidate.sets=NULL,name.var.sets=NULL,
 #'      dist,candidate.cor.sets=c("independence","exchangeable", "ar1"), joints=TRUE,lag=1)
 #'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept if the intercept is considered in the marginal mean. Covariate matrix should be complete.
@@ -627,7 +627,7 @@ ELCIC.gee<-function(x,y,r,id,time,candidate.sets=NULL,name.var.sets=NULL,dist,ca
 #'@param candidate.sets A list containing index corresponding to candidate covariates. See more in details section.
 #'@param name.var.sets A list containing names of candidate covariates. The names should be subset of column names of x matrix. See more in details section.
 #'@param dist A specified distribution. It can be "gaussian", "poisson",and "binomial".
-#'@param candidate.cor.sets A vector containing condidate correlation structures. When joint=TRUE, it is c("independence","exchangeable", "ar1") as default. When joint=FALSE, it should be either of "independence","exchangeable", "ar1". See more in details section.
+#'@param candidate.cor.sets A vector containing condidate correlation structures. When joints=TRUE, it is c("independence","exchangeable", "ar1") as default. When joints=FALSE, it should be either of "independence","exchangeable", "ar1". See more in details section.
 #'@param joints A logic value for joint selection of marginal mean and working correlation structure. The default is TRUE. See more in details section.
 #'@param lag A numeric value indicating lag-response involved in the missing data model. It can be either 1 or 2. The default is 1.
 
@@ -639,7 +639,7 @@ ELCIC.gee<-function(x,y,r,id,time,candidate.sets=NULL,name.var.sets=NULL,dist,ca
 #'
 #'Either arguments "candidate.sets" or "name.var.sets" is used to identify the set of candidate mean model. If both arguments are provided, only the argument "name.var.sets" will be used.
 #'
-#'When joint=TRUE, the argument "candidate.cor.sets" can contain multiple correlation structures; however, when joint=FALSE, it should contain either of "independence","exchangeable", "ar1". If multiple correlation structures are provided, only the first one will be used.
+#'When joints=TRUE, the argument "candidate.cor.sets" can contain multiple correlation structures; however, when joints=FALSE, it should contain either of "independence","exchangeable", "ar1". If multiple correlation structures are provided, only the first one will be used.
 
 #'@examples
 #'## tests
@@ -730,7 +730,7 @@ ELCIC.wgee<-function(x,y,x_mis,r,id,time,candidate.sets=NULL,name.var.sets=NULL,
 
 
 
-#'@title Joint selection of marginal mean and correlation structures in longitudinal data based on QIC
+#'@title Joint selection procedure of marginal mean and correlation structures in longitudinal data based on QIC
 #'@description This function provides the Joint selection of marginal mean and correlation structures in longitudinal data based on QIC.
 #'@usage QICc.gee(x,y,id,dist,candidate.sets=NULL, name.var.sets=NULL,
 #'    candidate.cor.sets=c("independence","exchangeable", "ar1"), joints=TRUE)
@@ -740,14 +740,14 @@ ELCIC.wgee<-function(x,y,x_mis,r,id,time,candidate.sets=NULL,name.var.sets=NULL,
 #'@param candidate.sets A list containing index corresponding to candidate covariates.
 #'@param name.var.sets A list containing names of candidate covariates. The names should be subset of column names of x matrix.
 #'@param dist A specified distribution. It can be "gaussian", "poisson",and "binomial".
-#'@param candidate.cor.sets A vector containing condidate correlation structures. When joint=TRUE, it is c("independence","exchangeable", "ar1") as default. When joint=FALSE, it should be one of c("independence","exchangeable", "ar1").
+#'@param candidate.cor.sets A vector containing condidate correlation structures. When joints=TRUE, it is c("independence","exchangeable", "ar1") as default. When joints=FALSE, it should be one of c("independence","exchangeable", "ar1").
 #'@param joints A logic value for joint selection of marginal mean and working correlation structure. The default is TRUE.
 #'
 #'@return A vector with each element containing QIC value for each candidate model. The row name of this vector is the selected correlation structure.
 #'
 #'@details Either arguments "index.var" or "name.var" is used to identify the candidate mean model. If both arguments are provided, only the argument "name.var" will be used.
 #'
-#'When the argument "joints" is TRUE, \code{\link{ELCIC.gee}} will calculate ELCIC value based on the function \code{\link{lambda.find.gee}} and \code{\link{ee.gee}}, which involve both marginal mean and correlation coefficient estimating equations. When the argument "joints" is FALSE, \code{\link{ELCIC.gee}} will calculate ELCIC value based on the function \code{\link{lambda.find.gee.mean}} and \code{\link{ee.gee.mean}}, which only involve marginal mean estimating equations.
+#'When the argument "joints" is TRUE, \code{\link{ELCIC.gee}} will calculate ELCIC value based on the function \code{\link{lambda.find.gee}} and \code{\link{ee.gee}}, which involve estimating equations for both marginal mean and correlation coefficient. When the argument "joints" is FALSE, \code{\link{ELCIC.gee}} will calculate ELCIC value based on the function \code{\link{lambda.find.gee.mean}} and \code{\link{ee.gee.mean}}, which only involve estimating equations for marginal mean.
 #'
 #'@examples
 #'## tests
@@ -859,7 +859,7 @@ QICc.gee<-function (x,y,id,dist,candidate.sets=NULL,name.var.sets=NULL,candidate
 
 
 
-#'@title The whole MLIC procedure for joint selection of mean structure and correlation structure in longitudinal dropout data
+#'@title The whole MLIC procedure for joint selection of mean structure and correlation structure for missing longitudinal data under the mechanism of missing at random and drop-out
 #'@description This function provides the overall MLIC procedure for joint selection of mean structure and correlation structure in longitudinal data missing at random. It is also able to implement marginal mean structure selection given a prespecified working correlation structure. The data is dropout missing and missing at random.
 #'@usage MLIC.wgee(x,y,x_mis,r,id,candidate.sets=NULL, name.var.sets=NULL,dist,
 #'       candidate.cor.sets=c("independence","exchangeable", "ar1"), joints=TRUE)
@@ -871,7 +871,7 @@ QICc.gee<-function (x,y,id,dist,candidate.sets=NULL,name.var.sets=NULL,candidate
 #'@param candidate.sets A list containing index corresponding to candidate covariates. See more in details section.
 #'@param name.var.sets A list containing names of candidate covariates. The names should be subset of column names of x matrix. See more in details section.
 #'@param dist A specified distribution. It can be "gaussian", "poisson",and "binomial".
-#'@param candidate.cor.sets A vector containing condidate correlation structures. When joint=TRUE, it is c("independence","exchangeable", "ar1") as default. When joint=FALSE, it should be either of "independence","exchangeable", "ar1". See more in details section.
+#'@param candidate.cor.sets A vector containing condidate correlation structures. When joints=TRUE, it is c("independence","exchangeable", "ar1") as default. When joints=FALSE, it should be either of "independence","exchangeable", "ar1". See more in details section.
 #'@param joints A logic value for joint selection of marginal mean and working correlation structure. The default is TRUE. See more in details section.
 
 #'@return A vector with each element containing MLIC value for each candidate model. The row name of this vector is the selected correlation structure.
@@ -882,7 +882,7 @@ QICc.gee<-function (x,y,id,dist,candidate.sets=NULL,name.var.sets=NULL,candidate
 #'
 #'Either arguments "candidate.sets" or "name.var.sets" is used to identify the set of candidate mean model. If both arguments are provided, only the argument "name.var.sets" will be used.
 #'
-#'When joint=TRUE, the argument "candidate.cor.sets" can contain multiple correlation structures; however, when joint=FALSE, it should contain either of "independence","exchangeable", "ar1". If multiple correlation structures are provided, only the first one will be used.
+#'When joints=TRUE, the argument "candidate.cor.sets" can contain multiple correlation structures; however, when joints=FALSE, it should contain either of "independence","exchangeable", "ar1". If multiple correlation structures are provided, only the first one will be used.
 #'
 #'@examples
 #'## tests
@@ -1062,7 +1062,7 @@ MLIC.wgee<-function(x,y,x_mis,r,id,candidate.sets=NULL,name.var.sets=NULL,dist,c
 
 
 
-#'@title The whole QICW procedure for joint selection of mean structure and correlation structure in longitudinal dropout data
+#'@title The whole QICW procedure for joint selection of mean structure and correlation structure for missing longitudinal data under the mechanism of missing at random and drop-out
 #'@description This function provides the overall QICW procedure for joint selection of mean structure and correlation structure in longitudinal data missing at random. It is also able to implement marginal mean structure selection given a prespecified working correlation structure. The data is dropout missing and missing at random.
 #'@usage QICW.wgee(x,y,x_mis,r,id,candidate.sets,name.var.sets=NULL,
 #'      dist,candidate.cor.sets=c("independence","exchangeable", "ar1"), joints=TRUE)
@@ -1074,7 +1074,7 @@ MLIC.wgee<-function(x,y,x_mis,r,id,candidate.sets=NULL,name.var.sets=NULL,dist,c
 #'@param candidate.sets A list containing index corresponding to candidate covariates. See more in details section.
 #'@param name.var.sets A list containing names of candidate covariates. The names should be subset of column names of x matrix. See more in details section.
 #'@param dist A specified distribution. It can be "gaussian", "poisson",and "binomial".
-#'@param candidate.cor.sets A vector containing condidate correlation structures. When joint=TRUE, it is c("independence","exchangeable", "ar1") as default. When joint=FALSE, it should be either of "independence","exchangeable", "ar1". See more in details section.
+#'@param candidate.cor.sets A vector containing condidate correlation structures. When joints=TRUE, it is c("independence","exchangeable", "ar1") as default. When joints=FALSE, it should be either of "independence","exchangeable", "ar1". See more in details section.
 #'@param joints A logic value for joint selection of marginal mean and working correlation structure. The default is TRUE. See more in details section.
 
 #'@return A vector with each element containing QICW value for each candidate model. The row name of this vector is the selected correlation structure.
@@ -1085,7 +1085,7 @@ MLIC.wgee<-function(x,y,x_mis,r,id,candidate.sets=NULL,name.var.sets=NULL,dist,c
 #'
 #'Either arguments "candidate.sets" or "name.var.sets" is used to identify the set of candidate mean model. If both arguments are provided, only the argument "name.var.sets" will be used.
 #'
-#'When joint=TRUE, the argument "candidate.cor.sets" can contain multiple correlation structures; however, when joint=FALSE, it should contain either of "independence","exchangeable", "ar1". If multiple correlation structures are provided, only the first one will be used.
+#'When joints=TRUE, the argument "candidate.cor.sets" can contain multiple correlation structures; however, when joints=FALSE, it should contain either of "independence","exchangeable", "ar1". If multiple correlation structures are provided, only the first one will be used.
 #'
 #'@examples
 #'## tests
