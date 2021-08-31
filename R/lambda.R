@@ -26,10 +26,10 @@ R0der<-function(lambda,ZZ)
 #function to find lambda, given beta and an
 #'@title To calculate tuning parameter involved in ELCIC under GLM
 #'@description This function aims to efficiently calculate the tuning parameter lambda in ELCIC.
-#'@usage lambda.find.glm(x, y, betahat, dist)
+#'@usage lambda.find.glm(x, y, beta, dist)
 #'@param x A matrix containing covariates. The first column should contain all ones corresponding to the intercept.
 #'@param y A vector containing outcomes.
-#'@param betahat A plug-in estimator solved by an external estimating procedure.
+#'@param beta A plug-in estimator solved by an external estimating procedure.
 #'@param dist A specified distribution. It can be "gaussian", "poisson",and "binomial".
 #'
 #'@return A value of lambda (tuning parameter) vector involved in the empirical likelihood.
@@ -44,16 +44,16 @@ R0der<-function(lambda,ZZ)
 #'y<-glmsimdata$y
 #'# obtain the estimates
 #'fit<-glm(y~x-1,family="poisson")
-#'betahat<-fit$coefficients
-#'lambda<-lambda.find.glm(x, y, betahat, dist="poisson")
+#'beta<-fit$coefficients
+#'lambda<-lambda.find.glm(x, y, beta, dist="poisson")
 #'lambda
 #'
 #'@export
 
-lambda.find.glm<-function(x,y,betahat,dist)
+lambda.find.glm<-function(x,y,beta,dist)
 {
     samplesize<-nrow(x)
-    ZZ<-ee.glm(x=x,y=y,betahat=betahat,dist=dist)[,1:(samplesize)]
+    ZZ<-ee.glm(x=x,y=y,beta=beta,dist=dist)[,1:(samplesize)]
     #ZZ<-wgeef(beta=beta,adata,r=r,id=id,dist=dist,time=time)[,1:(n+1)]
     dim(ZZ)
     apply(ZZ,1,mean)
@@ -97,13 +97,13 @@ lambda.find.glm<-function(x,y,betahat,dist)
 
 #'@title Calculate the tuning parameters involved in ELCIC under GEE
 #'@description This function provides an efficient algorithm to calculate the tuning parameters involved in ELCIC under GEE.
-#'@usage lambda.find.gee(x, y, id, betahat, r, dist, rho, phi, corstr)
+#'@usage lambda.find.gee(x, y, id, beta, r, dist, rho, phi, corstr)
 #'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept.
 #'@param y A vector containing outcomes.
 #'@param r A vector indicating the observation of outcomes: 1 for observed records, and 0 for unobserved records. The default setup is that all data are observed. See more in details section.
 #'@param id A vector indicating subject id.
 #'@param dist A specified distribution. It can be "gaussian", "poisson",and "binomial".
-#'@param betahat A plug-in estimator solved by an external estimation procedure, such as GEE.
+#'@param beta A plug-in estimator solved by an external estimation procedure, such as GEE.
 #'@param rho A correlation coefficients obtained from an external estimation procedure, such as GEE.
 #'@param phi An over-dispersion parameter obtained from an external estimation procedure, such as GEE.
 #'@param corstr A condidate correlation structure. It can be "independence","exchangeable", and "ar1".
@@ -124,22 +124,22 @@ lambda.find.glm<-function(x,y,betahat,dist)
 #'# obtain the estimates
 #'library(geepack)
 #'fit<-geeglm(y~x-1,data=geesimdata,family =dist,id=id,corstr = corstr)
-#'betahat<-fit$coefficients
+#'beta<-fit$coefficients
 #'rho<-unlist(summary(fit)$corr[1])
 #'phi<-unlist(summary(fit)$dispersion[1])
 #'r=rep(1,nrow(x))
-#'lambda<-lambda.find.gee(x,y,id,betahat,r,dist,rho,phi,corstr)
+#'lambda<-lambda.find.gee(x,y,id,beta,r,dist,rho,phi,corstr)
 #'lambda
 #'
 #'@export
 
 #function to find lambda, given beta and an
-lambda.find.gee<-function(x,y,id,betahat,r,dist,rho,phi,corstr)
+lambda.find.gee<-function(x,y,id,beta,r,dist,rho,phi,corstr)
 {
     samplesize<-length(unique(id))
 
-    ZZ<-ee.gee(y=y,x=x,r=r,id=id,beta=betahat,rho=rho,phi=phi,dist=dist,corstr=corstr)[,1:(samplesize)]
-    #ZZ<-ee.glm(x=x,y=y,betahat=betahat,dist=dist)[,1:(samplesize)]
+    ZZ<-ee.gee(y=y,x=x,r=r,id=id,beta=beta,rho=rho,phi=phi,dist=dist,corstr=corstr)[,1:(samplesize)]
+    #ZZ<-ee.glm(x=x,y=y,beta=beta,dist=dist)[,1:(samplesize)]
     #ZZ<-wgeef(beta=beta,adata,r=r,id=id,dist=dist,time=time)[,1:(n+1)]
     dim(ZZ)
     apply(ZZ,1,mean)
@@ -227,7 +227,7 @@ lambda.find.wgee<-function(y,x,r,pi,id,time,beta,rho,phi,dist,corstr)
     samplesize<-length(unique(id))
 
     ZZ<-ee.wgee(y,x,r,pi,id,time,beta,rho,phi,dist,corstr)[,1:(samplesize)]
-    #ZZ<-ee.glm(x=x,y=y,betahat=betahat,dist=dist)[,1:(samplesize)]
+    #ZZ<-ee.glm(x=x,y=y,beta=beta,dist=dist)[,1:(samplesize)]
     #ZZ<-wgeef(beta=beta,adata,r=r,id=id,dist=dist,time=time)[,1:(n+1)]
     dim(ZZ)
     apply(ZZ,1,mean)
@@ -272,13 +272,13 @@ lambda.find.wgee<-function(y,x,r,pi,id,time,beta,rho,phi,dist,corstr)
 #function to find lambda under marginal mean selection in gee
 #'@title Calculate the tuning parameters under marginal mean selection in GEE
 #'@description This function provides an efficient algorithm to calculate the tuning parameters involved in marginal mean selection in GEE.
-#'@usage lambda.find.gee.mean(x, y, id, betahat, r, dist, rho, phi, corstr)
+#'@usage lambda.find.gee.mean(x, y, id, beta, r, dist, rho, phi, corstr)
 #'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept.
 #'@param y A vector containing outcomes.
 #'@param r A vector indicating the observation of outcomes: 1 for observed records, and 0 for unobserved records. The default setup is that all data are observed. See more in details section.
 #'@param id A vector indicating subject id.
 #'@param dist A specified distribution. It can be "gaussian", "poisson",and "binomial".
-#'@param betahat A plug-in estimator solved by an external estimation procedure, such as GEE.
+#'@param beta A plug-in estimator solved by an external estimation procedure, such as GEE.
 #'@param rho A correlation coefficients obtained from an external estimation procedure, such as GEE.
 #'@param phi An over-dispersion parameter obtained from an external estimation procedure, such as GEE.
 #'@param corstr A condidate correlation structure. It can be "independence","exchangeable", and "ar1".
@@ -301,21 +301,21 @@ lambda.find.wgee<-function(y,x,r,pi,id,time,beta,rho,phi,dist,corstr)
 #'# obtain the estimates
 #'library(geepack)
 #'fit<-geeglm(y~x-1,data=geesimdata,family =dist,id=id,corstr = corstr)
-#'betahat<-fit$coefficients
+#'beta<-fit$coefficients
 #'rho<-unlist(summary(fit)$corr[1])
 #'phi<-unlist(summary(fit)$dispersion[1])
 #'r<-rep(1,nrow(x))
-#'lambda<-lambda.find.gee.mean(x,y,id,betahat,r,dist,rho,phi,corstr)
+#'lambda<-lambda.find.gee.mean(x,y,id,beta,r,dist,rho,phi,corstr)
 #'lambda
 #'
 #'@export
 #'
-lambda.find.gee.mean<-function(x,y,id,betahat,r,dist,rho,phi,corstr)
+lambda.find.gee.mean<-function(x,y,id,beta,r,dist,rho,phi,corstr)
 {
     samplesize<-length(unique(id))
 
-    ZZ<-ee.gee.mean(y=y,x=x,r=r,id=id,beta=betahat,rho=rho,phi=phi,dist=dist,corstr=corstr)[,1:(samplesize)]
-    #ZZ<-ee.glm(x=x,y=y,betahat=betahat,dist=dist)[,1:(samplesize)]
+    ZZ<-ee.gee.mean(y=y,x=x,r=r,id=id,beta=beta,rho=rho,phi=phi,dist=dist,corstr=corstr)[,1:(samplesize)]
+    #ZZ<-ee.glm(x=x,y=y,beta=beta,dist=dist)[,1:(samplesize)]
     #ZZ<-wgeef(beta=beta,adata,r=r,id=id,dist=dist,time=time)[,1:(n+1)]
     dim(ZZ)
     apply(ZZ,1,mean)
@@ -408,7 +408,7 @@ lambda.find.wgee.mean<-function(y,x,r,pi,id,time,beta,rho,phi,dist,corstr)
     samplesize<-length(unique(id))
 
     ZZ<-ee.wgee.mean(y,x,r,pi,id,time,beta,rho,phi,dist,corstr)[,1:(samplesize)]
-    #ZZ<-ee.glm(x=x,y=y,betahat=betahat,dist=dist)[,1:(samplesize)]
+    #ZZ<-ee.glm(x=x,y=y,beta=beta,dist=dist)[,1:(samplesize)]
     #ZZ<-wgeef(beta=beta,adata,r=r,id=id,dist=dist,time=time)[,1:(n+1)]
     dim(ZZ)
     apply(ZZ,1,mean)
