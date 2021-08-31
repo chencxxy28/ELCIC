@@ -3,7 +3,7 @@
 \docType{data}
 \name{geesimdata}
 \alias{geesimdata}
-\title{Toydata generated for model selection under GEE framework without missingness or missing completely at random}
+\title{Data simulated for model selection under GEE framework without missingness}
 \format{
 An object of class \code{"data.frame"}
 \describe{
@@ -15,7 +15,7 @@ An object of class \code{"data.frame"}
 data(geesimdata)
 }
 \description{
-Toydata generated for model selection under GEE framework without missingness or missing completely at random
+Data simulated for model selection under GEE framework without missingness
 }
 \examples{
 
