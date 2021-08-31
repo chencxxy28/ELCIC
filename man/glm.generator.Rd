@@ -2,7 +2,7 @@
 % Please edit documentation in R/supporting_functions.R
 \name{glm.generator}
 \alias{glm.generator}
-\title{Data generation under GLM}
+\title{Cross-sectional data generation under GLM}
 \usage{
 glm.generator(beta, samplesize, rho = 0, dist, sd.gaussian = NULL, ov = NULL)
 }
