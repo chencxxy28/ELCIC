@@ -2,7 +2,7 @@
 % Please edit documentation in R/model_selection.R
 \name{MLIC.wgee}
 \alias{MLIC.wgee}
-\title{The whole MLIC procedure for joint selection of mean structure and correlation structure in longitudinal dropout data}
+\title{The whole MLIC procedure for joint selection of mean structure and correlation structure for missing longitudinal data under the mechanism of missing at random and drop-out}
 \usage{
 MLIC.wgee(x,y,x_mis,r,id,candidate.sets=NULL, name.var.sets=NULL,dist,
       candidate.cor.sets=c("independence","exchangeable", "ar1"), joints=TRUE)
@@ -24,7 +24,7 @@ MLIC.wgee(x,y,x_mis,r,id,candidate.sets=NULL, name.var.sets=NULL,dist,
 
 \item{dist}{A specified distribution. It can be "gaussian", "poisson",and "binomial".}
 
-\item{candidate.cor.sets}{A vector containing condidate correlation structures. When joint=TRUE, it is c("independence","exchangeable", "ar1") as default. When joint=FALSE, it should be either of "independence","exchangeable", "ar1". See more in details section.}
+\item{candidate.cor.sets}{A vector containing condidate correlation structures. When joints=TRUE, it is c("independence","exchangeable", "ar1") as default. When joints=FALSE, it should be either of "independence","exchangeable", "ar1". See more in details section.}
 
 \item{joints}{A logic value for joint selection of marginal mean and working correlation structure. The default is TRUE. See more in details section.}
 }
@@ -41,7 +41,7 @@ The argument "x_mis" includes all covariates to fit the missing data model. It t
 
 Either arguments "candidate.sets" or "name.var.sets" is used to identify the set of candidate mean model. If both arguments are provided, only the argument "name.var.sets" will be used.
 
-When joint=TRUE, the argument "candidate.cor.sets" can contain multiple correlation structures; however, when joint=FALSE, it should contain either of "independence","exchangeable", "ar1". If multiple correlation structures are provided, only the first one will be used.
+When joints=TRUE, the argument "candidate.cor.sets" can contain multiple correlation structures; however, when joints=FALSE, it should contain either of "independence","exchangeable", "ar1". If multiple correlation structures are provided, only the first one will be used.
 }
 \examples{
 ## tests
