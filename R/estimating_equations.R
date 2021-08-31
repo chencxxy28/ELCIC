@@ -165,7 +165,7 @@ ee.gee<-function(y,x,r,id,beta,rho,phi,dist,corstr)
         {
             error<-error+e[j]*e[j+m]*WW[j+m,j+m]*WW[j,j]
         }
-        error<-error-rho[m]*phi*(m_num_vector[m]-p)/n #NOT CORRECT!! directly use phi might be more efficient
+        error<-error-rho[m]*phi*(m_num_vector[m]-p)/n #directly use phi might be more efficient
         wgeei<-rbind(wgeei,error)
         }
 
