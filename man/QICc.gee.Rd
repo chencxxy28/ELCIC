@@ -2,7 +2,7 @@
 % Please edit documentation in R/model_selection.R
 \name{QICc.gee}
 \alias{QICc.gee}
-\title{Joint selection of marginal mean and correlation structures in longitudinal data based on QIC}
+\title{Joint selection procedure of marginal mean and correlation structures in longitudinal data based on QIC}
 \usage{
 QICc.gee(x,y,id,dist,candidate.sets=NULL, name.var.sets=NULL,
    candidate.cor.sets=c("independence","exchangeable", "ar1"), joints=TRUE)
@@ -20,7 +20,7 @@ QICc.gee(x,y,id,dist,candidate.sets=NULL, name.var.sets=NULL,
 
 \item{name.var.sets}{A list containing names of candidate covariates. The names should be subset of column names of x matrix.}
 
-\item{candidate.cor.sets}{A vector containing condidate correlation structures. When joint=TRUE, it is c("independence","exchangeable", "ar1") as default. When joint=FALSE, it should be one of c("independence","exchangeable", "ar1").}
+\item{candidate.cor.sets}{A vector containing condidate correlation structures. When joints=TRUE, it is c("independence","exchangeable", "ar1") as default. When joints=FALSE, it should be one of c("independence","exchangeable", "ar1").}
 
 \item{joints}{A logic value for joint selection of marginal mean and working correlation structure. The default is TRUE.}
 }
@@ -33,7 +33,7 @@ This function provides the Joint selection of marginal mean and correlation stru
 \details{
 Either arguments "index.var" or "name.var" is used to identify the candidate mean model. If both arguments are provided, only the argument "name.var" will be used.
 
-When the argument "joints" is TRUE, \code{\link{ELCIC.gee}} will calculate ELCIC value based on the function \code{\link{lambda.find.gee}} and \code{\link{ee.gee}}, which involve both marginal mean and correlation coefficient estimating equations. When the argument "joints" is FALSE, \code{\link{ELCIC.gee}} will calculate ELCIC value based on the function \code{\link{lambda.find.gee.mean}} and \code{\link{ee.gee.mean}}, which only involve marginal mean estimating equations.
+When the argument "joints" is TRUE, \code{\link{ELCIC.gee}} will calculate ELCIC value based on the function \code{\link{lambda.find.gee}} and \code{\link{ee.gee}}, which involve estimating equations for both marginal mean and correlation coefficient. When the argument "joints" is FALSE, \code{\link{ELCIC.gee}} will calculate ELCIC value based on the function \code{\link{lambda.find.gee.mean}} and \code{\link{ee.gee.mean}}, which only involve estimating equations for marginal mean.
 }
 \examples{
 ## tests
