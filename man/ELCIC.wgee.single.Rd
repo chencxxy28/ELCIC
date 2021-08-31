@@ -2,7 +2,7 @@
 % Please edit documentation in R/model_selection.R
 \name{ELCIC.wgee.single}
 \alias{ELCIC.wgee.single}
-\title{Calculate ELCIC value for a given candidate model under WGEE framework with dropout data}
+\title{Calculate ELCIC value for a given candidate model under WGEE framework for missing longitudinal data under the mechanism of missing at random and drop-out}
 \usage{
 ELCIC.wgee.single(x,y,x_mis,r,id,time,index.var=NULL,
       name.var=NULL,dist,corstr,joints=TRUE,lag=1)
@@ -45,7 +45,7 @@ The argument "x_mis" includes all covariates to fit the missing data model. It d
 
 Either arguments "index.var" or "name.var" is used to identify the candidate mean model. If both arguments are provided, only the argument "name.var" will be used.
 
-When the argument "joints" is TRUE, \code{\link{ELCIC.wgee.single}} will calculate ELCIC value based on the function \code{\link{lambda.find.wgee}} and \code{\link{ee.wgee}}, which involve both marginal mean and correlation coefficient estimating equations. When the argument "joints" is FALSE, \code{\link{ELCIC.wgee.single}} will calculate ELCIC value based on the function \code{\link{lambda.find.wgee.mean}} and \code{\link{ee.wgee.mean}}, which only involve marginal mean estimating equations.
+When the argument "joints" is TRUE, \code{\link{ELCIC.wgee.single}} will calculate ELCIC value based on the function \code{\link{lambda.find.wgee}} and \code{\link{ee.wgee}}, which involve estimating equations for both marginal mean and correlation coefficient. When the argument "joints" is FALSE, \code{\link{ELCIC.wgee.single}} will calculate ELCIC value based on the function \code{\link{lambda.find.wgee.mean}} and \code{\link{ee.wgee.mean}}, which only involve estimating equations for marginal mean.
 }
 \examples{
 ## tests
