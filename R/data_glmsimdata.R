@@ -1,4 +1,4 @@
-#' Toydata generated for variable selection under GLM framework
+#' Data simulated for variable selection under GLM framework
 #'
 #'
 #' @docType data
