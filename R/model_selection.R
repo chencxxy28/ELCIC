@@ -515,7 +515,7 @@ ELCIC.glm<-function(x,y,candidate.sets,name.var.sets=NULL,dist)
 #'@param candidate.sets A list containing index corresponding to candidate covariates. See more in details section.
 #'@param name.var.sets A list containing names of candidate covariates. The names should be subset of column names of x matrix. See more in details section.
 #'@param dist A specified distribution. It can be "gaussian", "poisson",and "binomial".
-#'@param candidate.cor.sets A vector containing condidate correlation structures. When joints=TRUE, it is c("independence","exchangeable", "ar1") as default. When joints=FALSE, it should be either of "independence","exchangeable", "ar1". See more in details section.
+#'@param candidate.cor.sets A vector containing condidate correlation structures. When joints=TRUE, it can be any subset of c("independence","exchangeable", "ar1"). The default is c("independence","exchangeable", "ar1"). When joints=FALSE, it should be either of "independence","exchangeable", "ar1". See more in details section.
 #'@param joints A logic value for joint selection of marginal mean and working correlation structure. The default is TRUE. See more in details section.
 #'
 #'@return A matrix with each element containing ELCIC value for each candidate model.
@@ -627,7 +627,7 @@ ELCIC.gee<-function(x,y,r,id,time,candidate.sets=NULL,name.var.sets=NULL,dist,ca
 #'@param candidate.sets A list containing index corresponding to candidate covariates. See more in details section.
 #'@param name.var.sets A list containing names of candidate covariates. The names should be subset of column names of x matrix. See more in details section.
 #'@param dist A specified distribution. It can be "gaussian", "poisson",and "binomial".
-#'@param candidate.cor.sets A vector containing condidate correlation structures. When joints=TRUE, it is c("independence","exchangeable", "ar1") as default. When joints=FALSE, it should be either of "independence","exchangeable", "ar1". See more in details section.
+#'@param candidate.cor.sets A vector containing condidate correlation structures. When joints=TRUE, it can be any subset of c("independence","exchangeable", "ar1"). The default is c("independence","exchangeable", "ar1"). When joints=FALSE, it should be either of "independence","exchangeable", "ar1". See more in details section.
 #'@param joints A logic value for joint selection of marginal mean and working correlation structure. The default is TRUE. See more in details section.
 #'@param lag A numeric value indicating lag-response involved in the missing data model. It can be either 1 or 2. The default is 1.
 
@@ -740,14 +740,14 @@ ELCIC.wgee<-function(x,y,x_mis,r,id,time,candidate.sets=NULL,name.var.sets=NULL,
 #'@param candidate.sets A list containing index corresponding to candidate covariates.
 #'@param name.var.sets A list containing names of candidate covariates. The names should be subset of column names of x matrix.
 #'@param dist A specified distribution. It can be "gaussian", "poisson",and "binomial".
-#'@param candidate.cor.sets A vector containing condidate correlation structures. When joints=TRUE, it is c("independence","exchangeable", "ar1") as default. When joints=FALSE, it should be one of c("independence","exchangeable", "ar1").
+#'@param candidate.cor.sets A vector containing condidate correlation structures. When joints=TRUE, it can be any subset of c("independence","exchangeable", "ar1"). The default is c("independence","exchangeable", "ar1"). When joints=FALSE, it should be either of "independence","exchangeable", "ar1". See more in details section.
 #'@param joints A logic value for joint selection of marginal mean and working correlation structure. The default is TRUE.
 #'
 #'@return A vector with each element containing QIC value for each candidate model. The row name of this vector is the selected correlation structure.
 #'
 #'@details Either arguments "index.var" or "name.var" is used to identify the candidate mean model. If both arguments are provided, only the argument "name.var" will be used.
 #'
-#'When the argument "joints" is TRUE, \code{\link{ELCIC.gee}} will calculate ELCIC value based on the function \code{\link{lambda.find.gee}} and \code{\link{ee.gee}}, which involve estimating equations for both marginal mean and correlation coefficient. When the argument "joints" is FALSE, \code{\link{ELCIC.gee}} will calculate ELCIC value based on the function \code{\link{lambda.find.gee.mean}} and \code{\link{ee.gee.mean}}, which only involve estimating equations for marginal mean.
+#'When joints=TRUE, the argument "candidate.cor.sets" can contain multiple correlation structures; however, when joints=FALSE, it should contain either of "independence","exchangeable", "ar1". If multiple correlation structures are provided, only the first one will be used.
 #'
 #'@examples
 #'## tests
@@ -822,7 +822,7 @@ QICc.gee<-function (x,y,id,dist,candidate.sets=NULL,name.var.sets=NULL,candidate
         if(!is.null(name.var.sets))
         {
             data<-data.frame(y,x)
-            QICcorstr<-candidate.cor.sets
+            QICcorstr<-candidate.cor.sets[1]
 
             criterion.mean<-rep()
             for (i in seq_len(length(name.var.sets)))
@@ -838,7 +838,7 @@ QICc.gee<-function (x,y,id,dist,candidate.sets=NULL,name.var.sets=NULL,candidate
             criterion.mean
         }else{
             data<-data.frame(y,x)
-            QICcorstr<-candidate.cor.sets
+            QICcorstr<-candidate.cor.sets[1]
 
             criterion.mean<-rep()
             for (i in seq_len(length(candidate.sets)))
