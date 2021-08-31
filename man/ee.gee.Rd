@@ -15,7 +15,7 @@ ee.gee(y,x,r,id,beta,rho,phi,dist,corstr)
 
 \item{id}{A vector indicating subject id.}
 
-\item{beta}{A plug-in estimator solved by an external estimation procedure, such as GEE.}
+\item{beta}{A plug-in estimator solved by an external estimation procedure.}
 
 \item{rho}{A correlation coefficients obtained from an external estimation procedure, such as GEE.}
 
