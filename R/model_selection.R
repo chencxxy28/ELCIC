@@ -425,7 +425,7 @@ ELCIC.wgee.single<-function(x,y,x_mis,r,id,time,index.var=NULL,name.var=NULL,dis
         phi<-summary(fit)$phi
         gamma<-as.vector(summary(fit$mis_fit)$coefficients[,1])
         pi<-cond.prob(x_mis,gamma,id,time)
-        Z<-as.matrix(ee.wgee.mean(y,x,r, pi,id,time=3,beta,rho,phi,dist,corstr))
+        Z<-as.matrix(ee.wgee.mean(y,x,r, pi,id,time,beta,rho,phi,dist,corstr))
         # epi<-1/samplesize
         # model<-function(lambda)
         # {
@@ -433,7 +433,7 @@ ELCIC.wgee.single<-function(x,y,x_mis,r,id,time,index.var=NULL,name.var=NULL,dis
         #     {x/(1+t(lambda)%*%x)}
         #     else {2/epi*x-(1+t(lambda)%*%x)/(epi^2)*x})%*%rep(1,samplesize)
         # }
-        lambda<-lambda.find.wgee.mean(y,x,r, pi,id,time=3,beta,rho,phi,dist,corstr)
+        lambda<-lambda.find.wgee.mean(y,x,r, pi,id,time,beta,rho,phi,dist,corstr)
         # lambda<-multiroot(f = model, start = rep(0,length(beta)+time-1))$root
         likelihood<-apply(Z,2,function(x) {
             2*log(1+t(lambda)%*%x)})%*%rep(1,samplesize)
