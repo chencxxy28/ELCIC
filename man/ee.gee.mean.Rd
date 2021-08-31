@@ -2,7 +2,7 @@
 % Please edit documentation in R/estimating_equations.R
 \name{ee.gee.mean}
 \alias{ee.gee.mean}
-\title{Estimating equation of marginal mean for GEE without missing}
+\title{Estimating equation of marginal mean for GEE without missingness or missing completely at random}
 \usage{
 ee.gee.mean(y,x,r,id,beta,rho,phi,dist,corstr)
 }
