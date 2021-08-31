@@ -5,7 +5,7 @@
 #'
 #' @usage data(wgeesimdata)
 #'
-#' @format An object of class \code{"data.frame"}
+#' @format An object of class \code{"list"}
 #' \describe{
 #'  \item{y}{The outcomes generated from Bernoulli distribution with three repeated measurements from each subject. The data is longitudinal dropout and missing at random.}
 #'  \item{x}{A full covariate matrix. The first column corresponds to the intercept; the second column contains time-independent continuous-scale variable x1; the third column contains a doctor-visit variable x2; the third column contains time-independent binary-scale variable x3.}
