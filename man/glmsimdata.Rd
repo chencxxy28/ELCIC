@@ -3,7 +3,7 @@
 \docType{data}
 \name{glmsimdata}
 \alias{glmsimdata}
-\title{Toydata generated for variable selection under GLM framework}
+\title{Data simulated for variable selection under GLM framework}
 \format{
 An object of class \code{"data.frame"}
 \describe{
@@ -16,7 +16,7 @@ An object of class \code{"data.frame"}
 data(glmsimdata)
 }
 \description{
-Toydata generated for variable selection under GLM framework
+Data simulated for variable selection under GLM framework
 }
 \examples{
 
