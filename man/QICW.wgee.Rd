@@ -4,8 +4,8 @@
 \alias{QICW.wgee}
 \title{The whole QICW procedure for joint selection of mean structure and correlation structure for missing longitudinal data under the mechanism of missing at random and drop-out}
 \usage{
-QICW.wgee(x,y,x_mis,r,id,candidate.sets,name.var.sets=NULL,
-     dist,candidate.cor.sets=c("independence","exchangeable", "ar1"), joints=TRUE)
+QICW.wgee(x,y,x_mis,r,id,time,candidate.sets,name.var.sets=NULL,
+     dist,candidate.cor.sets=c("independence","exchangeable", "ar1"), joints=TRUE,lag=1)
 }
 \arguments{
 \item{x}{A matrix containing covariates. The first column should be all ones corresponding to the intercept if the intercept is expected in the marginal mean model. Covariate matrix should be complete.}
@@ -18,6 +18,8 @@ QICW.wgee(x,y,x_mis,r,id,candidate.sets,name.var.sets=NULL,
 
 \item{id}{A vector indicating subject id.}
 
+\item{time}{The number of observations in total for each subject.}
+
 \item{candidate.sets}{A list containing index corresponding to candidate covariates. See more in details section.}
 
 \item{name.var.sets}{A list containing names of candidate covariates. The names should be subset of column names of x matrix. See more in details section.}
@@ -27,6 +29,8 @@ QICW.wgee(x,y,x_mis,r,id,candidate.sets,name.var.sets=NULL,
 \item{candidate.cor.sets}{A vector containing condidate correlation structures. When joints=TRUE, it is c("independence","exchangeable", "ar1") as default. When joints=FALSE, it should be either of "independence","exchangeable", "ar1". See more in details section.}
 
 \item{joints}{A logic value for joint selection of marginal mean and working correlation structure. The default is TRUE. See more in details section.}
+
+\item{lag}{A numeric value indicating lag-response involved in the missing data model. It can be either 1 or 2. The default is 1.}
 }
 \value{
 A vector with each element containing QICW value for each candidate model. The row name of this vector is the selected correlation structure.
@@ -37,7 +41,7 @@ This function provides the overall QICW procedure for joint selection of mean st
 \details{
 Covariate matrix "x" should be complete. If missing data are present in "x", the elements in covariate vector will be replaced by zeros for individuals who have missing covariates.
 
-The argument "x_mis" includes all covariates to fit the missing data model. It typically contains a lag-1 variable based on the outcome y to indicate the data missing at random. Note that the lag-1 variable should be NA for the first observation from each subject.
+The argument "x_mis" includes all covariates to fit the missing data model. It does not contains a lag variable based on the outcome y. The argument "lag" in this function will automatically add lag-response variables to indicate the data missing at random.
 
 Either arguments "candidate.sets" or "name.var.sets" is used to identify the set of candidate mean model. If both arguments are provided, only the argument "name.var.sets" will be used.
 
@@ -53,9 +57,10 @@ y<-wgeesimdata$y
 x_mis<-wgeesimdata$x_mis
 r<-wgeesimdata$obs_ind
 id<-wgeesimdata$id
+time=3
 candidate.sets<-list(c(1,2,3))
 candidate.cor.sets<-c("exchangeable")
-criterion.qicw<-QICW.wgee(x,y,x_mis,r,id,candidate.sets,
+criterion.qicw<-QICW.wgee(x,y,x_mis,r,id,time,candidate.sets,
           name.var.sets=NULL,dist,candidate.cor.sets,joints=FALSE)
 criterion.qicw
 
