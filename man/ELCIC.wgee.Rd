@@ -26,7 +26,7 @@ ELCIC.wgee(x,y,x_mis,r,id,time,candidate.sets=NULL,name.var.sets=NULL,
 
 \item{dist}{A specified distribution. It can be "gaussian", "poisson",and "binomial".}
 
-\item{candidate.cor.sets}{A vector containing condidate correlation structures. When joints=TRUE, it is c("independence","exchangeable", "ar1") as default. When joints=FALSE, it should be either of "independence","exchangeable", "ar1". See more in details section.}
+\item{candidate.cor.sets}{A vector containing condidate correlation structures. When joints=TRUE, it can be any subset of c("independence","exchangeable", "ar1"). The default is c("independence","exchangeable", "ar1"). When joints=FALSE, it should be either of "independence","exchangeable", "ar1". See more in details section.}
 
 \item{joints}{A logic value for joint selection of marginal mean and working correlation structure. The default is TRUE. See more in details section.}
 
