@@ -1,6 +1,6 @@
 #' The imps data frame has 1544 rows and 8 columns. The data is from National Institute of the Mental Health Schizophrenia Collaborative Study, where the effect of chlorpromazine, fluphenazine, or thioridazine treatment on the overall severity of the schizophrenia disorder is of interest.
 #'
-#'
+#' @title Inpatient Multidimensional Psychiatric Scale (IMPS)
 #' @docType data
 #'
 #' @usage data(impsdata)
