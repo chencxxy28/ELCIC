@@ -12,7 +12,7 @@ ELCIC.wgee.single(x,y,x_mis,r,id,time,index.var=NULL,
 
 \item{y}{A vector containing outcomes. Use NA to indicate missing outcomes.}
 
-\item{x_mis}{A matrix containing covariates for the missing data model. The first column should be all ones corresponding to the intercept if the intercept is considered in this missing data model. This covariate matrix should be complete and all observed. See more in details section.}
+\item{x_mis}{A matrix containing covariates for the missing data model. The first column should be all ones corresponding to the intercept. This covariate matrix should be complete and all observed. See more in details section.}
 
 \item{r}{A vector indicating the observation of outcomes: 1 for observed records, and 0 for unobserved records.}
 
