@@ -3,7 +3,7 @@
 \docType{data}
 \name{impsdata}
 \alias{impsdata}
-\title{The imps data frame has 1544 rows and 8 columns. The data is from National Institute of the Mental Health Schizophrenia Collaborative Study, where the effect of chlorpromazine, fluphenazine, or thioridazine treatment on the overall severity of the schizophrenia disorder is of interest.}
+\title{Inpatient Multidimensional Psychiatric Scale (IMPS)}
 \format{
 An object of class \code{"list"}
 \describe{
@@ -30,7 +30,7 @@ id<-impsdata$id
 r<-impsdata$r
 dist="binomial"
 time<-4
-candidate.sets<-list(c(1:2),c(1,4),c(1:2,4),c(1:2,4,7),c(1:4),c(1:7))
+candidate.sets<-list(c(1,2),c(1,4),c(1,2,4),c(1,2,4,7),c(1,2,3,4),c(1,2,3,4,5,6,7))
 candidate.cor.sets<-c("exchangeable","ar1","independence")
 #not run
 #criterion.elcic<-ELCIC.wgee(x,y,x_mis,r,id,time,candidate.sets,
