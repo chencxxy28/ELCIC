@@ -2,42 +2,42 @@
 % Please edit documentation in R/model_selection.R
 \name{ELCIC.gee.single}
 \alias{ELCIC.gee.single}
-\title{Calculate ELCIC value for a given candidate model under GEE framework with complete longitudinal data or data missing completely at random}
+\title{Calculate ELCIC for a given candidate model under the GEE framework with longitudinal data that is complete or missing completely at random}
 \usage{
 ELCIC.gee.single(x, y, r, id, time, index.var=NULL, name.var = NULL,
                      dist, corstr, joints=TRUE)
 }
 \arguments{
-\item{x}{A matrix containing covariates. The first column should be all ones corresponding to the intercept. If y and x are missing completely at random, use NA to indicate missingness and specify argument "r".}
+\item{x}{A matrix containing covariates. The first column should be all ones corresponding to the intercept. If y and x are missing completely at random, use NA to indicate missingness and specify them in the argument "r".}
 
-\item{y}{A vector containing outcomes. If y and x are missing completely at random, use NA to indicate missing outcomes and specify argument "r".}
+\item{y}{A vector containing outcomes. If y and x are missing completely at random, use NA to indicate missingness and specify them in the argument "r".}
 
-\item{r}{A vector indicating the observation of data: 1 for observed records (both outcome and covariates are observed for a given subject), and 0 for unobserved records. The default setup is that all data are observed.}
+\item{r}{A vector indicating the observation of data: 1 for an observed record (both outcome and covariates are observed for a given subject), and 0 for an unobserved record. The default setup is that all elements of r are ones, indicating all data are observed.}
 
 \item{id}{A vector indicating subject id.}
 
 \item{time}{The number of observations in total for each subject}
 
-\item{index.var}{A vector containing index corresponding to candidate covariates. See more in details section.}
+\item{index.var}{A vector containing index corresponding to covariates in the candidate model. See more in Details section.}
 
-\item{name.var}{A vector containing names of candidate covariates. The names should be subset of column names of x matrix. See more in details section.}
+\item{name.var}{A vector containing names of covariates in the candidate model. The names should be a subset of the column names of the x matrix. See more in Details section.}
 
-\item{dist}{A specified distribution. It can be "gaussian", "poisson",and "binomial".}
+\item{dist}{A specified distribution. It can be "gaussian", "poisson", and "binomial".}
 
-\item{corstr}{A condidate correlation structure. It can be either of "independence","exchangeable", and "ar1".}
+\item{corstr}{A condidate correlation structure. It can be either of "independence", "exchangeable", and "ar1".}
 
-\item{joints}{A logic value for joint selection of marginal mean and working correlation structure. The default is TRUE. See more in details section.}
+\item{joints}{A logic value for joint selection of marginal mean and "working" correlation structures. The default is TRUE. See more in Details section.}
 }
 \value{
 A ELCIC value for a given candidate model.
 }
 \description{
-The function \code{\link{ELCIC.gee.single}} calculates ELCIC value for a given marginal mean candidate model with a specified working correlation structure. It is able to simultaneously evaluate mean model and working correlation structure.
+The function \code{\link{ELCIC.gee.single}} calculates ELCIC for a given marginal candidate mean model with a specified "working" correlation structure. It is able to simultaneously evaluate the marginal mean and "working" correlation structures.
 }
 \details{
-Either arguments "index.var" or "name.var" is used to identify the candidate mean model. If both arguments are provided, only the argument "name.var" will be used.
+Either of the arguments, "index.var" and "name.var", is used to identify the candidate mean model. If both arguments are provided, only the argument "name.var" will be used.
 
-When the argument "joints" is TRUE, \code{\link{ELCIC.gee.single}} will calculate ELCIC value based on the function \code{\link{lambda.find.gee}} and \code{\link{ee.gee}}, which involve estimating equations for both marginal mean and correlation coefficient. When the argument "joints" is FALSE, \code{\link{ELCIC.gee.single}} will calculate ELCIC value based on the function \code{\link{lambda.find.gee.mean}} and \code{\link{ee.gee.mean}}, which only involve estimating equations for marginal mean.
+When the argument "joints" is TRUE, \code{\link{ELCIC.gee.single}} will calculate ELCIC value based on the function \code{\link{lambda.find.gee}} and \code{\link{ee.gee}}, which involve estimating equations for both marginal mean and correlation coefficients. When the argument "joints" is FALSE, \code{\link{ELCIC.gee.single}} will calculate ELCIC value based on the function \code{\link{lambda.find.gee.mean}} and \code{\link{ee.gee.mean}}, which only involve estimating equations for marginal mean.
 }
 \examples{
 ## tests
