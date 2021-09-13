@@ -2,40 +2,40 @@
 % Please edit documentation in R/model_selection.R
 \name{ELCIC.gee}
 \alias{ELCIC.gee}
-\title{The whole procedure for joint selection of mean structure and correlation structure in longitudinal data without missingness or missing completely at random}
+\title{The whole procedure for joint selection of marginal mean and correlation structures in longitudinal data that is complete or missing completely at random}
 \usage{
 ELCIC.gee(x,y,r,id,time,candidate.sets=NULL,name.var.sets=NULL,dist,
       candidate.cor.sets=c("independence","exchangeable", "ar1"), joints=TRUE)
 }
 \arguments{
-\item{x}{A matrix containing covariates. The first column should be all ones corresponding to the intercept if the intercept is expected in the marginal mean. Covariate matrix should be complete. NA values will be replaced by 0 if missingness is detected in x.}
+\item{x}{A matrix containing covariates. The first column should be all ones corresponding to the intercept if the intercept is expected in the marginal mean. The covariate matrix should be complete. NA values will be replaced by 0 if missingness is detected in x.}
 
-\item{y}{A vector containing outcomes. If y is missing completely at random, use NA to indicate missing outcomes and specify argument "r".}
+\item{y}{A vector containing outcomes. If y is missing completely at random, use NA to indicate missing outcomes and specify them in the argument "r".}
 
-\item{r}{A vector indicating the observation of data: 1 for observed records (both outcome and covariates are observed for a given subject), and 0 for unobserved records. The default setup is that all data are observed.}
+\item{r}{A vector indicating the observation of data: 1 for an observed record (both outcome and covariates are observed for a given subject), and 0 for an unobserved record. The default setup is that all elements of r are ones, indicating all data are observed.}
 
 \item{id}{A vector indicating subject id.}
 
 \item{time}{The number of observations in total for each subject}
 
-\item{candidate.sets}{A list containing index corresponding to candidate covariates. See more in details section.}
+\item{candidate.sets}{A list containing index corresponding to covariates in the candidate model. See more in Details section.}
 
-\item{name.var.sets}{A list containing names of candidate covariates. The names should be subset of column names of x matrix. See more in details section.}
+\item{name.var.sets}{A list containing names of ccovariates in the candidate model. The names should be a subset of the column names of the x matrix. See more in Details section.}
 
-\item{dist}{A specified distribution. It can be "gaussian", "poisson",and "binomial".}
+\item{dist}{A specified distribution. It can be "gaussian", "poisson", and "binomial".}
 
-\item{candidate.cor.sets}{A vector containing condidate correlation structures. When joints=TRUE, it can be any subset of c("independence","exchangeable", "ar1"). The default is c("independence","exchangeable", "ar1"). When joints=FALSE, it should be either of "independence","exchangeable", "ar1". See more in details section.}
+\item{candidate.cor.sets}{A vector containing candidate correlation structures. When joints=TRUE, it can be any subset of c("independence", "exchangeable", "ar1"). The default is c("independence", "exchangeable", "ar1"). When joints=FALSE, it should be either of "independence", "exchangeable", and "ar1". See more in Details section.}
 
-\item{joints}{A logic value for joint selection of marginal mean and working correlation structure. The default is TRUE. See more in details section.}
+\item{joints}{A logic value for joint selection of marginal mean and "working" correlation structures. The default is TRUE. See more in Details section.}
 }
 \value{
-A matrix with each element containing ELCIC value for each candidate model.
+A matrix with each element containing ELCIC for each candidate model.
 }
 \description{
-The function \code{\link{ELCIC.gee}} provides the overall procedure for joint selection of mean structure and correlation structure in longitudinal data without missingness or missing completely at random.
+The function \code{\link{ELCIC.gee}} provides the overall procedure for joint selection of marginal mean and correlation structures in longitudinal data that is complete or missing completely at random.
 }
 \details{
-Either arguments "candidate.sets" or "name.var.sets" is used to identify the set of candidate mean model. If both arguments are provided, only the argument "name.var.sets" will be used.
+Either arguments "candidate.sets" or "name.var.sets" is used to identify the set of candidate mean models. If both arguments are provided, only the argument "name.var.sets" will be used.
 
 When joints=TRUE, the argument "candidate.cor.sets" can contain multiple correlation structures; however, when joints=FALSE, it should contain either of "independence","exchangeable", "ar1". If multiple correlation structures are provided, only the first one will be used.
 }
