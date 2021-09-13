@@ -7,21 +7,21 @@
 ELCIC.glm.single(x, y, index.var=NULL, name.var = NULL, dist)
 }
 \arguments{
-\item{x}{A matrix containing covariates. The first column should contain all ones corresponding to the intercept if intercept is considered in your mean model.}
+\item{x}{A matrix containing covariates. The first column should contain all ones corresponding to the intercept if an intercept is considered in a candidate mean model.}
 
 \item{y}{A vector containing outcomes.}
 
-\item{index.var}{A vector containing index corresponding to candidate covariates (including the intercept). See more in details section.}
+\item{index.var}{A vector containing index corresponding to covariates (including the intercept) in the candidate mean model. See more in Details section.}
 
-\item{name.var}{A vector containing names of candidate covariates. The names should be subset of column names of x matrix. See more in details section.}
+\item{name.var}{A vector containing names of covariates in the candidate mean model. The names should be a subset of the column names of the x matrix. See more in Details section.}
 
-\item{dist}{A specified distribution. It can be "gaussian", "poisson",and "binomial".}
+\item{dist}{A specified distribution. It can be "gaussian", "poisson", and "binomial".}
 }
 \value{
-A vector containing information criteria including ELCIC, AIC, BIC, and GIC.
+A vector containing values of information criteria including AIC, BIC, GIC and ELCIC.
 }
 \description{
-The function \code{\link{ELCIC.glm.single}} provides values of several model selection criteria including AIC, BIC, GIC, and ELCIC, given a candidate mean model.
+The function \code{\link{ELCIC.glm.single}} provides values of several model selection criteria including AIC, BIC, GIC and ELCIC, given a candidate mean model.
 }
 \details{
 "x" and "y" should be all observed. The corresponding individual data will be omitted in analysis if any missingness is detected.
