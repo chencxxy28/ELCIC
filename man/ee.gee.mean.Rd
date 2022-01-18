@@ -23,7 +23,7 @@ ee.gee.mean(y,x,r,id,beta,rho,phi,dist,corstr)
 
 \item{dist}{A specified distribution. It can be "gaussian", "poisson",and "binomial".}
 
-\item{corstr}{A condidate correlation structure. It can be "independence","exchangeable", and "ar1".}
+\item{corstr}{A candidate correlation structure. It can be "independence","exchangeable", and "ar1".}
 }
 \value{
 A matrix containing values of calculated estimating equations.
