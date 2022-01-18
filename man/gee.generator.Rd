@@ -29,7 +29,7 @@ gee.generator(beta,samplesize,time,num.time.dep,num.time.indep,
 \item{x.cor.str}{The correlation structure for time-dependent covariates across time. It can be "independence","exchangeable", and "ar1".}
 }
 \value{
-x: a matrix containing covariates. The first column should contain all ones corresponding to the intercept.
+x: a matrix containing continuous covariates. The first column should contain all ones corresponding to the intercept.
 
 y: a vector containing outcomes.
 
