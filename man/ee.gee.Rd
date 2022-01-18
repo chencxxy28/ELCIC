@@ -2,14 +2,14 @@
 % Please edit documentation in R/estimating_equations.R
 \name{ee.gee}
 \alias{ee.gee}
-\title{Estimating equation for GEE without missingness or missing completely at random}
+\title{Estimating equation for GEE without missingness or with data missing completely at random.}
 \usage{
 ee.gee(y,x,r,id,beta,rho,phi,dist,corstr)
 }
 \arguments{
 \item{y}{A vector containing outcomes.}
 
-\item{x}{A matrix containing covariates. The first column should be all ones corresponding to the intercept.}
+\item{x}{A matrix containing covariates. The first column should be all ones the represents the intercept.}
 
 \item{r}{A vector indicating the observation of outcomes: 1 for observed records, and 0 for unobserved records. The default setup is that all data are observed. See more in details section.}
 
@@ -23,7 +23,7 @@ ee.gee(y,x,r,id,beta,rho,phi,dist,corstr)
 
 \item{dist}{A specified distribution. It can be "gaussian", "poisson",and "binomial".}
 
-\item{corstr}{A condidate correlation structure. It can be "independence","exchangeable", and "ar1".}
+\item{corstr}{A candidate correlation structure. It can be "independence","exchangeable", and "ar1".}
 }
 \value{
 A matrix containing values of calculated estimating equations.
@@ -45,6 +45,7 @@ corstr<-"exchangeable"
 dist<-"poisson"
 # obtain the estimates
 library(geepack)
+# x matrix already include the intercept column.
 fit<-geeglm(y~x-1,data=geesimdata,family =dist,id=id,corstr = "ar1")
 beta<-fit$coefficients
 rho<-unlist(summary(fit)$corr[1])
