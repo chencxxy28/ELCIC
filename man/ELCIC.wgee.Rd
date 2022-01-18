@@ -2,33 +2,33 @@
 % Please edit documentation in R/model_selection.R
 \name{ELCIC.wgee}
 \alias{ELCIC.wgee}
-\title{The whole procedure for joint selection of marginal mean and correlation structures for longitudinal data with dropout missingness under the mechanism of missing at random}
+\title{The whole procedure for joint selection of mean structure and correlation structure for missing longitudinal data under the mechanism of missing at random and drop-out}
 \usage{
 ELCIC.wgee(x,y,x_mis,r,id,time,candidate.sets=NULL,name.var.sets=NULL,
      dist,candidate.cor.sets=c("independence","exchangeable", "ar1"), joints=TRUE,lag=1)
 }
 \arguments{
-\item{x}{A matrix containing covariates. The first column should be all ones corresponding to the intercept if the intercept is considered in the marginal mean. The covariate matrix should be complete.}
+\item{x}{A matrix containing covariates. The first column should be all ones corresponding to the intercept if the intercept is considered in the marginal mean. Covariate matrix should be complete.}
 
 \item{y}{A vector containing outcomes. Use NA to indicate missing outcomes.}
 
-\item{x_mis}{A matrix containing covariates for the missing data model. The first column should be all ones corresponding to the intercept. This covariate matrix should be complete and all observed. See more in Details section.}
+\item{x_mis}{A matrix containing covariates for the missing data model. The first column should be all ones corresponding to the intercept. This covariate matrix should be complete and all observed. See more in details section.}
 
-\item{r}{A vector indicating the observation of outcomes: 1 for an observed record, and 0 for an unobserved record.}
+\item{r}{A vector indicating the observation of outcomes: 1 for observed records, and 0 for unobserved records.}
 
 \item{id}{A vector indicating subject id.}
 
 \item{time}{The number of observations in total for each subject}
 
-\item{candidate.sets}{A list containing index corresponding to covariates in the candidate models. See more in Details section.}
+\item{candidate.sets}{A list containing index corresponding to candidate covariates. See more in details section.}
 
-\item{name.var.sets}{A list containing names of in the candidate models. The names should be a subset of the column names of the x matrix. See more in Details section.}
+\item{name.var.sets}{A list containing names of candidate covariates. The names should be subset of column names of x matrix. See more in details section.}
 
 \item{dist}{A specified distribution. It can be "gaussian", "poisson",and "binomial".}
 
-\item{candidate.cor.sets}{A vector containing candidate correlation structures. When joints=TRUE, it can be any subset of c("independence", "exchangeable", "ar1"). The default is c("independence", "exchangeable", "ar1"). When joints=FALSE, it should be either of "independence","exchangeable", "ar1". See more in Details section.}
+\item{candidate.cor.sets}{A vector containing candidate correlation structures. When joints=TRUE, it can be any subset of c("independence","exchangeable", "ar1"). The default is c("independence","exchangeable", "ar1"). When joints=FALSE, it should be either of "independence","exchangeable", "ar1". See more in details section.}
 
-\item{joints}{A logic value for joint selection of marginal mean and working correlation structures. The default is TRUE. See more in Details section.}
+\item{joints}{A logic value for joint selection of marginal mean and working correlation structure. The default is TRUE. See more in details section.}
 
 \item{lag}{A numeric value indicating lag-response involved in the missing data model. It can be either 1 or 2. The default is 1.}
 }
@@ -36,16 +36,16 @@ ELCIC.wgee(x,y,x_mis,r,id,time,candidate.sets=NULL,name.var.sets=NULL,
 A matrix with each element containing ELCIC value for each candidate model.
 }
 \description{
-The function \code{\link{ELCIC.wgee}} provides the overall procedure for joint selection of marginal mean and correlation structures for longitudinal data with dropout missingness under the mechanism of missing at random. It is also able to implement the marginal mean structure selection given a prespecified working correlation structure. The data is dropout missing and missing at random.
+The function \code{\link{ELCIC.wgee}} provides the overall procedure for joint selection of mean structure and correlation structure in longitudinal data under missing at random. It is also able to implement marginal mean structure selection given a prespecified working correlation structure. The data is dropout missing and missing at random.
 }
 \details{
 Covariate matrix "x" should be complete. If missing data are present in "x", the elements in covariate vector will be replaced by zeros for individuals who have missing covariates.
 
 The argument "x_mis" includes all covariates to fit the missing data model. It does not contains a lag variable based on the outcome y. The argument "lag" in this function will automatically add lag-response variables to indicate the data missing at random.
 
-Either arguments "candidate.sets" or "name.var.sets" is used to identify the set of candidate mean models. If both arguments are provided, only the argument "name.var.sets" will be used.
+Either arguments "candidate.sets" or "name.var.sets" is used to identify the set of candidate mean model. If both arguments are provided, only the argument "name.var.sets" will be used.
 
-When joints=TRUE, the argument "candidate.cor.sets" can contain multiple correlation structures; however, when joints=FALSE, it should contain either of "independence", "exchangeable", and "ar1". If multiple correlation structures are provided, only the first one will be used.
+When joints=TRUE, the argument "candidate.cor.sets" can contain multiple correlation structures; however, when joints=FALSE, it should contain either of "independence","exchangeable", "ar1". If multiple correlation structures are provided, only the first one will be used.
 }
 \examples{
 ## tests
