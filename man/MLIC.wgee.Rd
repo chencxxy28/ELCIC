@@ -2,33 +2,33 @@
 % Please edit documentation in R/model_selection.R
 \name{MLIC.wgee}
 \alias{MLIC.wgee}
-\title{The whole MLIC procedure for joint selection of marginal mean and correlation structures for longitudinal data with dropout missingness under the mechanism of missing at random}
+\title{The whole MLIC procedure for joint selection of mean structure and correlation structure for missing longitudinal data under the mechanism of missing at random and drop-out}
 \usage{
 MLIC.wgee(x,y,x_mis,r,id,time,candidate.sets=NULL, name.var.sets=NULL,dist,
       candidate.cor.sets=c("independence","exchangeable", "ar1"), joints=TRUE,lag=1)
 }
 \arguments{
-\item{x}{A matrix containing covariates. The first column should be all ones corresponding to the intercept if the intercept is expected in the marginal mean model. The covariate matrix should be complete.}
+\item{x}{A matrix containing covariates. The first column should be all ones corresponding to the intercept if the intercept is expected in the marginal mean model. Covariate matrix should be complete.}
 
 \item{y}{A vector containing outcomes. Use NA to indicate missing outcomes.}
 
-\item{x_mis}{A matrix containing covariates for the missing data model. The first column should be all ones corresponding to the intercept. This covariate matrix should be complete and all observed. See more in Details section.}
+\item{x_mis}{A matrix containing covariates for the missing data model. The first column should be all ones corresponding to the intercept. This covariate matrix should be complete and all observed. See more in details section.}
 
-\item{r}{A vector indicating the observation of outcomes: 1 for an observed record, and 0 for an unobserved record.}
+\item{r}{A vector indicating the observation of outcomes: 1 for observed records, and 0 for unobserved records.}
 
 \item{id}{A vector indicating subject id.}
 
 \item{time}{The number of observations in total for each subject.}
 
-\item{candidate.sets}{A list containing index corresponding to covariates in the candidate models. See more in Details section.}
+\item{candidate.sets}{A list containing index corresponding to candidate covariates. See more in details section.}
 
-\item{name.var.sets}{A list containing names of covariates in the candidate models. The names should be a subset of the column names of x matrix. See more in Details section.}
+\item{name.var.sets}{A list containing names of candidate covariates. The names should be subset of column names of x matrix. See more in details section.}
 
-\item{dist}{A specified distribution. It can be "gaussian", "poisson", and "binomial".}
+\item{dist}{A specified distribution. It can be "gaussian", "poisson",and "binomial".}
 
-\item{candidate.cor.sets}{A vector containing condidate correlation structures. When joints=TRUE, it is c("independence", "exchangeable", "ar1") as default. When joints=FALSE, it should be either of "independence", "exchangeable", "ar1". See more in Details section.}
+\item{candidate.cor.sets}{A vector containing candidate correlation structures. When joints=TRUE, it is c("independence","exchangeable", "ar1") as default. When joints=FALSE, it should be either of "independence","exchangeable", "ar1". See more in details section.}
 
-\item{joints}{A logic value for joint selection of marginal mean and working correlation structures. The default is TRUE. See more in Details section.}
+\item{joints}{A logic value for joint selection of marginal mean and working correlation structure. The default is TRUE. See more in details section.}
 
 \item{lag}{A numeric value indicating lag-response involved in the missing data model. It can be either 1 or 2. The default is 1.}
 }
@@ -36,16 +36,16 @@ MLIC.wgee(x,y,x_mis,r,id,time,candidate.sets=NULL, name.var.sets=NULL,dist,
 A vector with each element containing MLIC value for each candidate model. The row name of this vector is the selected correlation structure.
 }
 \description{
-This function provides the overall MLIC procedure for joint selection of marginal mean and correlation structures for longitudinal data with dropout missingness under the mechanism of missing at random. It is also able to implement the marginal mean structure selection given a prespecified "working" correlation structure. The data is dropout missing and missing at random.
+This function provides the overall MLIC procedure for joint selection of mean structure and correlation structure in longitudinal data missing at random. It is also able to implement marginal mean structure selection given a prespecified working correlation structure. The data is dropout missing and missing at random.
 }
 \details{
-The covariate matrix "x" should be complete. If missing data are present in "x", the elements in covariate vector will be replaced by zeros for individuals who have missing covariates.
+Covariate matrix "x" should be complete. If missing data are present in "x", the elements in covariate vector will be replaced by zeros for individuals who have missing covariates.
 
 The argument "x_mis" includes all covariates to fit the missing data model. It does not contains a lag variable based on the outcome y. The argument "lag" in this function will automatically add lag-response variables to indicate the data missing at random.
 
-Either arguments "candidate.sets" or "name.var.sets" is used to identify the set of candidate mean models. If both arguments are provided, only the argument "name.var.sets" will be used.
+Either arguments "candidate.sets" or "name.var.sets" is used to identify the set of candidate mean model. If both arguments are provided, only the argument "name.var.sets" will be used.
 
-When joints=TRUE, the argument "candidate.cor.sets" can contain multiple correlation structures; however, when joints=FALSE, it should contain either of "independence","exchangeable", and "ar1". If multiple correlation structures are provided, only the first one will be used.
+When joints=TRUE, the argument "candidate.cor.sets" can contain multiple correlation structures; however, when joints=FALSE, it should contain either of "independence","exchangeable", "ar1". If multiple correlation structures are provided, only the first one will be used.
 }
 \examples{
 ## tests
