@@ -27,7 +27,7 @@ lambda.find.wgee(y,x,r,pi,id,time,beta,rho,phi,dist,corstr)
 
 \item{dist}{A specified distribution. It can be "gaussian", "poisson",and "binomial".}
 
-\item{corstr}{A condidate correlation structure. It can be "independence","exchangeable", and "ar1".}
+\item{corstr}{A candidate correlation structure. It can be "independence","exchangeable", and "ar1".}
 }
 \value{
 Tuning parameter values.
