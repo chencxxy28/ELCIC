@@ -2,7 +2,7 @@
 % Please edit documentation in R/model_selection.R
 \name{ELCIC.glm}
 \alias{ELCIC.glm}
-\title{The whole variable selection procedure in GLM}
+\title{The whole variable selection procedure for mean structure in GLM}
 \usage{
 ELCIC.glm(x,y,candidate.sets,name.var.sets=NULL,dist)
 }
@@ -11,14 +11,14 @@ ELCIC.glm(x,y,candidate.sets,name.var.sets=NULL,dist)
 
 \item{y}{A vector containing outcomes.}
 
-\item{candidate.sets}{A list containing index corresponding to covariates in each candidate model. See more in details section.}
+\item{candidate.sets}{A list containing index corresponding to candidate covariates in each candidate model. See more in details section.}
 
-\item{name.var.sets}{A list containing names of covariates coresponding to each candidate model. The names should be a subset of the column names of the x matrix. See more in details section.}
+\item{name.var.sets}{A list containing names of candidate covariates corresponding to each candidate model. The names should be subset of column names of the x matrix. See more in details section.}
 
-\item{dist}{A specified distribution. It can be "gaussian", "poisson", and "binomial".}
+\item{dist}{A specified distribution. It can be "gaussian", "poisson",and "binomial".}
 }
 \value{
-A matrix with each element containing ELCIC value for each candidate model (in columns) and (in rows)????
+A matrix with each element containing ELCIC value for each candidate model (in columns) and (in rows)
 }
 \description{
 The function \code{\link{ELCIC.glm}} provides the overall procedure for variable selection in GLM.
@@ -26,7 +26,7 @@ The function \code{\link{ELCIC.glm}} provides the overall procedure for variable
 \details{
 "x" and "y" should be all observed. The corresponding individual data will be deleted if any missingness is detected.
 
-Either of the arguments, "candidate.sets" and "name.var.sets", is used to identify the set of candidate mean models. If both arguments are provided, only the argument "name.var.sets" will be used.
+Either arguments "candidate.sets" or "name.var.sets" is used to identify the set of candidate mean model. If both arguments are provided, only the argument "name.var.sets" will be used.
 }
 \examples{
 ## tests
