@@ -68,7 +68,7 @@ JJ<-function (x,y,beta,size,samplesize,dist)
 #'@param ov The dispersion parameter for the outcome from Negative Binomial distribution.
 #'
 #'
-#'@return x: a matrix containing covariates. The first column should contain all ones corresponding to the intercept.
+#'@return x: a matrix containing continuous covariates. The first column should contain all ones corresponding to the intercept.
 #'@return y: a vector containing outcomes.
 #'
 #'@examples
@@ -135,7 +135,7 @@ glm.generator<-function(beta,samplesize,rho=0,dist,sd.gaussian=NULL,ov=NULL)
 #'@param cor.str The correlation structure for residuals across time. It can be "independence","exchangeable", and "ar1".
 #'@param x.cor.str The correlation structure for time-dependent covariates across time. It can be "independence","exchangeable", and "ar1".
 #'
-#'@return x: a matrix containing covariates. The first column should contain all ones corresponding to the intercept.
+#'@return x: a matrix containing continuous covariates. The first column should contain all ones corresponding to the intercept.
 #'@return y: a vector containing outcomes.
 #'@return id: a vector indicating subject id.
 #'
@@ -346,7 +346,7 @@ roo<-function(rho,time,corstr)
 
 
 #'@title Calculate conditional probabilities for observing records at each time point
-#'@description A function calculates conditional probabilities.
+#'@description A function calculates conditional probabilities for longitudinal missing data. The observing probability is at observation-level.
 #'@usage cond.prob(x_mis,gamma,id,time)
 #'@param x_mis A matrix containing covariates for the missing data model. The first column should be all ones corresponding to the intercept.
 #'@param gamma coefficients calculated from missing data model
