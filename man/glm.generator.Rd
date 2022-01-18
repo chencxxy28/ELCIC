@@ -20,7 +20,7 @@ glm.generator(beta, samplesize, rho = 0, dist, sd.gaussian = NULL, ov = NULL)
 \item{ov}{The dispersion parameter for the outcome from Negative Binomial distribution.}
 }
 \value{
-x: a matrix containing covariates. The first column should contain all ones corresponding to the intercept.
+x: a matrix containing continuous covariates. The first column should contain all ones corresponding to the intercept.
 
 y: a vector containing outcomes.
 }
