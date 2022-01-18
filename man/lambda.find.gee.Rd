@@ -23,7 +23,7 @@ lambda.find.gee(x, y, id, beta, r, dist, rho, phi, corstr)
 
 \item{phi}{An over-dispersion parameter obtained from an external estimation procedure, such as GEE.}
 
-\item{corstr}{A condidate correlation structure. It can be "independence","exchangeable", and "ar1".}
+\item{corstr}{A candidate correlation structure. It can be "independence","exchangeable", and "ar1".}
 }
 \value{
 Tuning parameter values.
