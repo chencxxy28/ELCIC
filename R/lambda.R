@@ -106,7 +106,7 @@ lambda.find.glm<-function(x,y,beta,dist)
 #'@param beta A plug-in estimator solved by an external estimation procedure, such as GEE.
 #'@param rho A correlation coefficients obtained from an external estimation procedure, such as GEE.
 #'@param phi An over-dispersion parameter obtained from an external estimation procedure, such as GEE.
-#'@param corstr A condidate correlation structure. It can be "independence","exchangeable", and "ar1".
+#'@param corstr A candidate correlation structure. It can be "independence","exchangeable", and "ar1".
 #'
 #'@return Tuning parameter values.
 #'
@@ -193,7 +193,7 @@ lambda.find.gee<-function(x,y,id,beta,r,dist,rho,phi,corstr)
 #'@param rho A correlation coefficients obtained from an external estimation procedure, such as WGEE.
 #'@param phi An over-dispersion parameter obtained from an external estimation procedure, such as GEE.
 #'@param dist A specified distribution. It can be "gaussian", "poisson",and "binomial".
-#'@param corstr A condidate correlation structure. It can be "independence","exchangeable", and "ar1".
+#'@param corstr A candidate correlation structure. It can be "independence","exchangeable", and "ar1".
 #'
 #'@return Tuning parameter values.
 #'
@@ -281,7 +281,7 @@ lambda.find.wgee<-function(y,x,r,pi,id,time,beta,rho,phi,dist,corstr)
 #'@param beta A plug-in estimator solved by an external estimation procedure, such as GEE.
 #'@param rho A correlation coefficients obtained from an external estimation procedure, such as GEE.
 #'@param phi An over-dispersion parameter obtained from an external estimation procedure, such as GEE.
-#'@param corstr A condidate correlation structure. It can be "independence","exchangeable", and "ar1".
+#'@param corstr A candidate correlation structure. It can be "independence","exchangeable", and "ar1".
 #'
 #'@return Tuning parameter values.
 #'
@@ -371,7 +371,7 @@ lambda.find.gee.mean<-function(x,y,id,beta,r,dist,rho,phi,corstr)
 #'@param rho A correlation coefficients obtained from an external estimation procedure, such as WGEE.
 #'@param phi An over-dispersion parameter obtained from an external estimation procedure, such as GEE.
 #'@param dist A specified distribution. It can be "gaussian", "poisson",and "binomial".
-#'@param corstr A condidate correlation structure. It can be "independence","exchangeable", and "ar1".
+#'@param corstr A candidate correlation structure. It can be "independence","exchangeable", and "ar1".
 #'
 #'@return Tuning parameter values.
 #'
