@@ -19,7 +19,7 @@ cond.prob(x_mis,gamma,id,time)
 a vector containing conditional probabilities.
 }
 \description{
-A function calculates conditional probabilities.
+A function calculates conditional probabilities for longitudinal missing data. The observing probability is at observation-level.
 }
 \examples{
 ## tests
