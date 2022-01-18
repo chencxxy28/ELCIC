@@ -82,10 +82,10 @@ ee.glm<-function (x,y,beta,dist)
 #######################################################
 ###### for joint selection of marginal mean and working correlation
 
-#'@title Estimating equation for GEE without missingness or missing completely at random
+#'@title Estimating equation for GEE without missingness or with data missing completely at random.
 #'@description Calculate estimating equation from GEE in ELCIC without missingness or missing completely at random. This estimating equation is used for joint selection of marginal mean and working correlation structure.
 #'@usage ee.gee(y,x,r,id,beta,rho,phi,dist,corstr)
-#'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept.
+#'@param x A matrix containing covariates. The first column should be all ones the represents the intercept.
 #'@param y A vector containing outcomes.
 #'@param r A vector indicating the observation of outcomes: 1 for observed records, and 0 for unobserved records. The default setup is that all data are observed. See more in details section.
 #'@param id A vector indicating subject id.
@@ -93,7 +93,7 @@ ee.glm<-function (x,y,beta,dist)
 #'@param rho A correlation coefficients obtained from an external estimation procedure, such as GEE.
 #'@param phi An over-dispersion parameter obtained from an external estimation procedure, such as GEE.
 #'@param dist A specified distribution. It can be "gaussian", "poisson",and "binomial".
-#'@param corstr A condidate correlation structure. It can be "independence","exchangeable", and "ar1".
+#'@param corstr A candidate correlation structure. It can be "independence","exchangeable", and "ar1".
 #'
 #'@return A matrix containing values of calculated estimating equations.
 #'
@@ -110,6 +110,7 @@ ee.glm<-function (x,y,beta,dist)
 #'dist<-"poisson"
 #'# obtain the estimates
 #'library(geepack)
+#'# x matrix already include the intercept column.
 #'fit<-geeglm(y~x-1,data=geesimdata,family =dist,id=id,corstr = "ar1")
 #'beta<-fit$coefficients
 #'rho<-unlist(summary(fit)$corr[1])
@@ -191,7 +192,7 @@ ee.gee<-function(y,x,r,id,beta,rho,phi,dist,corstr)
 #'@param rho A correlation coefficients obtained from an external estimation procedure, such as WGEE.
 #'@param phi An over-dispersion parameter obtained from an external estimation procedure, such as GEE.
 #'@param dist A specified distribution. It can be "gaussian", "poisson",and "binomial".
-#'@param corstr A condidate correlation structure. It can be "independence","exchangeable", and "ar1".
+#'@param corstr A candidate correlation structure. It can be "independence","exchangeable", and "ar1".
 #'
 #'@return A matrix containing values of calculated estimating equations.
 #'
@@ -281,7 +282,7 @@ ee.wgee<-function(y,x,r,pi,id,time,beta,rho,phi,dist,corstr)
 #'@param rho A correlation coefficients obtained from an external estimation procedure, such as GEE.
 #'@param phi An over-dispersion parameter obtained from an external estimation procedure, such as GEE.
 #'@param dist A specified distribution. It can be "gaussian", "poisson",and "binomial".
-#'@param corstr A condidate correlation structure. It can be "independence","exchangeable", and "ar1".
+#'@param corstr A candidate correlation structure. It can be "independence","exchangeable", and "ar1".
 #'
 #'@return A matrix containing values of calculated estimating equations.
 #'
@@ -354,7 +355,7 @@ ee.gee.mean<-function(y,x,r,id,beta,rho,phi,dist,corstr)
 
 
 #'@title Estimating equation for marginal mean under WGEE for missing longitudinal data under the mechanism of missing at random and drop-out
-#'@description Calculate estimating equation from WGEE in ELCIC. This estimating equation is used for marginal mean selection.
+#'@description Calculate estimating function from WGEE. This estimating function is used for marginal mean selection.
 #'@usage ee.wgee.mean(y,x,r,pi,id,time,beta,rho,phi,dist,corstr)
 #'@param x A matrix containing covariates. The first column should be all ones corresponding to the intercept.
 #'@param y A vector containing outcomes. use NA to indicate missing outcomes.
@@ -366,7 +367,7 @@ ee.gee.mean<-function(y,x,r,id,beta,rho,phi,dist,corstr)
 #'@param rho A correlation coefficients obtained from an external estimation procedure, such as WGEE.
 #'@param phi An over-dispersion parameter obtained from an external estimation procedure, such as GEE.
 #'@param dist A specified distribution. It can be "gaussian", "poisson",and "binomial".
-#'@param corstr A condidate correlation structure. It can be "independence","exchangeable", and "ar1".
+#'@param corstr A candidate correlation structure. It can be "independence","exchangeable", and "ar1".
 #'
 #'@note corstr should be prespecified.
 #'
