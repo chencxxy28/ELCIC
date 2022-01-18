@@ -27,13 +27,13 @@ ee.wgee.mean(y,x,r,pi,id,time,beta,rho,phi,dist,corstr)
 
 \item{dist}{A specified distribution. It can be "gaussian", "poisson",and "binomial".}
 
-\item{corstr}{A condidate correlation structure. It can be "independence","exchangeable", and "ar1".}
+\item{corstr}{A candidate correlation structure. It can be "independence","exchangeable", and "ar1".}
 }
 \value{
 A matrix containing values of calculated estimating equations.
 }
 \description{
-Calculate estimating equation from WGEE in ELCIC. This estimating equation is used for marginal mean selection.
+Calculate estimating function from WGEE. This estimating function is used for marginal mean selection.
 }
 \note{
 corstr should be prespecified.
