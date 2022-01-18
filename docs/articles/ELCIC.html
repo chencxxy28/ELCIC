@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,28 +33,25 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ELCIC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../articles/ELCIC.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/chencxxy28/ELCIC/">
+  <a href="https://github.com/chencxxy28/ELCIC/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -67,14 +66,14 @@
 
       
 
-      </header><script src="ELCIC_files/header-attrs-2.6/header-attrs.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>ELCIC</h1>
-                        <h4 class="author">Chixiang Chen</h4>
+                        <h4 data-toc-skip class="author">Chixiang Chen</h4>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/chencxxy28/ELCIC/blob/master/vignettes/ELCIC.Rmd"><code>vignettes/ELCIC.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/chencxxy28/ELCIC/blob/HEAD/vignettes/ELCIC.Rmd" class="external-link"><code>vignettes/ELCIC.Rmd</code></a></small>
       <div class="hidden name"><code>ELCIC.Rmd</code></div>
 
     </div>
@@ -82,160 +81,176 @@
     
     
 <p><strong>ELCIC</strong> is a robust and consistent model selection criterion based upon the empirical likelihood function which is data-driven. In particular, this framework adopts plug-in estimators that can be achieved by solving external estimating equations, not limited to the empirical likelihood, which avoids potential computational convergence issues and allows versatile applications, such as generalized linear models, generalized estimating equations, penalized regressions, and so on. The formulation of our proposed criterion is initially derived from the asymptotic expansion of the marginal likelihood under the variable selection framework, but more importantly, the consistent model selection property is established under a general context.</p>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="st"><a href="https://devtools.r-lib.org/">"devtools"</a></span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://devtools.r-lib.org/" class="external-link">"devtools"</a></span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span>
 <span class="op">}</span>
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"chencxxy28/ELCIC"</span><span class="op">)</span></code></pre></div>
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"chencxxy28/ELCIC"</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/chencxxy28/ELCIC">ELCIC</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.stats.ox.ac.uk/pub/MASS4/">MASS</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://mvtnorm.R-forge.R-project.org">mvtnorm</a></span><span class="op">)</span></code></pre></div>
-<p>We provide some basic tutorial for illustrating the usage of <strong>ELCIC</strong> package. More technical details are referred to the <a href="https://arxiv.org/pdf/2006.13281.pdf">Chen et al. (2021)</a>. In the following, we list three applications of ELCIC, which is the variable selection in generalized linear model, model selection in longitudinal data, and model selection in longitudinal data with missingness.</p>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/chencxxy28/ELCIC" class="external-link">ELCIC</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://www.stats.ox.ac.uk/pub/MASS4/" class="external-link">MASS</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://mvtnorm.R-forge.R-project.org" class="external-link">mvtnorm</a></span><span class="op">)</span></code></pre></div>
+<p>We provide some basic tutorial for illustrating the usage of <strong>ELCIC</strong> package. More technical details are referred to the <a href="https://arxiv.org/pdf/2006.13281.pdf" class="external-link">Chen et al. (2021)</a>. In the following, we list three applications of ELCIC, which is the variable selection in generalized linear model, model selection in longitudinal data, and model selection in longitudinal data with missingness.</p>
 </div>
-<div id="variable-selection-in-generalized-linear-models-glms" class="section level2">
-<h2 class="hasAnchor">
-<a href="#variable-selection-in-generalized-linear-models-glms" class="anchor"></a>Variable Selection in Generalized Linear Models (GLMs)</h2>
-<p>First, let us generate a pseudo data from negative binomial distribution with overdispersion paramter (ov) equal to 8. We provide a function <code>glm.generator</code> to generate responses and covariates. Different outcome distributions are considered in this function including Gaussian, Poisson, Binomial, and Negative Binomial distributions.</p>
-<p>We first test how ELCIC works when the distribution is correctly specified. The outcomes are generated from Poisson distribution. Then, we consider seven candidate models with different covariate combinations and compare ELCIC with most commonly used criteria including <a href="https://ieeexplore.ieee.org/document/1100705">AIC</a>, <a href="https://projecteuclid.org/journals/annals-of-statistics/volume-6/issue-2/Estimating-the-Dimension-of-a-Model/10.1214/aos/1176344136.full">BIC</a>, and <a href="https://www.jstor.org/stable/2337290?seq=1">GIC</a>. The function <code>ELCIC.glm</code> can produce the values of ELCIC, AIC, BIC, and GIC given a candidate model. The selection rates from four criteria are present based on 20 Monte Carlo runs (may take 1-2 minutes to run).</p>
+<div class="section level2">
+<h2 id="variable-selection-in-generalized-linear-models-glms">Variable Selection in Generalized Linear Models (GLMs)<a class="anchor" aria-label="anchor" href="#variable-selection-in-generalized-linear-models-glms"></a>
+</h2>
+<p>First, let us generate a pseudo data from negative binomial distribution with overdispersion parameter (ov) equal to 8. We provide a function <code>glm.generator</code> to generate responses and covariates. Different outcome distributions are considered in this function including Gaussian, Poisson, Binomial, and Negative Binomial distributions.</p>
+<p>We first test how ELCIC works when the distribution is correctly specified. The outcomes are generated from Poisson distribution. Then, we consider seven candidate models with different covariate combinations and compare ELCIC with most commonly used criteria including <a href="https://ieeexplore.ieee.org/document/1100705" class="external-link">AIC</a>, <a href="https://projecteuclid.org/journals/annals-of-statistics/volume-6/issue-2/Estimating-the-Dimension-of-a-Model/10.1214/aos/1176344136.full" class="external-link">BIC</a>, and <a href="https://www.jstor.org/stable/2337290?seq=1" class="external-link">GIC</a>. The function <code>ELCIC.glm</code> can produce the values of ELCIC, AIC, BIC, and GIC given a candidate model. The selection rates from four criteria are present based on 20 Monte Carlo runs (may take 1-2 minutes to run).</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">28582</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">28582</span><span class="op">)</span>
 <span class="va">inter.total</span><span class="op">=</span><span class="fl">20</span>
-<span class="va">count.matrix</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fl">0</span>,nrow<span class="op">=</span><span class="fl">4</span>,ncol<span class="op">=</span><span class="fl">7</span><span class="op">)</span>
-<span class="va">candidate.sets</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">3</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">4</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">4</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">3</span>,<span class="fl">4</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">count.matrix</span><span class="op">)</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"ELCIC"</span>,<span class="st">"AIC"</span>,<span class="st">"BIC"</span>,<span class="st">"GIC"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">count.matrix</span><span class="op">)</span><span class="op">&lt;-</span><span class="va">candidate.sets</span>
+<span class="va">count.matrix</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">0</span>,nrow<span class="op">=</span><span class="fl">4</span>,ncol<span class="op">=</span><span class="fl">7</span><span class="op">)</span>
+<span class="va">candidate.sets</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">3</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">4</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">4</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">3</span>,<span class="fl">4</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">count.matrix</span><span class="op">)</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ELCIC"</span>,<span class="st">"AIC"</span>,<span class="st">"BIC"</span>,<span class="st">"GIC"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">count.matrix</span><span class="op">)</span><span class="op">&lt;-</span><span class="va">candidate.sets</span>
 <span class="va">samplesize</span><span class="op">&lt;-</span><span class="fl">100</span>
 <span class="va">ov</span><span class="op">=</span><span class="fl">2</span>
 
 <span class="kw">for</span><span class="op">(</span><span class="va">iter</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="va">inter.total</span><span class="op">)</span>
 <span class="op">{</span>
     <span class="co">#generate data</span>
-<span class="va">simulated.data</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/glm.generator.html">glm.generator</a></span><span class="op">(</span>beta<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.5</span>,<span class="fl">0.5</span>,<span class="fl">0.5</span>,<span class="fl">0</span><span class="op">)</span>,samplesize<span class="op">=</span><span class="va">samplesize</span>,rho<span class="op">=</span><span class="fl">0.5</span>,dist<span class="op">=</span><span class="st">"poisson"</span><span class="op">)</span>
+<span class="va">simulated.data</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/glm.generator.html">glm.generator</a></span><span class="op">(</span>beta<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>,<span class="fl">0.5</span>,<span class="fl">0.5</span>,<span class="fl">0</span><span class="op">)</span>,samplesize<span class="op">=</span><span class="va">samplesize</span>,rho<span class="op">=</span><span class="fl">0.5</span>,dist<span class="op">=</span><span class="st">"poisson"</span><span class="op">)</span>
 <span class="va">y</span><span class="op">&lt;-</span><span class="va">simulated.data</span><span class="op">[[</span><span class="st">"y"</span><span class="op">]</span><span class="op">]</span>
 <span class="va">x</span><span class="op">&lt;-</span><span class="va">simulated.data</span><span class="op">[[</span><span class="st">"x"</span><span class="op">]</span><span class="op">]</span>
 
-<span class="va">criterion.all</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/ELCIC.glm.procedure.html">ELCIC.glm.procedure</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">x</span>,y<span class="op">=</span><span class="va">y</span>,candidate.sets<span class="op">=</span><span class="va">candidate.sets</span>,name.var<span class="op">=</span><span class="cn">NULL</span>,dist<span class="op">=</span><span class="st">"poisson"</span><span class="op">)</span>
+<span class="va">criterion.all</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/ELCIC.glm.html">ELCIC.glm</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">x</span>,y<span class="op">=</span><span class="va">y</span>,candidate.sets<span class="op">=</span><span class="va">candidate.sets</span>,name.var<span class="op">=</span><span class="cn">NULL</span>,dist<span class="op">=</span><span class="st">"poisson"</span><span class="op">)</span>
 
 <span class="co">#print(iter)</span>
-<span class="va">index.used</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>,<span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">criterion.all</span>,<span class="fl">1</span>,<span class="va">which.min</span><span class="op">)</span><span class="op">)</span>
+<span class="va">index.used</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>,<span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">criterion.all</span>,<span class="fl">1</span>,<span class="va">which.min</span><span class="op">)</span><span class="op">)</span>
 <span class="va">count.matrix</span><span class="op">[</span><span class="va">index.used</span><span class="op">]</span><span class="op">&lt;-</span><span class="va">count.matrix</span><span class="op">[</span><span class="va">index.used</span><span class="op">]</span><span class="op">+</span><span class="fl">1</span>
 <span class="op">}</span>
 <span class="va">count.matrix</span><span class="op">/</span><span class="va">inter.total</span></code></pre></div>
-<pre><code>##       c(1, 2) c(1, 3) c(1, 4) c(1, 2, 3) c(1, 2, 4) c(1, 3, 4) c(1, 2, 3, 4)
-## ELCIC       0       0       0       1.00          0          0          0.00
-## AIC         0       0       0       0.95          0          0          0.05
-## BIC         0       0       0       1.00          0          0          0.00
-## GIC         0       0       0       0.90          0          0          0.10</code></pre>
-<p>Based on the results, we find ELCIC and BIC has the best performance due to the highest selection rate among others. It shows that ELCIC is as powerfull as BIC when the distribution is correctly specified. Next, we consider the situation where the AIC, BIC, and GIC is based on misspecified distribution. Accrodingly, we generate outcomes from Negative Binomial distribution with the dispersion parameter equal to 2, while AIC, BIC, and GIC consider Poisson distribution as the input (may take 1-2 minutes to run).</p>
+<pre><code><span class="co">##       c(1, 2) c(1, 3) c(1, 4) c(1, 2, 3) c(1, 2, 4) c(1, 3, 4) c(1, 2, 3, 4)</span>
+<span class="co">## ELCIC       0       0       0       1.00          0          0          0.00</span>
+<span class="co">## AIC         0       0       0       0.95          0          0          0.05</span>
+<span class="co">## BIC         0       0       0       1.00          0          0          0.00</span>
+<span class="co">## GIC         0       0       0       0.90          0          0          0.10</span></code></pre>
+<p>Based on the results, we find ELCIC and BIC has the best performance due to the highest selection rate among others. It shows that ELCIC is as powerful as BIC when the distribution is correctly specified. Next, we consider the situation where the AIC, BIC, and GIC is based on misspecified distribution. Accordingly, we generate outcomes from Negative Binomial distribution with the dispersion parameter equal to 2, while AIC, BIC, and GIC consider Poisson distribution as the input (may take 1-2 minutes to run).</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">28582</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">28582</span><span class="op">)</span>
 <span class="va">inter.total</span><span class="op">=</span><span class="fl">20</span>
-<span class="va">count.matrix</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fl">0</span>,nrow<span class="op">=</span><span class="fl">4</span>,ncol<span class="op">=</span><span class="fl">7</span><span class="op">)</span>
-<span class="va">candidate.sets</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">3</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">4</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">4</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">3</span>,<span class="fl">4</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">count.matrix</span><span class="op">)</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"ELCIC"</span>,<span class="st">"AIC"</span>,<span class="st">"BIC"</span>,<span class="st">"GIC"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">count.matrix</span><span class="op">)</span><span class="op">&lt;-</span><span class="va">candidate.sets</span>
+<span class="va">count.matrix</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">0</span>,nrow<span class="op">=</span><span class="fl">4</span>,ncol<span class="op">=</span><span class="fl">7</span><span class="op">)</span>
+<span class="va">candidate.sets</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">3</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">4</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">4</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">3</span>,<span class="fl">4</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">count.matrix</span><span class="op">)</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ELCIC"</span>,<span class="st">"AIC"</span>,<span class="st">"BIC"</span>,<span class="st">"GIC"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">count.matrix</span><span class="op">)</span><span class="op">&lt;-</span><span class="va">candidate.sets</span>
 <span class="va">samplesize</span><span class="op">&lt;-</span><span class="fl">100</span>
 <span class="va">ov</span><span class="op">=</span><span class="fl">2</span>
 
 <span class="kw">for</span><span class="op">(</span><span class="va">iter</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="va">inter.total</span><span class="op">)</span>
 <span class="op">{</span>
     <span class="co">#generate data</span>
-<span class="va">simulated.data</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/glm.generator.html">glm.generator</a></span><span class="op">(</span>beta<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.5</span>,<span class="fl">0.5</span>,<span class="fl">0.5</span>,<span class="fl">0</span><span class="op">)</span>,samplesize<span class="op">=</span><span class="va">samplesize</span>,rho<span class="op">=</span><span class="fl">0.5</span>,dist<span class="op">=</span><span class="st">"NB"</span>,ov<span class="op">=</span><span class="fl">2</span><span class="op">)</span>
+<span class="va">simulated.data</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/glm.generator.html">glm.generator</a></span><span class="op">(</span>beta<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>,<span class="fl">0.5</span>,<span class="fl">0.5</span>,<span class="fl">0</span><span class="op">)</span>,samplesize<span class="op">=</span><span class="va">samplesize</span>,rho<span class="op">=</span><span class="fl">0.5</span>,dist<span class="op">=</span><span class="st">"NB"</span>,ov<span class="op">=</span><span class="fl">2</span><span class="op">)</span>
 <span class="va">y</span><span class="op">&lt;-</span><span class="va">simulated.data</span><span class="op">[[</span><span class="st">"y"</span><span class="op">]</span><span class="op">]</span>
 <span class="va">x</span><span class="op">&lt;-</span><span class="va">simulated.data</span><span class="op">[[</span><span class="st">"x"</span><span class="op">]</span><span class="op">]</span>
 
-<span class="va">criterion.all</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/ELCIC.glm.procedure.html">ELCIC.glm.procedure</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">x</span>,y<span class="op">=</span><span class="va">y</span>,candidate.sets<span class="op">=</span><span class="va">candidate.sets</span>,name.var<span class="op">=</span><span class="cn">NULL</span>,dist<span class="op">=</span><span class="st">"poisson"</span><span class="op">)</span>
+<span class="va">criterion.all</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/ELCIC.glm.html">ELCIC.glm</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">x</span>,y<span class="op">=</span><span class="va">y</span>,candidate.sets<span class="op">=</span><span class="va">candidate.sets</span>,name.var<span class="op">=</span><span class="cn">NULL</span>,dist<span class="op">=</span><span class="st">"poisson"</span><span class="op">)</span>
 
 <span class="co">#print(iter)</span>
-<span class="va">index.used</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>,<span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">criterion.all</span>,<span class="fl">1</span>,<span class="va">which.min</span><span class="op">)</span><span class="op">)</span>
+<span class="va">index.used</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>,<span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">criterion.all</span>,<span class="fl">1</span>,<span class="va">which.min</span><span class="op">)</span><span class="op">)</span>
 <span class="va">count.matrix</span><span class="op">[</span><span class="va">index.used</span><span class="op">]</span><span class="op">&lt;-</span><span class="va">count.matrix</span><span class="op">[</span><span class="va">index.used</span><span class="op">]</span><span class="op">+</span><span class="fl">1</span>
 <span class="op">}</span>
 <span class="va">count.matrix</span><span class="op">/</span><span class="va">inter.total</span></code></pre></div>
-<pre><code>##       c(1, 2) c(1, 3) c(1, 4) c(1, 2, 3) c(1, 2, 4) c(1, 3, 4) c(1, 2, 3, 4)
-## ELCIC    0.05    0.05       0       0.85          0       0.00          0.05
-## AIC      0.00    0.00       0       0.60          0       0.00          0.40
-## BIC      0.00    0.00       0       0.70          0       0.05          0.25
-## GIC      0.00    0.00       0       0.80          0       0.00          0.20</code></pre>
+<pre><code><span class="co">##       c(1, 2) c(1, 3) c(1, 4) c(1, 2, 3) c(1, 2, 4) c(1, 3, 4) c(1, 2, 3, 4)</span>
+<span class="co">## ELCIC    0.05    0.05       0       0.85          0       0.00          0.05</span>
+<span class="co">## AIC      0.00    0.00       0       0.60          0       0.00          0.40</span>
+<span class="co">## BIC      0.00    0.00       0       0.70          0       0.05          0.25</span>
+<span class="co">## GIC      0.00    0.00       0       0.80          0       0.00          0.20</span></code></pre>
 <p>The above results show that ELCIC has the highest selection rate. The better performance is attributed to its distribution free property, which is highly valuable in real applications where the underlying distribution is hard to be correctly specified.</p>
 </div>
-<div id="model-selection-in-longitudinal-data-analysis-assuming-missing-completely-at-random" class="section level2">
-<h2 class="hasAnchor">
-<a href="#model-selection-in-longitudinal-data-analysis-assuming-missing-completely-at-random" class="anchor"></a>Model Selection in longitudinal data analysis (assuming missing completely at random)</h2>
-<p>Since ELCIC is distribution free, it is most suitable to statistical models in semi-parameteric framework. This section evaluates how ELCIC works for joint selection of marginal mean and correlation structures in longitudinal data analysis. We assume the data is complete or missing completely at random. The following packages are used to generate different types of outcomes.</p>
+<div class="section level2">
+<h2 id="model-selection-in-longitudinal-data-analysis-assuming-missing-completely-at-random">Model Selection in longitudinal data analysis (assuming missing completely at random)<a class="anchor" aria-label="anchor" href="#model-selection-in-longitudinal-data-analysis-assuming-missing-completely-at-random"></a>
+</h2>
+<p>Since ELCIC is distribution free, it is most suitable to statistical models in semi-parametric framework. This section evaluates how ELCIC works for joint selection of marginal mean and correlation structures in longitudinal data analysis. We assume the data is complete or missing completely at random. The following packages are used to generate different types of outcomes.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">PoisNor</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">bindata</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">geepack</span><span class="op">)</span></code></pre></div>
-<p>In the following evaluation, we consider generalized estimating equations <a href="https://www.jstor.org/stable/2531734?seq=1">GEEs</a> framework, which is a semi-parametric framework and widely used in longitudinal data analysis. We jointly select marginal mean and correlation structures. To be noted, correctly identifying working correlation structure will be beneficial to estimation efficiency in the mean structure. We provide a function <code>gee.generator</code> to generate responses and covariates. Different outcome distributions are considered in this function including Gaussian, Poisson, and Binomial, and both time-dependent covariates and time-independent covariates are allowed in this generator function. We compare ELCIC with another widely adopted information criterion <a href="https://onlinelibrary.wiley.com/doi/abs/10.1111/j.0006-341X.2001.00120.x">QIC</a>.</p>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">PoisNor</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">bindata</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">geepack</span><span class="op">)</span></code></pre></div>
+<p>In the following evaluation, we consider generalized estimating equations <a href="https://www.jstor.org/stable/2531734?seq=1" class="external-link">GEEs</a> framework, which is a semi-parametric framework and widely used in longitudinal data analysis. We jointly select marginal mean and correlation structures. To be noted, correctly identifying working correlation structure will be beneficial to estimation efficiency in the mean structure. We provide a function <code>gee.generator</code> to generate responses and covariates. Different outcome distributions are considered in this function including Gaussian, Poisson, and Binomial, and both time-dependent covariates and time-independent covariates are allowed in this generator function. We compare ELCIC with another widely adopted information criterion <a href="https://onlinelibrary.wiley.com/doi/abs/10.1111/j.0006-341X.2001.00120.x" class="external-link">QIC</a>.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">28582</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">28582</span><span class="op">)</span>
 <span class="va">inter.total</span><span class="op">=</span><span class="fl">20</span>
 <span class="va">samplesize</span><span class="op">&lt;-</span><span class="fl">300</span>
 <span class="va">time</span><span class="op">=</span><span class="fl">3</span>
 <span class="va">dist</span><span class="op">=</span><span class="st">"poisson"</span>
-<span class="va">candidate.sets</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">3</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">4</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">4</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">3</span>,<span class="fl">4</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span><span class="op">)</span><span class="op">)</span>
-<span class="va">candidate.cor.sets</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"independence"</span>,<span class="st">"exchangeable"</span>,<span class="st">"ar1"</span><span class="op">)</span>
+<span class="va">candidate.sets</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">3</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">4</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">4</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">3</span>,<span class="fl">4</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span><span class="op">)</span><span class="op">)</span>
+<span class="va">candidate.cor.sets</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"independence"</span>,<span class="st">"exchangeable"</span>,<span class="st">"ar1"</span><span class="op">)</span>
 
-<span class="va">count.matrix.elcic</span><span class="op">&lt;-</span><span class="va">count.matrix.qic</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fl">0</span>,nrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">candidate.cor.sets</span><span class="op">)</span>,ncol<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">candidate.sets</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">count.matrix.elcic</span><span class="op">)</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">count.matrix.qic</span><span class="op">)</span><span class="op">&lt;-</span><span class="va">candidate.cor.sets</span>
-<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">count.matrix.elcic</span><span class="op">)</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">count.matrix.qic</span><span class="op">)</span><span class="op">&lt;-</span><span class="va">candidate.sets</span>
+<span class="va">count.matrix.elcic</span><span class="op">&lt;-</span><span class="va">count.matrix.qic</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">0</span>,nrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">candidate.cor.sets</span><span class="op">)</span>,ncol<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">candidate.sets</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">count.matrix.elcic</span><span class="op">)</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">count.matrix.qic</span><span class="op">)</span><span class="op">&lt;-</span><span class="va">candidate.cor.sets</span>
+<span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">count.matrix.elcic</span><span class="op">)</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">count.matrix.qic</span><span class="op">)</span><span class="op">&lt;-</span><span class="va">candidate.sets</span>
 
 <span class="kw">for</span><span class="op">(</span><span class="va">iter</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="va">inter.total</span><span class="op">)</span>
 <span class="op">{</span>
     <span class="co">#generate data</span>
-<span class="va">data.corpos</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/gee.generator.html">gee.generator</a></span><span class="op">(</span>beta<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">0.5</span>,<span class="fl">0</span><span class="op">)</span>,samplesize<span class="op">=</span><span class="va">samplesize</span>,time<span class="op">=</span><span class="va">time</span>,num.time.dep<span class="op">=</span><span class="fl">2</span>,num.time.indep<span class="op">=</span><span class="fl">1</span>,rho<span class="op">=</span><span class="fl">0.4</span>,x.rho<span class="op">=</span><span class="fl">0.2</span>,dist<span class="op">=</span><span class="st">"poisson"</span>,cor.str<span class="op">=</span><span class="st">"exchangeable"</span>,x.cor.str<span class="op">=</span><span class="st">"exchangeable"</span><span class="op">)</span>
+<span class="va">data.corpos</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/gee.generator.html">gee.generator</a></span><span class="op">(</span>beta<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">0.5</span>,<span class="fl">0</span><span class="op">)</span>,samplesize<span class="op">=</span><span class="va">samplesize</span>,time<span class="op">=</span><span class="va">time</span>,num.time.dep<span class="op">=</span><span class="fl">2</span>,num.time.indep<span class="op">=</span><span class="fl">1</span>,rho<span class="op">=</span><span class="fl">0.4</span>,x.rho<span class="op">=</span><span class="fl">0.2</span>,dist<span class="op">=</span><span class="st">"poisson"</span>,cor.str<span class="op">=</span><span class="st">"exchangeable"</span>,x.cor.str<span class="op">=</span><span class="st">"exchangeable"</span><span class="op">)</span>
 
 <span class="va">y</span><span class="op">&lt;-</span><span class="va">data.corpos</span><span class="op">$</span><span class="va">y</span>
 <span class="va">x</span><span class="op">&lt;-</span><span class="va">data.corpos</span><span class="op">$</span><span class="va">x</span>
 <span class="va">id</span><span class="op">&lt;-</span><span class="va">data.corpos</span><span class="op">$</span><span class="va">id</span>
-<span class="va">r</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span>,<span class="va">samplesize</span><span class="op">*</span><span class="va">time</span><span class="op">)</span>
+<span class="va">r</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>,<span class="va">samplesize</span><span class="op">*</span><span class="va">time</span><span class="op">)</span>
 
-<span class="va">criterion.elcic</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/ELCIC.gee.procedure.html">ELCIC.gee.procedure</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">x</span>,y<span class="op">=</span><span class="va">y</span>,r<span class="op">=</span><span class="va">r</span>,id<span class="op">=</span><span class="va">id</span>,time<span class="op">=</span><span class="va">time</span>,candidate.sets<span class="op">=</span><span class="va">candidate.sets</span>,name.var<span class="op">=</span><span class="cn">NULL</span>,dist<span class="op">=</span><span class="st">"poisson"</span>,candidate.cor.sets<span class="op">=</span><span class="va">candidate.cor.sets</span><span class="op">)</span>
+<span class="va">criterion.elcic</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/ELCIC.gee.html">ELCIC.gee</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">x</span>,y<span class="op">=</span><span class="va">y</span>,r<span class="op">=</span><span class="va">r</span>,id<span class="op">=</span><span class="va">id</span>,time<span class="op">=</span><span class="va">time</span>,candidate.sets<span class="op">=</span><span class="va">candidate.sets</span>,name.var<span class="op">=</span><span class="cn">NULL</span>,dist<span class="op">=</span><span class="st">"poisson"</span>,candidate.cor.sets<span class="op">=</span><span class="va">candidate.cor.sets</span><span class="op">)</span>
 
-<span class="va">criterion.qic</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/QIC.procedure.html">QIC.procedure</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">x</span>,y<span class="op">=</span><span class="va">y</span>,id<span class="op">=</span><span class="va">id</span>,dist<span class="op">=</span><span class="va">dist</span>,candidate.sets<span class="op">=</span><span class="va">candidate.sets</span>, name.var<span class="op">=</span><span class="cn">NULL</span>, candidate.cor.sets<span class="op">=</span><span class="va">candidate.cor.sets</span><span class="op">)</span>
+<span class="va">criterion.qic</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/QICc.gee.html">QICc.gee</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">x</span>,y<span class="op">=</span><span class="va">y</span>,id<span class="op">=</span><span class="va">id</span>,dist<span class="op">=</span><span class="va">dist</span>,candidate.sets<span class="op">=</span><span class="va">candidate.sets</span>, name.var<span class="op">=</span><span class="cn">NULL</span>, candidate.cor.sets<span class="op">=</span><span class="va">candidate.cor.sets</span><span class="op">)</span>
 
-<span class="va">index.used.elcic</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="va">criterion.elcic</span><span class="op">==</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">criterion.elcic</span><span class="op">)</span>,arr.ind <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="va">index.used.elcic</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">criterion.elcic</span><span class="op">==</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">criterion.elcic</span><span class="op">)</span>,arr.ind <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="va">count.matrix.elcic</span><span class="op">[</span><span class="va">index.used.elcic</span><span class="op">]</span><span class="op">&lt;-</span><span class="va">count.matrix.elcic</span><span class="op">[</span><span class="va">index.used.elcic</span><span class="op">]</span><span class="op">+</span><span class="fl">1</span>
 
-<span class="va">index.used.qic.row</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="va">candidate.cor.sets</span><span class="op">==</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">criterion.qic</span><span class="op">)</span><span class="op">)</span> 
-<span class="va">index.used.qic.col</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/which.min.html">which.min</a></span><span class="op">(</span><span class="va">criterion.qic</span><span class="op">)</span>
+<span class="va">index.used.qic.row</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">candidate.cor.sets</span><span class="op">==</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">criterion.qic</span><span class="op">)</span><span class="op">)</span> 
+<span class="va">index.used.qic.col</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/which.min.html" class="external-link">which.min</a></span><span class="op">(</span><span class="va">criterion.qic</span><span class="op">)</span>
 <span class="va">count.matrix.qic</span><span class="op">[</span><span class="va">index.used.qic.row</span>,<span class="va">index.used.qic.col</span><span class="op">]</span><span class="op">&lt;-</span><span class="va">count.matrix.qic</span><span class="op">[</span><span class="va">index.used.qic.row</span>,<span class="va">index.used.qic.col</span><span class="op">]</span><span class="op">+</span><span class="fl">1</span>
 
-<span class="co">#print(iter)</span>
-<span class="op">}</span>
-<span class="va">count.matrix.elcic</span><span class="op">/</span><span class="va">inter.total</span></code></pre></div>
-<pre><code>##              c(1, 2) c(1, 3) c(1, 4) c(1, 2, 3) c(1, 2, 4) c(1, 3, 4)
-## independence       0       0       0       0.00          0          0
-## exchangeable       0       0       0       0.95          0          0
-## ar1                0       0       0       0.05          0          0
-##              c(1, 2, 3, 4)
-## independence             0
-## exchangeable             0
-## ar1                      0</code></pre>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">iter</span><span class="op">)</span>
+<span class="op">}</span></code></pre></div>
+<pre><code><span class="co">## [1] 1</span>
+<span class="co">## [1] 2</span>
+<span class="co">## [1] 3</span>
+<span class="co">## [1] 4</span>
+<span class="co">## [1] 5</span>
+<span class="co">## [1] 6</span>
+<span class="co">## [1] 7</span>
+<span class="co">## [1] 8</span>
+<span class="co">## [1] 9</span>
+<span class="co">## [1] 10</span>
+<span class="co">## [1] 11</span>
+<span class="co">## [1] 12</span>
+<span class="co">## [1] 13</span>
+<span class="co">## [1] 14</span>
+<span class="co">## [1] 15</span>
+<span class="co">## [1] 16</span>
+<span class="co">## [1] 17</span>
+<span class="co">## [1] 18</span>
+<span class="co">## [1] 19</span>
+<span class="co">## [1] 20</span></code></pre>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">count.matrix.elcic</span><span class="op">/</span><span class="va">inter.total</span></code></pre></div>
+<pre><code><span class="co">##              c(1, 2) c(1, 3) c(1, 4) c(1, 2, 3) c(1, 2, 4) c(1, 3, 4)</span>
+<span class="co">## independence       0       0       0       0.00          0          0</span>
+<span class="co">## exchangeable       0       0       0       0.95          0          0</span>
+<span class="co">## ar1                0       0       0       0.05          0          0</span>
+<span class="co">##              c(1, 2, 3, 4)</span>
+<span class="co">## independence             0</span>
+<span class="co">## exchangeable             0</span>
+<span class="co">## ar1                      0</span></code></pre>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">count.matrix.qic</span><span class="op">/</span><span class="va">inter.total</span></code></pre></div>
-<pre><code>##              c(1, 2) c(1, 3) c(1, 4) c(1, 2, 3) c(1, 2, 4) c(1, 3, 4)
-## independence       0       0       0       0.00          0          0
-## exchangeable       0       0       0       0.70          0          0
-## ar1                0       0       0       0.05          0          0
-##              c(1, 2, 3, 4)
-## independence          0.00
-## exchangeable          0.25
-## ar1                   0.00</code></pre>
+<pre><code><span class="co">##              c(1, 2) c(1, 3) c(1, 4) c(1, 2, 3) c(1, 2, 4) c(1, 3, 4)</span>
+<span class="co">## independence       0       0       0       0.00          0          0</span>
+<span class="co">## exchangeable       0       0       0       0.70          0          0</span>
+<span class="co">## ar1                0       0       0       0.05          0          0</span>
+<span class="co">##              c(1, 2, 3, 4)</span>
+<span class="co">## independence          0.00</span>
+<span class="co">## exchangeable          0.25</span>
+<span class="co">## ar1                   0.00</span></code></pre>
 <p>The results above show that ELCIC has much higher power to implement joint selection, especially for the selection of marginal mean structure.</p>
 </div>
-<div id="model-selection-in-longitudinal-data-analysis-dropout-missing" class="section level2">
-<h2 class="hasAnchor">
-<a href="#model-selection-in-longitudinal-data-analysis-dropout-missing" class="anchor"></a>Model Selection in longitudinal data analysis (dropout missing)</h2>
-<p>coming soon</p>
-</div>
-<div id="mondel-selection-in-high-dimensional-longitudal-data-analysis" class="section level2">
-<h2 class="hasAnchor">
-<a href="#mondel-selection-in-high-dimensional-longitudal-data-analysis" class="anchor"></a>Mondel Selection in high-dimensional longitudal data analysis</h2>
+<div class="section level2">
+<h2 id="model-selection-in-longitudinal-data-analysis-dropout-missing">Model Selection in longitudinal data analysis (dropout missing)<a class="anchor" aria-label="anchor" href="#model-selection-in-longitudinal-data-analysis-dropout-missing"></a>
+</h2>
 <p>coming soon</p>
 </div>
   </div>
@@ -251,11 +266,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Chixiang Chen.</p>
+  <p></p>
+<p>Developed by Chixiang Chen.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
 </div>
 
       </footer>
@@ -263,6 +280,8 @@
 
   
 
+
+  
 
   </body>
 </html>
