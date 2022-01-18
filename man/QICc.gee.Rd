@@ -2,38 +2,38 @@
 % Please edit documentation in R/model_selection.R
 \name{QICc.gee}
 \alias{QICc.gee}
-\title{the joint selection procedure of marginal mean and correlation structures in longitudinal data based on QIC}
+\title{Joint selection procedure of marginal mean and correlation structures in longitudinal data based on QIC}
 \usage{
 QICc.gee(x,y,id,dist,candidate.sets=NULL, name.var.sets=NULL,
    candidate.cor.sets=c("independence","exchangeable", "ar1"), joints=TRUE)
 }
 \arguments{
-\item{x}{A matrix containing covariates. The first column should be all ones corresponding to the intercept. The covariate matrix should be complete.}
+\item{x}{A matrix containing covariates. The first column should be all ones corresponding to the intercept. Covariate matrix should be complete.}
 
 \item{y}{A vector containing outcomes.}
 
 \item{id}{A vector indicating subject id.}
 
-\item{dist}{A specified distribution. It can be "gaussian", "poisson", and "binomial".}
+\item{dist}{A specified distribution. It can be "gaussian", "poisson",and "binomial".}
 
-\item{candidate.sets}{A list containing index corresponding to covariates in the candidate models.}
+\item{candidate.sets}{A list containing index corresponding to candidate covariates.}
 
-\item{name.var.sets}{A list containing names of covariates in the candidate models. The names should be a subset of the column names of the x matrix.}
+\item{name.var.sets}{A list containing names of candidate covariates. The names should be subset of column names of x matrix.}
 
-\item{candidate.cor.sets}{A vector containing condidate correlation structures. When joints=TRUE, it can be any subset of c("independence", "exchangeable", "ar1"). The default is c("independence", "exchangeable", "ar1"). When joints=FALSE, it should be either of "independence","exchangeable", "ar1". See more in Details section.}
+\item{candidate.cor.sets}{A vector containing candidate correlation structures. When joints=TRUE, it can be any subset of c("independence","exchangeable", "ar1"). The default is c("independence","exchangeable", "ar1"). When joints=FALSE, it should be either of "independence","exchangeable", "ar1". See more in details section.}
 
-\item{joints}{A logic value for joint selection of marginal mean and working correlation structures. The default is TRUE.}
+\item{joints}{A logic value for joint selection of marginal mean and working correlation structure. The default is TRUE.}
 }
 \value{
 A vector with each element containing QIC value for each candidate model. The row name of this vector is the selected correlation structure.
 }
 \description{
-This function provides the joint selection of marginal mean and correlation structures in longitudinal data based on QIC.
+This function provides the Joint selection of marginal mean and correlation structures in longitudinal data based on QIC.
 }
 \details{
-Either arguments "index.var" or "name.var" is used to identify the candidate mean models. If both arguments are provided, only the argument "name.var" will be used.
+Either arguments "index.var" or "name.var" is used to identify the candidate mean model. If both arguments are provided, only the argument "name.var" will be used.
 
-When joints=TRUE, the argument "candidate.cor.sets" can contain multiple correlation structures; however, when joints=FALSE, it should contain either of "independence", "exchangeable", and "ar1". If multiple correlation structures are provided, only the first one will be used.
+When joints=TRUE, the argument "candidate.cor.sets" can contain multiple correlation structures; however, when joints=FALSE, it should contain either of "independence","exchangeable", "ar1". If multiple correlation structures are provided, only the first one will be used.
 }
 \examples{
 ## tests
