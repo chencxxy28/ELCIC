@@ -2,7 +2,7 @@ Package: ELCIC
 Type: Package
 Title: The Empirical Likelihood-Based Consistent Information Criterion
 Version: 0.2.0
-Author@R: c(person("Chixiang","Chen",email="chixiang.chen@hotmail.com",role="cre"),
+Authors@R: c(person("Chixiang","Chen",email="chixiang.chen@hotmail.com",role="cre"),
         person("Biyi","Shen",email="sbyxy28@hotmail.com",role="aut"),
         person("Ming","Wang",email="muw22@psu.edu",role="aut"))
 Maintainer: Chixiang Chen <chixiang.chen@som.umaryland.edu>
