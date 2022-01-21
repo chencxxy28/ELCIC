@@ -2,7 +2,7 @@ Package: ELCIC
 Type: Package
 Title: The Empirical Likelihood-Based Consistent Information Criterion
 Version: 0.2.0
-Author: Chixiang Chen <chixiang.chen@som.umaryland.edu>;
+Author: Chixiang Chen <chixiang.chen@hotmail.com>;
         Biyi Shen <sbyxy28@hotmail.com>;
         Ming Wang <muw22@psu.edu>
 Maintainer: Chixiang Chen <chixiang.chen@som.umaryland.edu>
