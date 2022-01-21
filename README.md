@@ -1,6 +1,6 @@
 
 # ELCIC: Empirical Likelihood-based Consistent Information Criterion
-[![codecov](https://codecov.io/gh/chencxxy28/ELCIC/branch/master/graph/badge.svg?token=MP1P4H0OHP)](https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Fapp.codecov.io%2Fgh%2Fchencxxy28%2FELCIC&amp;data=04%7C01%7Cchixiang.chen%40som.umaryland.edu%7C79885d3c57b04467c57d08d9db971e30%7C717009a620de461a88940312a395cac9%7C0%7C0%7C637782264380571588%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000&amp;sdata=jHGfKIAKeA0V8MzQrsx3NiB9KbNkX4T9X3xdP%2FfcEIw%3D&amp;reserved=0)
+[![codecov](https://codecov.io/gh/chencxxy28/ELCIC/branch/master/graph/badge.svg?token=MP1P4H0OHP)](https://codecov.io/gh/chencxxy28/ELCIC)
 [![R-CMD-check](https://github.com/chencxxy28/ELCIC/workflows/R-CMD-check/badge.svg)](https://github.com/chencxxy28/ELCIC/actions)
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/ELCIC)](https://cran.r-project.org/package=ELCIC)
 
