@@ -426,3 +426,53 @@ for (i in 2:time)
 return(pii)
 }
 
+print.elcic.glm <- function(x, ...)
+{
+    cat ("ELCIC for glm\n")
+    cat("****************\n")
+    colnames(x) <- paste("model", 1:ncol(x))
+    print.default(x[,], quote=FALSE, ...)
+    cat("****************\n")
+    for (i in 1:ncol(x))
+        {cat("model ", i, ": ", deparse(attr(x, "formula")[[i]]), "\n", sep="")}
+    cat("****************\n")
+    cat("The model selected by ELCIC", ": ", deparse(attr(x, "formula")[[which.min(x[1,])]]), "\n", sep="")
+    invisible()
+}
+
+
+print.elcic.gee <- function(x,y, ...)
+{
+    cat ("ELCIC for gee\n")
+    cat("****************\n")
+    colnames(x) <- paste("model", 1:ncol(x))
+    print.default(x[,], quote=FALSE, ...)
+    cat("****************\n")
+    for (i in 1:ncol(x))
+    {cat("model ", i, ": ", deparse(attr(x, "formula")[[i]]), "\n", sep="")}
+    cat("****************\n")
+    cat("The mean model selected by ELCIC", ": ",
+        deparse(attr(x, "formula")[[which(x==min(x),arr.ind = TRUE)[2]]]), "\n", sep="")
+    cat("The correlation structure selected by ELCIC",
+        ": ", deparse(y[which(x==min(x),arr.ind = TRUE)[1]]), "\n", sep="")
+    invisible()
+}
+
+print.elcic.wgee <- function(x,y, ...)
+{
+    cat ("ELCIC for wgee\n")
+    cat("****************\n")
+    colnames(x) <- paste("model", 1:ncol(x))
+    print.default(x[,], quote=FALSE, ...)
+    cat("****************\n")
+    for (i in 1:ncol(x))
+    {cat("model ", i, ": ", deparse(attr(x, "formula")[[i]]), "\n", sep="")}
+    cat("****************\n")
+    cat("The mean model selected by ELCIC", ": ",
+        deparse(attr(x, "formula")[[which(x==min(x),arr.ind = TRUE)[2]]]), "\n", sep="")
+    cat("The correlation structure selected by ELCIC",
+        ": ", deparse(y[which(x==min(x),arr.ind = TRUE)[1]]), "\n", sep="")
+    invisible()
+}
+
+
