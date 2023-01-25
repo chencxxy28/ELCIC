@@ -56,36 +56,51 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">glm.generator</span><span class="op">(</span><span class="va">beta</span>, <span class="va">samplesize</span>, rho <span class="op">=</span> <span class="fl">0</span>, <span class="va">dist</span>, sd.gaussian <span class="op">=</span> <span class="cn">NULL</span>, ov <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">glm.generator</span><span class="op">(</span><span class="va">beta</span>, <span class="va">samplesize</span>, rho <span class="op">=</span> <span class="fl">0</span>, <span class="va">dist</span>, sd.gaussian <span class="op">=</span> <span class="cn">NULL</span>, ov <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>beta</dt>
 <dd><p>The underlying true coefficient for each covariates in the model (including the intercept).</p></dd>
+
+
 <dt>samplesize</dt>
 <dd><p>The sample size.</p></dd>
+
+
 <dt>rho</dt>
 <dd><p>The correlation coefficient among covariates.</p></dd>
+
+
 <dt>dist</dt>
 <dd><p>A specified distribution. It can be "gaussian", "poisson",and "binomial".</p></dd>
+
+
 <dt>sd.gaussian</dt>
 <dd><p>The standard deviation for the outcome from Gaussian distribution.</p></dd>
+
+
 <dt>ov</dt>
 <dd><p>The dispersion parameter for the outcome from Negative Binomial distribution.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>x: a matrix containing continuous covariates. The first column should contain all ones corresponding to the intercept.
-y: a vector containing outcomes.</p>
+    
+
+<p>x: a matrix containing continuous covariates. The first column should contain all ones corresponding to the intercept.</p>
+
+
+<p>y: a vector containing outcomes.</p>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">beta</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>,<span class="fl">0.5</span>,<span class="fl">0.5</span>,<span class="fl">0</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">samplesize</span><span class="op">&lt;-</span><span class="fl">100</span></span>
-<span class="r-in"><span class="va">data</span><span class="op">&lt;-</span><span class="fu">glm.generator</span><span class="op">(</span>beta<span class="op">=</span><span class="va">beta</span>,samplesize<span class="op">=</span><span class="va">samplesize</span>,rho<span class="op">=</span><span class="fl">0.5</span>,dist<span class="op">=</span><span class="st">"poisson"</span><span class="op">)</span></span>
-<span class="r-in"></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">beta</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>,<span class="fl">0.5</span>,<span class="fl">0.5</span>,<span class="fl">0</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">samplesize</span><span class="op">&lt;-</span><span class="fl">100</span></span></span>
+<span class="r-in"><span><span class="va">data</span><span class="op">&lt;-</span><span class="fu">glm.generator</span><span class="op">(</span>beta<span class="op">=</span><span class="va">beta</span>,samplesize<span class="op">=</span><span class="va">samplesize</span>,rho<span class="op">=</span><span class="fl">0.5</span>,dist<span class="op">=</span><span class="st">"poisson"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -96,11 +111,11 @@ y: a vector containing outcomes.</p>
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by Chixiang Chen.</p>
+  <p></p><p>Developed by Chixiang Chen, Biyi Shen, Ming Wang.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

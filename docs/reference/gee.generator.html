@@ -56,58 +56,86 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">gee.generator</span><span class="op">(</span><span class="va">beta</span>,<span class="va">samplesize</span>,<span class="va">time</span>,<span class="va">num.time.dep</span>,<span class="va">num.time.indep</span>,
-     <span class="va">rho</span>,<span class="va">x.rho</span>,<span class="va">dist</span>,<span class="va">cor.str</span>,<span class="va">x.cor.str</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">gee.generator</span><span class="op">(</span><span class="va">beta</span>,<span class="va">samplesize</span>,<span class="va">time</span>,<span class="va">num.time.dep</span>,<span class="va">num.time.indep</span>,</span>
+<span>     <span class="va">rho</span>,<span class="va">x.rho</span>,<span class="va">dist</span>,<span class="va">cor.str</span>,<span class="va">x.cor.str</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>beta</dt>
 <dd><p>A vector containing underlying true coefficients for each covariate in the model (including the intercept).</p></dd>
+
+
 <dt>samplesize</dt>
 <dd><p>The sample size.</p></dd>
+
+
 <dt>time</dt>
 <dd><p>The number of observations per subject.</p></dd>
+
+
 <dt>num.time.dep</dt>
 <dd><p>The number of time-dependent covariates.</p></dd>
+
+
 <dt>num.time.indep</dt>
 <dd><p>The number of time-independent covariates (not include intercept).</p></dd>
+
+
 <dt>rho</dt>
 <dd><p>The correlation coefficient for residuals across time.</p></dd>
+
+
 <dt>x.rho</dt>
 <dd><p>The correlation coefficient for time-dependent covariates across time.</p></dd>
+
+
 <dt>dist</dt>
 <dd><p>A specified distribution. It can be "gaussian", "poisson",and "binomial".</p></dd>
+
+
 <dt>cor.str</dt>
 <dd><p>The correlation structure for residuals across time. It can be "independence","exchangeable", and "ar1".</p></dd>
+
+
 <dt>x.cor.str</dt>
 <dd><p>The correlation structure for time-dependent covariates across time. It can be "independence","exchangeable", and "ar1".</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>x: a matrix containing continuous covariates. The first column should contain all ones corresponding to the intercept.
-y: a vector containing outcomes.
-id: a vector indicating subject id.</p>
+    
+
+<p>x: a matrix containing continuous covariates. The first column should contain all ones corresponding to the intercept.</p>
+
+
+<p>y: a vector containing outcomes.</p>
+
+
+<p>id: a vector indicating subject id.</p>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">beta</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">0.5</span>,<span class="fl">0</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">samplesize</span><span class="op">&lt;-</span><span class="fl">100</span></span>
-<span class="r-in"><span class="va">geesimdata</span><span class="op">&lt;-</span><span class="fu">gee.generator</span><span class="op">(</span>beta<span class="op">=</span><span class="va">beta</span>,samplesize<span class="op">=</span><span class="va">samplesize</span>,time<span class="op">=</span><span class="fl">3</span>,num.time.dep<span class="op">=</span><span class="fl">2</span>,</span>
-<span class="r-in">num.time.indep<span class="op">=</span><span class="fl">1</span>,rho<span class="op">=</span><span class="fl">0.4</span>,x.rho<span class="op">=</span><span class="fl">0.2</span>,dist<span class="op">=</span><span class="st">"poisson"</span>,cor.str<span class="op">=</span><span class="st">"exchangeable"</span>,</span>
-<span class="r-in">x.cor.str<span class="op">=</span><span class="st">"exchangeable"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">geesimdata</span><span class="op">$</span><span class="va">y</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [1] 0 0 0 0 0 1 0 1 2 0 0 0 3 1 1 0 1 1 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 1 0 0 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [38] 1 0 0 0 0 1 1 1 0 0 0 1 2 0 0 1 0 1 0 7 0 0 0 1 0 0 4 0 0 1 2 0 1 0 0 0 2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [75] 1 1 0 0 0 0 0 1 0 0 0 0 0 1 0 1 0 0 0 0 0 1 1 1 2 0 0 2 4 1 1 0 6 2 0 5 3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [112] 1 1 0 1 0 0 0 0 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0 0 0 0 0 2 1 2 0 0 0 1 1 0 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [149] 4 4 0 0 0 0 1 2 2 2 2 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 1 1 4 2 0 0 0 0 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [186] 0 0 0 0 0 0 0 0 0 0 0 2 0 0 0 5 0 0 0 0 0 0 1 0 0 0 0 0 1 1 0 0 0 0 4 2 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [223] 0 0 0 0 2 0 0 0 1 1 1 1 0 9 0 0 0 0 0 0 0 0 0 0 3 6 0 0 0 0 1 0 1 3 1 2 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [260] 0 0 0 4 0 1 0 0 1 1 0 0 0 2 0 4 0 0 1 0 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 2 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [297] 3 4 3 5</span>
-<span class="r-in"></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">beta</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">0.5</span>,<span class="fl">0</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">samplesize</span><span class="op">&lt;-</span><span class="fl">100</span></span></span>
+<span class="r-in"><span><span class="va">geesimdata</span><span class="op">&lt;-</span><span class="fu">gee.generator</span><span class="op">(</span>beta<span class="op">=</span><span class="va">beta</span>,samplesize<span class="op">=</span><span class="va">samplesize</span>,time<span class="op">=</span><span class="fl">3</span>,num.time.dep<span class="op">=</span><span class="fl">2</span>,</span></span>
+<span class="r-in"><span>num.time.indep<span class="op">=</span><span class="fl">1</span>,rho<span class="op">=</span><span class="fl">0.4</span>,x.rho<span class="op">=</span><span class="fl">0.2</span>,dist<span class="op">=</span><span class="st">"poisson"</span>,cor.str<span class="op">=</span><span class="st">"exchangeable"</span>,</span></span>
+<span class="r-in"><span>x.cor.str<span class="op">=</span><span class="st">"exchangeable"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">geesimdata</span><span class="op">$</span><span class="va">y</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [1]  0  0  1  0  1  0  3  0  0  1  1  0  0  0  1  1  0  1  0  0  0  2  0  0  2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [26]  2  0  2  2  1  0  0  0 10  0  3  0  1  2  0  0  0  0  0  0  1  2  0  1  0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [51]  0  0  0  2  0  0  0  0  0  0  2  1  5  0  1  0  0  0  0  0  0  0  0  0  0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [76]  0  0  0  0  0  0  0  1  2  1  0  1  0  0  1  0  2  0  0  0  0  1  0  0  0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [101]  0  0  0  0  0  1  0  1  0  0  0  1  2  0  0  2  4  0  0  0  1  1  1  1  4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [126]  1  0  0  0  0  0  0  0  0  0  2  0  1  0  0  5  0  0  0  0  0  0  0  0  0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [151]  2  0  2  1  2  2  0  0  0  0  1  1  2  1  1  2  0  0  0  0  0  1  2  1  1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [176]  0  0  0  0  0  0  0  1  0  0  0  0  0  1  1  0  0  1  0  0  0  2  2  0  1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [201]  0  1  1  0  0  0  0  0  0  0  0  1  2  4  5  5  5  0  1  0  1  0  0  3  1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [226]  1  1  0  0  0  0  0  0  0  1  0  0  0  1  0  0  5  2  0  0  0  0  0  0  0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [251]  0  1  0  1  1  0  0  0  0  0  2  0  4  0  0  4  1  2  0  0  0  0  0  0  0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [276]  0  0  1  0  0  2  1  2  0  0  0  0  0  0  1  7  0  0  3  2  0  1  1  0  0</span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -118,11 +146,11 @@ id: a vector indicating subject id.</p>
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by Chixiang Chen.</p>
+  <p></p><p>Developed by Chixiang Chen, Biyi Shen, Ming Wang.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

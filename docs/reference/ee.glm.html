@@ -56,23 +56,32 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">ee.glm</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">beta</span>, <span class="va">dist</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ee.glm</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">beta</span>, <span class="va">dist</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>x</dt>
 <dd><p>A matrix containing covariates. The first column should be all ones corresponding to the intercept. See more details in</p></dd>
+
+
 <dt>y</dt>
 <dd><p>A vector containing outcomes.</p></dd>
+
+
 <dt>beta</dt>
 <dd><p>A plug-in estimator solved by an external estimating procedure.</p></dd>
+
+
 <dt>dist</dt>
 <dd><p>A specified distribution. It can be "gaussian", "poisson",and "binomial".</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A matrix containing values of calculated estimating equations.</p>
+    
+
+<p>A matrix containing values of calculated estimating equations.</p>
     </div>
     <div id="note">
     <h2>Note</h2>
@@ -81,18 +90,18 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co">## tests</span></span>
-<span class="r-in"><span class="co"># load data</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">glmsimdata</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">x</span><span class="op">&lt;-</span><span class="va">glmsimdata</span><span class="op">$</span><span class="va">x</span></span>
-<span class="r-in"><span class="va">y</span><span class="op">&lt;-</span><span class="va">glmsimdata</span><span class="op">$</span><span class="va">y</span></span>
-<span class="r-in"><span class="co"># obtain the estimates. Note that x matrix already contains intercept.</span></span>
-<span class="r-in"><span class="va">fit</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">y</span><span class="op">~</span><span class="va">x</span><span class="op">-</span><span class="fl">1</span>,family<span class="op">=</span><span class="st">"poisson"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">beta</span><span class="op">&lt;-</span><span class="va">fit</span><span class="op">$</span><span class="va">coefficients</span></span>
-<span class="r-in"><span class="va">ee.matrix</span><span class="op">&lt;-</span><span class="fu">ee.glm</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">beta</span>, dist<span class="op">=</span><span class="st">"poisson"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">ee.matrix</span>,<span class="fl">1</span>,<span class="va">mean</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">## tests</span></span></span>
+<span class="r-in"><span><span class="co"># load data</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">glmsimdata</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">x</span><span class="op">&lt;-</span><span class="va">glmsimdata</span><span class="op">$</span><span class="va">x</span></span></span>
+<span class="r-in"><span><span class="va">y</span><span class="op">&lt;-</span><span class="va">glmsimdata</span><span class="op">$</span><span class="va">y</span></span></span>
+<span class="r-in"><span><span class="co"># obtain the estimates. Note that x matrix already contains intercept.</span></span></span>
+<span class="r-in"><span><span class="va">fit</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">y</span><span class="op">~</span><span class="va">x</span><span class="op">-</span><span class="fl">1</span>,family<span class="op">=</span><span class="st">"poisson"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">beta</span><span class="op">&lt;-</span><span class="va">fit</span><span class="op">$</span><span class="va">coefficients</span></span></span>
+<span class="r-in"><span><span class="va">ee.matrix</span><span class="op">&lt;-</span><span class="fu">ee.glm</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">beta</span>, dist<span class="op">=</span><span class="st">"poisson"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">ee.matrix</span>,<span class="fl">1</span>,<span class="va">mean</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] -2.439933e-11  5.729860e-12 -1.884371e-12  6.665323e-12</span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -103,11 +112,11 @@
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by Chixiang Chen.</p>
+  <p></p><p>Developed by Chixiang Chen, Biyi Shen, Ming Wang.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>
