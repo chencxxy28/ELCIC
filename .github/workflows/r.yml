@@ -10,9 +10,9 @@ name: R
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "main","master" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "main","master" ]
 
 permissions:
   contents: read
@@ -32,7 +32,7 @@ jobs:
           r-version: ${{ matrix.r-version }}
       - name: Install dependencies
         run: |
-          install.packages(c("remotes", "rcmdcheck","Pandoc"))
+          install.packages(c("remotes", "rcmdcheck","pandoc"))
           remotes::install_deps(dependencies = TRUE)
         shell: Rscript {0}
       - name: Check
