@@ -16,7 +16,6 @@ Suggests:
     knitr,
     rmarkdown,
     markdown,
-    pandoc,
     testthat (>= 3.0.0)
 VignetteBuilder: knitr
 Depends: R (>= 3.5.0)
