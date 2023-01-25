@@ -20,5 +20,5 @@ Suggests:
     testthat (>= 3.0.0)
 VignetteBuilder: knitr
 Depends: R (>= 3.5.0)
-Imports: MASS, mvtnorm, PoisNor,bindata,geepack,wgeesel
+Imports: MASS, mvtnorm, PoisNor,bindata,geepack,wgeesel,pandoc
 Config/testthat/edition: 3
