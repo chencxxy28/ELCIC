@@ -13,7 +13,7 @@ ELCICwgee(models, candidate.cor.sets, data, model_mis, family,r,id,time)
 
 \item{data}{A data frame containing the variables in both the main model and the missing model.}
 
-\item{model_mis}{A formulas used in the missing data model.}
+\item{model_mis}{A formula used in the missing data model.}
 
 \item{family}{A description of the error distribution and link function to be used in the model.
 The details are given under "Details".}
@@ -31,12 +31,12 @@ A list with two items: model selection result based on ELCIC;
 An object of "geeglm" based on the selected model.
 }
 \description{
-The function \code{\link{ELCICwgee}} provides the model selection under the syntax of wgeesel package.
+The function \code{\link{ELCICwgee}} provides the model selection under the syntax of the wgeesel package.
 }
 \details{
-Three common distributions are considered: "gaussian", "poisson", "binomial".
-For the current package, the identical link is consider for "gaussian" distribution;
-the log link is consider for "poisson" distribution; the logit link is consider for "binomial" distribution;
+Three commonly used distributions are considered: "gaussian", "poisson", "binomial".
+For the current package, the identity link is considered for a "gaussian" distribution;
+the log link is considered for a "poisson" distribution; the logit link is considered for a "binomial" distribution;n;
 }
 \examples{
 ## tests

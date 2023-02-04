@@ -1,7 +1,7 @@
 Package: ELCIC
 Type: Package
 Title: The Empirical Likelihood-Based Consistent Information Criterion
-Version: 0.2.0
+Version: 0.2.1
 Authors@R: c(person("Chixiang","Chen",email="chencxxy@hotmail.com",role="cre"),
         person("Biyi","Shen",email="sbyxy28@hotmail.com",role="aut"),
         person("Ming","Wang",email="muw22@psu.edu",role="aut"))
@@ -19,5 +19,5 @@ Suggests:
     testthat (>= 3.0.0)
 VignetteBuilder: knitr
 Depends: R (>= 3.5.0)
-Imports: MASS, mvtnorm, PoisNor,bindata,geepack,wgeesel,pandoc
+Imports: MASS, mvtnorm, PoisNor,bindata,geepack,wgeesel
 Config/testthat/edition: 3

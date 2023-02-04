@@ -7,7 +7,7 @@
 ELCICgee(models, candidate.cor.sets,data, family,r,id,time)
 }
 \arguments{
-\item{models}{A list of formulas. See corresponding documentation to geeglm.}
+\item{models}{A list of formulas. See the corresponding documentation to geeglm.}
 
 \item{candidate.cor.sets}{A vector containing candidate correlation structures. It can be any subset of c("independence","exchangeable", "ar1").}
 
@@ -28,12 +28,12 @@ A list with two items: model selection result based on ELCIC;
 An object of "geeglm" based on the selected model.
 }
 \description{
-The function \code{\link{ELCICgee}} provides the model selection under the syntax of geepack package.
+The function \code{\link{ELCICgee}} provides the model selection under the syntax of the geepack package.
 }
 \details{
-Three common distributions are considered: "gaussian", "poisson", "binomial".
-For the current package, the identical link is consider for "gaussian" distribution;
-the log link is consider for "poisson" distribution; the logit link is consider for "binomial" distribution;
+Three commonly used distributions are considered: "gaussian", "poisson", "binomial".
+For the current package, the identity link is considered for a "gaussian" distribution;
+the log link is considered for a "poisson" distribution; the logit link is considered for a "binomial" distribution;
 }
 \examples{
 ## tests

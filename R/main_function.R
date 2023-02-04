@@ -1,17 +1,17 @@
 
 
 #'@title Variable selection based on ELCIC under the syntax of GLM (Main function).
-#'@description The function \code{\link{ELCICglm}} provides the variable selection under the syntax of GLM package.
+#'@description The function \code{\link{ELCICglm}} provides the variable selection under the syntax of the GLM package.
 #'@usage ELCICglm(models, data, family)
-#'@param models A list of formulas. See corresponding documentation to glm.
+#'@param models A list of formulas. See the corresponding documentation to glm.
 #'@param data A data frame containing the variables in the model.
 #'@param family A description of the error distribution and link function to be used in the model.
 #'The details are given under "Details".
-#'@return A list with two items: model selection result based on ELCIC, AIC, BIC, and GIC;
+#'@return A list with two items: model selection results based on ELCIC, AIC, BIC, and GIC;
 #'An object of "glm" based on the selected model.
-#'@details Three common distributions are considered: "gaussian", "poisson", "binomial".
-#'For the current package, the identical link is consider for "gaussian" distribution;
-#'the log link is consider for "poisson" distribution; the logit link is consider for "binomial" distribution;
+#'@details Three commonly used distributions are considered: "gaussian", "poisson", "binomial".
+#'For the current package, the identity link is considered for a "gaussian" distribution;
+#'the log link is considered for a "poisson" distribution; the logit link is considered for a "binomial" distribution;
 #'
 #'
 #'
@@ -19,7 +19,7 @@
 #'## tests
 #'# load data
 #'data(glmsimdata)
-#'dat <- data.frame(y=glmsimdata$y, glmsimdata$x)
+#'dat <- data.frame(y=glmsimdata$y, glmsimdata$x) ####x is a covariate matrix.
 #'models <- list(y~x1, y~x1+x2, y~x1+x2+x3)
 #'output<-ELCICglm(models, dat, poisson())
 #'output$model.selection
@@ -33,8 +33,6 @@ ELCICglm <- function(models, data, family)
 {
     if (!inherits(family, "family"))
         stop("dist must be an object of type 'family'")
-    ## dist should be passed directly to glm, but I don't here
-    ## because I don't want to change the package functions
     dist <- family$family
     if (!is.list(models))
         models <- list(models)
@@ -60,9 +58,9 @@ ELCICglm <- function(models, data, family)
 
 
 #'@title Model selection based on ELCIC under the syntax of GEE (Main function).
-#'@description The function \code{\link{ELCICgee}} provides the model selection under the syntax of geepack package.
+#'@description The function \code{\link{ELCICgee}} provides the model selection under the syntax of the geepack package.
 #'@usage ELCICgee(models, candidate.cor.sets,data, family,r,id,time)
-#'@param models A list of formulas. See corresponding documentation to geeglm.
+#'@param models A list of formulas. See the corresponding documentation to geeglm.
 #'@param candidate.cor.sets A vector containing candidate correlation structures. It can be any subset of c("independence","exchangeable", "ar1").
 #'@param data A data frame containing the variables in the model.
 #'@param family A description of the error distribution and link function to be used in the model.
@@ -73,9 +71,9 @@ ELCICglm <- function(models, data, family)
 #'@param time The number of observations in total for each subject.
 #'@return A list with two items: model selection result based on ELCIC;
 #'An object of "geeglm" based on the selected model.
-#'@details Three common distributions are considered: "gaussian", "poisson", "binomial".
-#'For the current package, the identical link is consider for "gaussian" distribution;
-#'the log link is consider for "poisson" distribution; the logit link is consider for "binomial" distribution;
+#'@details Three commonly used distributions are considered: "gaussian", "poisson", "binomial".
+#'For the current package, the identity link is considered for a "gaussian" distribution;
+#'the log link is considered for a "poisson" distribution; the logit link is considered for a "binomial" distribution;
 #'
 #'
 #'
@@ -100,8 +98,6 @@ ELCICgee <- function(models, candidate.cor.sets,data, family,r,id,time)
 {
     if (!inherits(family, "family"))
         stop("dist must be an object of type 'family'")
-    ## dist should be passed directly to glm, but I don't here
-    ## because I don't want to change the package functions
     dist <- family$family
     if (!is.list(models))
         models <- list(models)
@@ -121,19 +117,19 @@ ELCICgee <- function(models, candidate.cor.sets,data, family,r,id,time)
 
     ##fit gee based on ELCIC
     fit.gee<-geeglm(models[[which(ci==min(ci),arr.ind = TRUE)[2]]],data=data,family =family,id=id,
-           corstr = candidate.cor.sets[which(ci==min(ci),arr.ind = TRUE)[1]])
+                    corstr = candidate.cor.sets[which(ci==min(ci),arr.ind = TRUE)[1]])
 
     list(model.selection=ci,gee.output=fit.gee)
 }
 
 
 #'@title Model selection based on ELCIC under the syntax of WGEE (Main function).
-#'@description The function \code{\link{ELCICwgee}} provides the model selection under the syntax of wgeesel package.
+#'@description The function \code{\link{ELCICwgee}} provides the model selection under the syntax of the wgeesel package.
 #'@usage ELCICwgee(models, candidate.cor.sets, data, model_mis, family,r,id,time)
 #'@param models A list of formulas. See corresponding documentation to wgeesel.
 #'@param candidate.cor.sets A vector containing candidate correlation structures. It can be any subset of c("independence","exchangeable", "ar1").
 #'@param data A data frame containing the variables in both the main model and the missing model.
-#'@param model_mis A formulas used in the missing data model.
+#'@param model_mis A formula used in the missing data model.
 #'@param family A description of the error distribution and link function to be used in the model.
 #'The details are given under "Details".
 #'@param r A vector indicating the observation of data: 1 for observed records (both outcome and covariates are observed for a given subject),
@@ -143,9 +139,9 @@ ELCICgee <- function(models, candidate.cor.sets,data, family,r,id,time)
 #'@param time The number of observations in total for each subject.
 #'@return A list with two items: model selection result based on ELCIC;
 #'An object of "geeglm" based on the selected model.
-#'@details Three common distributions are considered: "gaussian", "poisson", "binomial".
-#'For the current package, the identical link is consider for "gaussian" distribution;
-#'the log link is consider for "poisson" distribution; the logit link is consider for "binomial" distribution;
+#'@details Three commonly used distributions are considered: "gaussian", "poisson", "binomial".
+#'For the current package, the identity link is considered for a "gaussian" distribution;
+#'the log link is considered for a "poisson" distribution; the logit link is considered for a "binomial" distribution;n;
 #'
 #'
 #'
@@ -173,14 +169,12 @@ ELCICwgee <- function(models, candidate.cor.sets,data, model_mis, family,r,id,ti
 {
     if (!inherits(family, "family"))
         stop("dist must be an object of type 'family'")
-    ## dist should be passed directly to glm, but I don't here
-    ## because I don't want to change the package functions
     dist <- family$family
     if (!is.list(models))
         models <- list(models)
     y <- model.response(model.frame(models[[1]], data,na.action=NULL))
     l <- lapply(models, function(li)
-        {
+    {
         m <- model.frame(li, data,na.action=NULL)
         m <- model.matrix(li, m)
     })
@@ -203,11 +197,11 @@ ELCICwgee <- function(models, candidate.cor.sets,data, model_mis, family,r,id,ti
     ##fit wgee based on ELCIC
     data$r<-r
     fit.wgee<-wgee(models[[which(ci==min(ci),arr.ind = TRUE)[2]]],data=data,id=id,family=dist,
-              corstr= candidate.cor.sets[which(ci==min(ci),arr.ind = TRUE)[1]],scale = NULL,mismodel =model_mis)
+                   corstr= candidate.cor.sets[which(ci==min(ci),arr.ind = TRUE)[1]],scale = NULL,mismodel =model_mis)
 
     list(model.selection=ci,
          wgee.output=fit.wgee
-         )
+    )
 }
 
 

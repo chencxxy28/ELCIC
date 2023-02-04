@@ -7,7 +7,7 @@
 ELCICglm(models, data, family)
 }
 \arguments{
-\item{models}{A list of formulas. See corresponding documentation to glm.}
+\item{models}{A list of formulas. See the corresponding documentation to glm.}
 
 \item{data}{A data frame containing the variables in the model.}
 
@@ -15,22 +15,22 @@ ELCICglm(models, data, family)
 The details are given under "Details".}
 }
 \value{
-A list with two items: model selection result based on ELCIC, AIC, BIC, and GIC;
+A list with two items: model selection results based on ELCIC, AIC, BIC, and GIC;
 An object of "glm" based on the selected model.
 }
 \description{
-The function \code{\link{ELCICglm}} provides the variable selection under the syntax of GLM package.
+The function \code{\link{ELCICglm}} provides the variable selection under the syntax of the GLM package.
 }
 \details{
-Three common distributions are considered: "gaussian", "poisson", "binomial".
-For the current package, the identical link is consider for "gaussian" distribution;
-the log link is consider for "poisson" distribution; the logit link is consider for "binomial" distribution;
+Three commonly used distributions are considered: "gaussian", "poisson", "binomial".
+For the current package, the identity link is considered for a "gaussian" distribution;
+the log link is considered for a "poisson" distribution; the logit link is considered for a "binomial" distribution;
 }
 \examples{
 ## tests
 # load data
 data(glmsimdata)
-dat <- data.frame(y=glmsimdata$y, glmsimdata$x)
+dat <- data.frame(y=glmsimdata$y, glmsimdata$x) ####x is a covariate matrix.
 models <- list(y~x1, y~x1+x2, y~x1+x2+x3)
 output<-ELCICglm(models, dat, poisson())
 output$model.selection
