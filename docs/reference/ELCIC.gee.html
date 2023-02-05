@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">ELCIC</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -122,14 +122,14 @@
 <span class="r-in"><span><span class="va">id</span><span class="op">&lt;-</span><span class="va">geesimdata</span><span class="op">$</span><span class="va">id</span></span></span>
 <span class="r-in"><span><span class="va">r</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">time</span><span class="op">&lt;-</span><span class="fl">3</span></span></span>
-<span class="r-in"><span><span class="va">candidate.sets</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">candidate.sets</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">candidate.cor.sets</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"exchangeable"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">dist</span><span class="op">&lt;-</span><span class="st">"poisson"</span></span></span>
 <span class="r-in"><span><span class="va">criterion.elcic</span><span class="op">&lt;-</span><span class="fu">ELCIC.gee</span><span class="op">(</span>x<span class="op">=</span><span class="va">x</span>,y<span class="op">=</span><span class="va">y</span>,r<span class="op">=</span><span class="va">r</span>,id<span class="op">=</span><span class="va">id</span>,time<span class="op">=</span><span class="va">time</span>,candidate.sets<span class="op">=</span><span class="va">candidate.sets</span>,</span></span>
 <span class="r-in"><span>                name.var.sets<span class="op">=</span><span class="cn">NULL</span>,dist<span class="op">=</span><span class="va">dist</span>,candidate.cor.sets<span class="op">=</span><span class="va">candidate.cor.sets</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">criterion.elcic</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               c(1, 2) c(1, 2, 3)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> exchangeable 145.8941   21.57026</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>              c(1, 2, 3)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> exchangeable   21.57026</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
