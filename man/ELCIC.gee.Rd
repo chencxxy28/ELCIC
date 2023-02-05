@@ -48,7 +48,7 @@ y<-geesimdata$y
 id<-geesimdata$id
 r<-rep(1,nrow(x))
 time<-3
-candidate.sets<-list(c(1,2),c(1,2,3))
+candidate.sets<-list(c(1,2,3))
 candidate.cor.sets<-c("exchangeable")
 dist<-"poisson"
 criterion.elcic<-ELCIC.gee(x=x,y=y,r=r,id=id,time=time,candidate.sets=candidate.sets,

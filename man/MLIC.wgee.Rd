@@ -58,8 +58,8 @@ x_mis<-wgeesimdata$x_mis
 r<-wgeesimdata$obs_ind
 id<-wgeesimdata$id
 time=3
-candidate.sets<-list(c(1,2,3))
-candidate.cor.sets<-c("exchangeable")
+candidate.sets<-list(c(1,2))
+candidate.cor.sets<-c("independence")
 criterion.mlic<-MLIC.wgee(x,y,x_mis,r,id,time,candidate.sets,
             name.var.sets=NULL,dist,candidate.cor.sets,joints=FALSE)
 criterion.mlic

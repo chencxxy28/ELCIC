@@ -47,7 +47,7 @@ r<-wgeesimdata$obs_ind
 id<-wgeesimdata$id
 time<-3
 dat <- data.frame(y=wgeesimdata$y, wgeesimdata$x,x_mis1=wgeesimdata$x_mis[,2])
-models <- list(y~x1, y~x1+x2)
+models <- list(y~x1+x2)
 model_mis<-r~x_mis1
 candidate.cor.sets<-c("exchangeable")
 output<-ELCICwgee(models, candidate.cor.sets,data=dat,model_mis,family,r,id,time)

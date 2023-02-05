@@ -535,7 +535,7 @@ ELCIC.glm<-function(x,y,candidate.sets,name.var.sets=NULL,dist)
 #'id<-geesimdata$id
 #'r<-rep(1,nrow(x))
 #'time<-3
-#'candidate.sets<-list(c(1,2),c(1,2,3))
+#'candidate.sets<-list(c(1,2,3))
 #'candidate.cor.sets<-c("exchangeable")
 #'dist<-"poisson"
 #'criterion.elcic<-ELCIC.gee(x=x,y=y,r=r,id=id,time=time,candidate.sets=candidate.sets,
@@ -899,8 +899,8 @@ QICc.gee<-function (x,y,id,dist,candidate.sets=NULL,name.var.sets=NULL,candidate
 #'r<-wgeesimdata$obs_ind
 #'id<-wgeesimdata$id
 #'time=3
-#'candidate.sets<-list(c(1,2,3))
-#'candidate.cor.sets<-c("exchangeable")
+#'candidate.sets<-list(c(1,2))
+#'candidate.cor.sets<-c("independence")
 #'criterion.mlic<-MLIC.wgee(x,y,x_mis,r,id,time,candidate.sets,
 #'             name.var.sets=NULL,dist,candidate.cor.sets,joints=FALSE)
 #'criterion.mlic
@@ -1132,10 +1132,10 @@ MLIC.wgee<-function(x,y,x_mis,r,id,time,candidate.sets=NULL,name.var.sets=NULL,d
 #'r<-wgeesimdata$obs_ind
 #'id<-wgeesimdata$id
 #'time=3
-#'candidate.sets<-list(c(1,2,3))
-#'candidate.cor.sets<-c("exchangeable")
+#'candidate.sets<-list(c(1,2))
+#'candidate.cor.sets<-c("independence")
 #'criterion.qicw<-QICW.wgee(x,y,x_mis,r,id,time,candidate.sets,
-#'           name.var.sets=NULL,dist,candidate.cor.sets,joints=FALSE)
+#'          name.var.sets=NULL,dist,candidate.cor.sets,joints=FALSE)
 #'criterion.qicw
 #'
 #'@export

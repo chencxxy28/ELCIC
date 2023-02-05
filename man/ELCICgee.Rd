@@ -43,7 +43,7 @@ id<-geesimdata$id
 r<-rep(1,length(id))
 time<-3
 dat <- data.frame(y=geesimdata$y, geesimdata$x,id=id)
-models <- list(y~x1, y~x1+x2)
+models <- list(y~x1+x2)
 candidate.cor.sets<-c("exchangeable")
 family<-poisson()
 output<-ELCICgee(models, candidate.cor.sets,data=dat,family,r,id,time)
