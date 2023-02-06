@@ -7,3 +7,5 @@
 ^\.travis\.yml$
 ^\.github$
 ^CRAN-RELEASE$
+^wgeesimdata\.RData$
+
