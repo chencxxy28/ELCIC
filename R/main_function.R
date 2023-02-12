@@ -138,7 +138,7 @@ ELCICgee <- function(models, candidate.cor.sets,data, family,r,id,time)
 #'@param id A vector indicating subject id.
 #'@param time The number of observations in total for each subject.
 #'@return A list with two items: model selection result based on ELCIC;
-#'An object of "geeglm" based on the selected model.
+#'An object of "wgee" based on the selected model.
 #'@details Three commonly used distributions are considered: "gaussian", "poisson", "binomial".
 #'For the current package, the identity link is considered for a "gaussian" distribution;
 #'the log link is considered for a "poisson" distribution; the logit link is considered for a "binomial" distribution;n;
@@ -159,7 +159,7 @@ ELCICgee <- function(models, candidate.cor.sets,data, family,r,id,time)
 #'candidate.cor.sets<-c("exchangeable")
 #'output<-ELCICwgee(models, candidate.cor.sets,data=dat,model_mis,family,r,id,time)
 #'output$model.selection
-#'output$gee.output
+#'output$wgee.output
 #'
 #'
 #'@export
@@ -204,4 +204,170 @@ ELCICwgee <- function(models, candidate.cor.sets,data, model_mis, family,r,id,ti
     )
 }
 
+
+
+
+#'@title Model selection based on MLIC under the syntax of WGEE (Main function).
+#'@description The function \code{\link{MLICwgee}} provides the model selection under the syntax of the wgeesel package.
+#'@usage MLICwgee(models, candidate.cor.sets, data, model_mis, family,r,id,time)
+#'@param models A list of formulas. See corresponding documentation to wgeesel.
+#'@param candidate.cor.sets A vector containing candidate correlation structures. It can be any subset of c("independence","exchangeable", "ar1").
+#'@param data A data frame containing the variables in both the main model and the missing model.
+#'@param model_mis A formula used in the missing data model.
+#'@param family A description of the error distribution and link function to be used in the model.
+#'The details are given under "Details".
+#'@param r A vector indicating the observation of data: 1 for observed records (both outcome and covariates are observed for a given subject),
+#'and 0 for unobserved records.
+#'The default setup is that all data are observed.
+#'@param id A vector indicating subject id.
+#'@param time The number of observations in total for each subject.
+#'@return A list with two items: model selection result based on ELCIC;
+#'An object of "wgee" based on the selected model.
+#'@details Three commonly used distributions are considered: "gaussian", "poisson", "binomial".
+#'For the current package, the identity link is considered for a "gaussian" distribution;
+#'the log link is considered for a "poisson" distribution; the logit link is considered for a "binomial" distribution;n;
+#'
+#'
+#'
+#'@examples
+#'## tests
+#'# load data
+#'data(wgeesimdata)
+#'family<-binomial()
+#'r<-wgeesimdata$obs_ind
+#'id<-wgeesimdata$id
+#'time<-3
+#'dat <- data.frame(y=wgeesimdata$y, wgeesimdata$x,x_mis1=wgeesimdata$x_mis[,2])
+#'models <- list(y~x1+x2)
+#'model_mis<-r~x_mis1
+#'candidate.cor.sets<-c("exchangeable")
+#'output<-MLICwgee(models, candidate.cor.sets,data=dat,model_mis,family,r,id,time)
+#'output$model.selection
+#'output$wgee.output
+#'
+#'
+#'@export
+
+
+MLICwgee <- function(models, candidate.cor.sets,data, model_mis, family,r,id,time)
+{
+    if (!inherits(family, "family"))
+        stop("dist must be an object of type 'family'")
+    dist <- family$family
+    if (!is.list(models))
+        models <- list(models)
+    y <- model.response(model.frame(models[[1]], data,na.action=NULL))
+    l <- lapply(models, function(li)
+    {
+        m <- model.frame(li, data,na.action=NULL)
+        m <- model.matrix(li, m)
+    })
+    l_mis <- model.matrix(model_mis, data)
+    name.var.sets <- lapply(l, colnames)
+    name.var.sets.mis <- colnames(l_mis)
+
+    dat <- do.call(cbind, l)
+    dat <- dat[,!duplicated(colnames(dat))]
+    dat_mis<-l_mis
+    ci<-MLIC.wgee(x=dat,y,x_mis=dat_mis,r=r,id=id,time=time,name.var.sets=name.var.sets,
+                dist=dist,candidate.cor.sets=candidate.cor.sets)
+
+    attr(ci, "formula") <- models
+    attr(ci, "type") <- "wgee"
+    class(ci) <- "mlic"
+
+    print.mlic.wgee(ci,candidate.cor.sets)
+
+    ##fit wgee based on ELCIC
+    data$r<-r
+    fit.wgee<-wgee(models[[which(ci==min(ci),arr.ind = TRUE)[2]]],data=data,id=id,family=dist,
+                   corstr= candidate.cor.sets[which(ci==min(ci),arr.ind = TRUE)[1]],scale = NULL,mismodel =model_mis)
+
+    list(model.selection=ci,
+         wgee.output=fit.wgee
+    )
+}
+
+
+
+#'@title Model selection based on QICW under the syntax of WGEE (Main function).
+#'@description The function \code{\link{QICWwgee}} provides the model selection under the syntax of the wgeesel package.
+#'@usage QICWwgee(models, candidate.cor.sets, data, model_mis, family,r,id,time)
+#'@param models A list of formulas. See corresponding documentation to wgeesel.
+#'@param candidate.cor.sets A vector containing candidate correlation structures. It can be any subset of c("independence","exchangeable", "ar1").
+#'@param data A data frame containing the variables in both the main model and the missing model.
+#'@param model_mis A formula used in the missing data model.
+#'@param family A description of the error distribution and link function to be used in the model.
+#'The details are given under "Details".
+#'@param r A vector indicating the observation of data: 1 for observed records (both outcome and covariates are observed for a given subject),
+#'and 0 for unobserved records.
+#'The default setup is that all data are observed.
+#'@param id A vector indicating subject id.
+#'@param time The number of observations in total for each subject.
+#'@return A list with two items: model selection result based on ELCIC;
+#'An object of "wgee" based on the selected model.
+#'@details Three commonly used distributions are considered: "gaussian", "poisson", "binomial".
+#'For the current package, the identity link is considered for a "gaussian" distribution;
+#'the log link is considered for a "poisson" distribution; the logit link is considered for a "binomial" distribution;n;
+#'
+#'
+#'
+#'@examples
+#'## tests
+#'# load data
+#'data(wgeesimdata)
+#'family<-binomial()
+#'r<-wgeesimdata$obs_ind
+#'id<-wgeesimdata$id
+#'time<-3
+#'dat <- data.frame(y=wgeesimdata$y, wgeesimdata$x,x_mis1=wgeesimdata$x_mis[,2])
+#'models <- list(y~x1+x2)
+#'model_mis<-r~x_mis1
+#'candidate.cor.sets<-c("exchangeable")
+#'output<-QICWwgee(models, candidate.cor.sets,data=dat,model_mis,family,r,id,time)
+#'output$model.selection
+#'output$wgee.output
+#'
+#'
+#'@export
+
+
+QICWwgee <- function(models, candidate.cor.sets,data, model_mis, family,r,id,time)
+{
+    if (!inherits(family, "family"))
+        stop("dist must be an object of type 'family'")
+    dist <- family$family
+    if (!is.list(models))
+        models <- list(models)
+    y <- model.response(model.frame(models[[1]], data,na.action=NULL))
+    l <- lapply(models, function(li)
+    {
+        m <- model.frame(li, data,na.action=NULL)
+        m <- model.matrix(li, m)
+    })
+    l_mis <- model.matrix(model_mis, data)
+    name.var.sets <- lapply(l, colnames)
+    name.var.sets.mis <- colnames(l_mis)
+
+    dat <- do.call(cbind, l)
+    dat <- dat[,!duplicated(colnames(dat))]
+    dat_mis<-l_mis
+    ci<-QICW.wgee(x=dat,y,x_mis=dat_mis,r=r,id=id,time=time,name.var.sets=name.var.sets,
+                  dist=dist,candidate.cor.sets=candidate.cor.sets)
+
+    attr(ci, "formula") <- models
+    attr(ci, "type") <- "wgee"
+    class(ci) <- "qicw"
+
+    print.qicw.wgee(ci,candidate.cor.sets)
+
+    ##fit wgee based on ELCIC
+    data$r<-r
+    fit.wgee<-wgee(models[[which(ci==min(ci),arr.ind = TRUE)[2]]],data=data,id=id,family=dist,
+                   corstr= candidate.cor.sets[which(ci==min(ci),arr.ind = TRUE)[1]],scale = NULL,mismodel =model_mis)
+
+    list(model.selection=ci,
+         wgee.output=fit.wgee
+    )
+}
 

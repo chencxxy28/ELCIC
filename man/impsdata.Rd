@@ -23,22 +23,25 @@ The imps data frame has 1544 rows and 8 columns. The data is from National Insti
 \examples{
 
 data(impsdata)
-y<-impsdata$y
-x<-impsdata$x
-x_mis<-impsdata$x_mis
 id<-impsdata$id
 r<-impsdata$r
-dist="binomial"
+data.real <- data.frame(id=id,y=impsdata$y, impsdata$x)
+head(data.real,n=10)
+# each participant has three records
 time<-4
-candidate.sets<-list(c(1,2),c(1,4),c(1,2,4),c(1,2,4,7),c(1,2,3,4),c(1,2,3,4,5,6,7))
-candidate.cor.sets<-c("exchangeable","ar1","independence")
+# the outcome is binary
+family=binomial()
+models <- list(y~Time, y~Drug,y~Time+Drug,
+               y~Time*Drug,y~Time+Sex+Drug,
+               y~Time+Sex+Drug+Time:Sex+Sex:Drug+Drug:Time)
+
+model_mis<-r~Drug+Time+Sex
+
+candidate.cor.sets<-c("exchangeable","independence","ar1")
 #not run
-#criterion.elcic<-ELCIC.wgee(x,y,x_mis,r,id,time,candidate.sets,
-#name.var.sets=NULL,dist,candidate.cor.sets,joints=TRUE,lag=2)
-#criterion.mlic<-MLIC.wgee(x,y,x_mis,r,id,time,candidate.sets,
-#name.var.sets=NULL,dist,candidate.cor.sets,joints=TRUE,lag=2)
-#criterion.qicw<-QICW.wgee(x,y,x_mis,r,id,time,candidate.sets,
-#name.var.sets=NULL,dist,candidate.cor.sets,joints=TRUE,lag=2)
+#output_ELCIC<-ELCICwgee(models, candidate.cor.sets,data=data.real,model_mis,family,r,id,time)
+#output_MLIC<-MLICwgee(models, candidate.cor.sets,data=data.real,model_mis,family,r,id,time)
+#output_QICW<-QICWwgee(models, candidate.cor.sets,data=data.real,model_mis,family,r,id,time)
 
 }
 \references{
