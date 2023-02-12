@@ -50,9 +50,10 @@ dat <- data.frame(y=wgeesimdata$y, wgeesimdata$x,x_mis1=wgeesimdata$x_mis[,2])
 models <- list(y~x1+x2)
 model_mis<-r~x_mis1
 candidate.cor.sets<-c("exchangeable")
-output<-QICWwgee(models, candidate.cor.sets,data=dat,model_mis,family,r,id,time)
-output$model.selection
-output$wgee.output
+##not run
+#output<-QICWwgee(models, candidate.cor.sets,data=dat,model_mis,family,r,id,time)
+#output$model.selection
+#output$wgee.output
 
 
 }

@@ -241,9 +241,10 @@ ELCICwgee <- function(models, candidate.cor.sets,data, model_mis, family,r,id,ti
 #'models <- list(y~x1+x2)
 #'model_mis<-r~x_mis1
 #'candidate.cor.sets<-c("exchangeable")
-#'output<-MLICwgee(models, candidate.cor.sets,data=dat,model_mis,family,r,id,time)
-#'output$model.selection
-#'output$wgee.output
+#'##not run
+#'#output<-MLICwgee(models, candidate.cor.sets,data=dat,model_mis,family,r,id,time)
+#'#output$model.selection
+#'#output$wgee.output
 #'
 #'
 #'@export
@@ -324,9 +325,10 @@ MLICwgee <- function(models, candidate.cor.sets,data, model_mis, family,r,id,tim
 #'models <- list(y~x1+x2)
 #'model_mis<-r~x_mis1
 #'candidate.cor.sets<-c("exchangeable")
-#'output<-QICWwgee(models, candidate.cor.sets,data=dat,model_mis,family,r,id,time)
-#'output$model.selection
-#'output$wgee.output
+#'##not run
+#'#output<-QICWwgee(models, candidate.cor.sets,data=dat,model_mis,family,r,id,time)
+#'#output$model.selection
+#'#output$wgee.output
 #'
 #'
 #'@export
