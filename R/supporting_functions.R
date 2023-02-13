@@ -481,7 +481,7 @@ print.mlic.wgee <- function(x,y, ...)
     cat("****************\n")
     colnames(x) <- paste("model", 1:ncol(x))
     zz<-as.matrix(x[1,])
-    colnames(zz)<-y[which(x==min(x),arr.ind = TRUE)[1]]
+    colnames(zz)<-rownames(x)
     print.default(zz, quote=FALSE)
     cat("****************\n")
     for (i in 1:ncol(x))
@@ -490,7 +490,7 @@ print.mlic.wgee <- function(x,y, ...)
     cat("The mean model selected by MLIC", ": ",
         deparse(attr(x, "formula")[[which(x==min(x),arr.ind = TRUE)[2]]]), "\n", sep="")
     cat("The correlation structure selected by MLIC",
-        ": ", deparse(y[which(x==min(x),arr.ind = TRUE)[1]]), "\n", sep="")
+        ": ", deparse(rownames(x)), "\n", sep="")
     invisible()
 }
 
@@ -502,7 +502,7 @@ print.qicw.wgee <- function(x,y, ...)
     cat("****************\n")
     colnames(x) <- paste("model", 1:ncol(x))
     zz<-as.matrix(x[1,])
-    colnames(zz)<-y[which(x==min(x),arr.ind = TRUE)[1]]
+    colnames(zz)<-rownames(x)
     print.default(zz, quote=FALSE)
     cat("****************\n")
     for (i in 1:ncol(x))
@@ -511,7 +511,7 @@ print.qicw.wgee <- function(x,y, ...)
     cat("The mean model selected by QICW", ": ",
         deparse(attr(x, "formula")[[which(x==min(x),arr.ind = TRUE)[2]]]), "\n", sep="")
     cat("The correlation structure selected by QICW",
-        ": ", deparse(y[which(x==min(x),arr.ind = TRUE)[1]]), "\n", sep="")
+        ": ", deparse(rownames(x)), "\n", sep="")
     invisible()
 }
 

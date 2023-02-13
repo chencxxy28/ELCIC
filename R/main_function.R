@@ -273,6 +273,7 @@ MLICwgee <- function(models, candidate.cor.sets,data, model_mis, family,r,id,tim
     ci<-MLIC.wgee(x=dat,y,x_mis=dat_mis,r=r,id=id,time=time,name.var.sets=name.var.sets,
                 dist=dist,candidate.cor.sets=candidate.cor.sets)
 
+    as.matrix(ci)
     attr(ci, "formula") <- models
     attr(ci, "type") <- "wgee"
     class(ci) <- "mlic"
